@@ -1,0 +1,8 @@
+<app-header [title]="constructionSelected?.name"></app-header>
+<ion-content [fullscreen]="true" class="loan">
+  <app-button-item-menu *ngFor="let item of loanMenu"
+    [srcImg]="item?.srcImg"
+    [title]="item?.title"
+    [urlRedirecet]="item?.routePath"
+  ></app-button-item-menu>
+</ion-content>

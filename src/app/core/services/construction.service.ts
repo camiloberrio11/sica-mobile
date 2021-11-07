@@ -5,7 +5,7 @@ import { Construction } from '../models/Construction';
   providedIn: 'root'
 })
 export class ConstructionService {
-  constructionSelected: Construction;
+  private constructionSelected: Construction;
 
   constructor() { }
 
