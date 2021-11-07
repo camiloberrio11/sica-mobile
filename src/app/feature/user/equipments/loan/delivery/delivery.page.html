@@ -1,12 +1,25 @@
 <app-header [title]="'Entrega de equipos'"></app-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="delivery">
   <app-form-step
     [listItems]="menuFormStep"
     [currentIndexInForm]="indexStep"
     (indexCurrent)="currentIndexStepForm($event)"
   ></app-form-step>
 
-<p *ngIf="stepEnd">En el ultimo paso</p>
+  <!-- form index 0 -->
+  <div class="delivery_loan">
+    <app-input-general
+      [label]="'Escanear'"
+      placeholder="Escanear Código"
+      srcIcon="assets/icon/barcode.png"
+      typeInput="text"
+    ></app-input-general>
+  </div>
+
+  <!-- form index 1 -->
+  <div></div>
+
+  <p *ngIf="stepEnd">En el ultimo paso</p>
   <button (click)="nextStep()">Oprime</button>
 </ion-content>
