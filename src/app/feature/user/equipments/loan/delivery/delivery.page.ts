@@ -20,8 +20,13 @@ export class DeliveryPage implements OnInit {
 
   nextStep(): void {
     if (this.stepEnd) {
+      this.sendRequest();
       return;
     }
     this.indexStep = this.indexStep + 1;
+  }
+
+  private sendRequest(): void {
+    alert('Equipo entregado');
   }
 }

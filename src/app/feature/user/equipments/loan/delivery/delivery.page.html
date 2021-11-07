@@ -44,6 +44,6 @@
       <app-input-observations placeholder="Observación"></app-input-observations>
     </div>
 
-    <button (click)="nextStep()">Continuar</button>
+    <button (click)="nextStep()">{{stepEnd ? 'Entregar' : 'Continuar'}}</button>
   </div>
 </ion-content>
