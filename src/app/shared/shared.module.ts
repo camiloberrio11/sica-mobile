@@ -5,6 +5,9 @@ import { ButtonItemMenuComponent } from './button-item-menu/button-item-menu.com
 import { IonicModule } from '@ionic/angular';
 import { FormStepComponent } from './form-step/form-step.component';
 import { InputGeneralComponent } from './input-general/input-general.component';
+import { CardDetailEquipmentComponent } from './card-detail-equipment/card-detail-equipment.component';
+import { InputObservationsComponent } from './input-observations/input-observations.component';
+import { BoxQuantityComponent } from './box-quantity/box-quantity.component';
 
 @NgModule({
   declarations: [
@@ -12,6 +15,9 @@ import { InputGeneralComponent } from './input-general/input-general.component';
     ButtonItemMenuComponent,
     FormStepComponent,
     InputGeneralComponent,
+    CardDetailEquipmentComponent,
+    InputObservationsComponent,
+    BoxQuantityComponent
   ],
   imports: [CommonModule, IonicModule],
   exports: [
@@ -19,6 +25,9 @@ import { InputGeneralComponent } from './input-general/input-general.component';
     ButtonItemMenuComponent,
     FormStepComponent,
     InputGeneralComponent,
+    CardDetailEquipmentComponent,
+    InputObservationsComponent,
+    BoxQuantityComponent
   ],
 })
 export class SharedModule {}

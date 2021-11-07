@@ -1,0 +1,16 @@
+.boxquantity {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  label {
+    position: absolute;
+    top: -20px;
+    color: var(--primary-color);
+    font-weight: bold;
+  }
+  input {
+    height: 60px;
+    width: 40%;
+    border: 1px solid var(--primary-color);
+  }
+}

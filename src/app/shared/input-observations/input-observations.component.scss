@@ -1,0 +1,11 @@
+.inputobs {
+  height: 50px;
+  position: relative;
+  width: 100%;
+  input {
+    border: none;
+    border-bottom: 1px solid var(--secondary-color);
+    width: 100%;
+    text-align: center;
+  }
+}

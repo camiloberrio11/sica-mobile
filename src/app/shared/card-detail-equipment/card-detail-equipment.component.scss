@@ -1,0 +1,26 @@
+.cardequipment {
+  box-shadow: 1px 1px 10px 1px var(--primary-color);
+  text-align: center;
+  padding: 25px;
+  width: 80%;
+  height: 250px;
+  p {
+    color: #8abcc1;
+  }
+  &__title {
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+
+  button {
+    font-weight: bold;
+    color: var(--primary-color);
+    background-color: transparent;
+    font-size: 14px;
+    height: 40px;
+    padding: 10px;
+    font-weight: bold;
+  }
+}
