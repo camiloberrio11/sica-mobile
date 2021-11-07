@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Construction } from 'src/app/core/models/Construction';
 import { ConstructionService } from 'src/app/core/services/construction.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
@@ -17,7 +18,8 @@ export class SelectConstructionPage  {
     private selectConstructionService: ConstructionService,
     private loadingService: LoadingService,
     private sicaApi: SicaBackendService,
-    private toastrService: ToastService
+    private toastrService: ToastService,
+    private router: Router
   ) { }
 
   ionViewWillEnter() {
@@ -29,7 +31,7 @@ export class SelectConstructionPage  {
     const construction = event?.detail?.value;
     if (construction) {
       this.selectConstructionService.selectConstruction(construction);
-      // this.router.navigate(['/auth/select-flow']);
+      this.router.navigate(['/auth/select-flow']);
     }
   }
 

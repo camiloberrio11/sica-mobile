@@ -1,0 +1,21 @@
+.itemmenu {
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  button {
+    width: 100%;
+    height: 75%;
+    border-radius: 15%;
+    background-color: var(--tertiary-color);
+    box-shadow: 1px 1px 15px 4px grey;
+  }
+  p {
+    color: var(--gray-text);
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+  }
+}

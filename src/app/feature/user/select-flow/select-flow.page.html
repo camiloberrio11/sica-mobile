@@ -1,0 +1,14 @@
+<app-header [title]="'Seleccionar accion'"></app-header>
+<ion-content [fullscreen]="true" class="selectflow">
+  <app-button-item-menu
+    [srcImg]="'assets/icon/materiales.svg'"
+    [title]="'Materiales'"
+    [urlRedirecet]=""
+  ></app-button-item-menu>
+  <app-button-item-menu
+    [srcImg]="'assets/icon/equipos.svg'"
+    [srcImgTwo]="'assets/icon/equipos2.svg'"
+    [title]="'Equipo'"
+    [urlRedirecet]="'/auth/menu-equipments'"
+  ></app-button-item-menu>
+</ion-content>

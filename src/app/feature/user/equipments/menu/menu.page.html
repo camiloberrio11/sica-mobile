@@ -1,0 +1,8 @@
+<app-header [title]="'Equipos'"></app-header>
+<ion-content [fullscreen]="true" class="menu">
+  <app-button-item-menu *ngFor="let item of menuItems"
+    [srcImg]="item?.srcImg"
+    [title]="item?.title"
+    [urlRedirecet]="item?.routePath"
+  ></app-button-item-menu>
+</ion-content>

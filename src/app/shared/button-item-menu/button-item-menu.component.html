@@ -1,0 +1,7 @@
+<div class="itemmenu">
+  <button (click)="redirect()">
+    <img [src]="srcImg" alt="icon" />
+    <img *ngIf="srcImgTwo" [src]="srcImgTwo" alt="icon" />
+  </button>
+  <p>{{title}}</p>
+</div>

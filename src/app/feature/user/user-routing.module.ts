@@ -15,8 +15,18 @@ const routes: Routes = [
             (m) => m.SelectConstructionPageModule
           ),
       },
+      {
+        path: 'select-flow',
+        loadChildren: () => import('./select-flow/select-flow.module').then( m => m.SelectFlowPageModule)
+      },
+      {
+        path: 'menu-equipments',
+        loadChildren: () => import('./equipments/menu/menu.module').then( m => m.MenuPageModule)
+      },
     ],
   },
+
+
 ];
 
 @NgModule({
