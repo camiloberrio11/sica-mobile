@@ -1,0 +1,40 @@
+.selectconstruction {
+  height: 100%;
+  width: 100%;
+  &__content {
+    &__title {
+      text-align: center;
+      color: var(--primary-color);
+      font-weight: bold;
+      margin: 75px;
+    }
+    &__select {
+      width: 95%;
+      margin: 0 auto;
+      &__label {
+        border: 1px solid var(--primary-color);
+      }
+    }
+
+  }
+}
+.selectconstruction {
+  height: 100%;
+  width: 100%;
+  &__content {
+    &__title {
+      text-align: center;
+      color: var(--primary-color);
+      font-weight: bold;
+      margin: 75px;
+    }
+    &__select {
+      width: 95%;
+      margin: 0 auto;
+      &__label {
+        border: 1px solid var(--primary-color);
+      }
+    }
+
+  }
+}

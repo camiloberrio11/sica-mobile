@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { SelectConstructionPageRoutingModule } from './select-construction-routing.module';
 
 import { SelectConstructionPage } from './select-construction.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SelectConstructionPageRoutingModule
+    SelectConstructionPageRoutingModule,
+    SharedModule
   ],
   declarations: [SelectConstructionPage]
 })

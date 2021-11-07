@@ -1,9 +1,24 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="login">
+  <div class="login__content">
+    <h2 class="login__content__title">Iniciar sesion</h2>
+    <div class="login__content__input">
+      <ion-icon class="login__content__input__icon" name="person"></ion-icon>
+      <input type="text" placeholder="Usuario" />
+    </div>
+    <div class="login__content__input">
+      <ion-icon
+        class="login__content__input__icon"
+        name="lock-closed"
+      ></ion-icon>
 
-<ion-content>
-
-</ion-content>
+      <input type="password" placeholder="Password" />
+    </div>
+    <p class="login__content__passwordcover">¿Olvidaste tu contraseña?</p>
+    <div class="login__content__logo">
+      <img src="assets/img/logo.svg" alt="logo-sica" />
+    </div>
+  </div>
+  <div class="login__action">
+    <button (click)="handleLogin()" class="">Iniciar sesión</button>
+  </div>
+</div>

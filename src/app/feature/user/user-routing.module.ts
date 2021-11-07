@@ -6,12 +6,17 @@ import { UserPage } from './user.page';
 const routes: Routes = [
   {
     path: '',
-    component: UserPage
+    component: UserPage,
+    children: [
+      {
+        path: 'select-construction',
+        loadChildren: () =>
+          import('./select-construction/select-construction.module').then(
+            (m) => m.SelectConstructionPageModule
+          ),
+      },
+    ],
   },
-  {
-    path: 'select-construction',
-    loadChildren: () => import('./select-construction/select-construction.module').then( m => m.SelectConstructionPageModule)
-  }
 ];
 
 @NgModule({

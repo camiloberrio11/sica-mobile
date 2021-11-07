@@ -1,9 +1,27 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>select-construction</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header></app-header>
 
-<ion-content>
-
+<ion-content [fullscreen]="true">
+  <div class="selectconstruction">
+    <div class="selectconstruction__content">
+      <h3 class="selectconstruction__content__title">Seleccionar obra</h3>
+      <div class="selectconstruction__content__select">
+        <ion-list>
+          <ion-item class="selectconstruction__content__select__label">
+            <ion-label>Obra</ion-label>
+            <ion-select
+              okText="Seleccionar"
+              cancelText="Cancelar"
+              (ionChange)="changeConstruction($event)"
+            >
+              <ion-select-option
+                *ngFor="let constr of listConstruction"
+                [value]="constr"
+                >{{constr.name}}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+  </div>
 </ion-content>
