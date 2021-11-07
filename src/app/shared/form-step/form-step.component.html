@@ -1,0 +1,10 @@
+<div class="circlesbox">
+  <button
+    class="circle"
+    *ngFor="let circle of listItems; index as i"
+    [ngClass]="i <= currentIndex ? 'full' : 'null'"
+    (click)="setIndexStep(i)"
+  >
+    <p>{{ circle }}</p>
+  </button>
+</div>

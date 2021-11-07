@@ -1,5 +1,12 @@
 <app-header [title]="'Entrega de equipos'"></app-header>
 
 <ion-content [fullscreen]="true">
+  <app-form-step
+    [listItems]="menuFormStep"
+    [currentIndexInForm]="indexStep"
+    (indexCurrent)="currentIndexStepForm($event)"
+  ></app-form-step>
 
+<p *ngIf="stepEnd">En el ultimo paso</p>
+  <button (click)="nextStep()">Oprime</button>
 </ion-content>

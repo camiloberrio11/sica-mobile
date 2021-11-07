@@ -1,0 +1,47 @@
+.circlesbox {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+margin: 20px;
+
+}
+
+.circlesbox:before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 3px;
+  width: 100%;
+  background: #9abec4;
+}
+
+.circle {
+  position: relative;
+  z-index: 2;
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 0 0 20px #fff;
+  width: 5%;
+  height: 20px;
+  border-radius: 50%;
+  p {
+    position: absolute;
+    top: 12px;
+    left: -2px;
+    font-size: 8px;
+    color: var(--primary-color);
+    font-weight: bold;
+  }
+}
+
+.null {
+  background: white;
+}
+
+.full {
+  background-color: var(--primary-color);
+}
