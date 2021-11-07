@@ -17,12 +17,12 @@ export class LoanPage implements OnInit {
     {
       title: 'Devolución',
       srcImg: 'assets/icon/materiales.svg',
-      routePath: 'auth/loan-equipment/return',
+      routePath: '/loan-equipment/delivery',
     },
     {
       title: 'Informe',
       srcImg: 'assets/icon/equipo-alquilado.svg',
-      routePath: 'auth/loan-equipment/report',
+      routePath: '/delivery',
     },
   ];
   constructionSelected: Construction;
