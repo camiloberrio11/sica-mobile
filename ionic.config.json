@@ -1,0 +1,7 @@
+{
+  "name": "sica-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
