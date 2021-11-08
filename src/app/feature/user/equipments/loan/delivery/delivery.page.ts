@@ -38,14 +38,13 @@ export class DeliveryPage implements OnInit {
   }
 
   private sendRequest(): void {
-    console.log('soy form', this.formDelivery);
+    console.log('soy form', this.formDelivery.value);
     alert('Equipo entregado');
   }
 
   private buildForm(): void {
     this.formDelivery = new FormGroup({
       codebar: new FormControl('', Validators.required),
-      // password: new FormControl('', Validators.required),
     });
   }
 }
