@@ -18,9 +18,6 @@ export class FormStepComponent implements OnChanges {
 
   ngOnChanges() {
     this.currentIndex = this.currentIndexInForm;
-    // if (this.currentIndex !== this.currentIndexInForm) {
-    //   this.currentIndex = this.currentIndexInForm;
-    // }
     this.emitCurrentIndex();
   }
 

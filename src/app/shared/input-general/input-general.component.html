@@ -1,5 +1,5 @@
 <div class="inputgeneral">
   <p>{{ label }}</p>
-  <input [type]="typeInput" />
+  <input [type]="typeInput" #inputgeneral (keyup)="handleInput($event)" />
   <img *ngIf="srcIcon" [src]="srcIcon" alt="" />
 </div>
