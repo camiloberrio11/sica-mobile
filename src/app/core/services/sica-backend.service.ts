@@ -27,4 +27,10 @@ export class SicaBackendService {
       `${environment.urlApi}/api/${idConstruction}/tool/${code}`
     );
   }
+
+  getTokenByDocument(doc: string): Observable<{token: string}> {
+    return this.http.get<{token: string}>(
+      `${environment.urlApi}/api/token/${doc}`
+    );
+  }
 }

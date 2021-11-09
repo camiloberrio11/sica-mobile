@@ -3,9 +3,10 @@
 <ion-content [fullscreen]="true" class="createtoken">
   <div class="createtoken__identification">
     <p>Ingresar cédula</p>
-    <input type="text" />
+    <input type="text" [(ngModel)]="identification" />
   </div>
   <app-button-item-menu
+    *ngIf="identification"
     title="Registrar token"
     srcImg="assets/icon/nfc.svg"
     (clickedBtn)="handleClick($event)"
