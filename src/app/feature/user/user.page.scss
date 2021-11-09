@@ -1,0 +1,44 @@
+ion-list {
+  padding-top: 0px;
+}
+
+.profile {
+  background-color: var(--primary-color);
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  p {
+    margin: 0;
+    text-align: center;
+    color: white;
+    font-size: 14px;
+  }
+  &__name {
+    color: white;
+    font-weight: bold;
+    font-size: 17px;
+  }
+}
+
+ion-menu-toggle,
+ion-list,
+ion-item {
+  --background: transparent;
+  color: white;
+  font-weight: bold;
+}
+
+ion-list {
+  height: 89%;
+  background: linear-gradient(
+    to bottom,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+}
+
+ion-icon {
+  color: white;
+}

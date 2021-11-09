@@ -23,16 +23,11 @@ export class DeliveryPage implements OnInit {
 
   ngOnInit() {}
 
-  inputChange(
-    event: string,
-    formcontrolname?: string
-  ): void {
+  inputChange(event: string, formcontrolname?: string): void {
     this.formDelivery.patchValue({
       [formcontrolname]: event,
     });
   }
-
-
 
   currentIndexStepForm(event: number) {
     this.stepEnd = this.indexStep + 1 === this.menuFormStep?.length;
@@ -47,9 +42,7 @@ export class DeliveryPage implements OnInit {
     this.indexStep = this.indexStep + 1;
   }
 
-
-
-   getEquipmentByCodeBar(codebar: string): void {
+  getEquipmentByCodeBar(codebar: string): void {
     this.loadingService.initLoading('Obtiendo equipo');
     this.sicaApiService.getToolByCodeBar(codebar).subscribe(
       (data) => {

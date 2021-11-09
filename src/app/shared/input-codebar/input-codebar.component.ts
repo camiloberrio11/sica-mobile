@@ -25,7 +25,6 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
   @ViewChild('searchInput') sInput;
   render = false;
 
-
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
   ionViewDidEnter() {
