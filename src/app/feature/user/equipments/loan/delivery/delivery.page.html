@@ -7,49 +7,76 @@
     (indexCurrent)="currentIndexStepForm($event)"
   ></app-form-step>
 
-  <div class="delivery__layout" [ngSwitch]="indexStep">
-    <!-- form index 0 -->
-    <div class="delivery__layout__loan__0" *ngSwitchCase="0">
-      <app-input-codebar
-        (codeBarRead)="getEquipmentByCodeBar($event)"
-        [label]="'Escanear'"
-        placeholder="Escanear Código"
-        srcIcon="assets/icon/barcode.png"
-        typeInput="text"
-      ></app-input-codebar>
-      <app-card-detail-equipment
-        [brand]="toolFindByCodeBar?.brand?.name"
-        [categoryName]="toolFindByCodeBar?.category?.name"
-        [reference]="toolFindByCodeBar?.reference"
-        [serial]="toolFindByCodeBar?.serial"
-        [isOwned]="true"
-      ></app-card-detail-equipment>
-    </div>
-
-    <!-- form index 1 -->
-    <div class="delivery__layout__loan__1" *ngSwitchCase="1">
-      <app-input-label-nfc
-        [label]="'Entregado a'"
-        srcIcon="assets/icon/nfc.svg"
-        (nfcValue)="getUserByToken($event)"
-      ></app-input-label-nfc>
-
-      <app-input-general
-        [label]="'Contratista'"
-        typeInput="text"
-      ></app-input-general>
-
-      <div class="delivery__layout__loan__1__quan">
-        <app-box-quantity label="Cantidad"></app-box-quantity>
-        <app-box-quantity label="Días"></app-box-quantity>
+  <form [formGroup]="formDelivery">
+    <div class="delivery__layout" [ngSwitch]="indexStep">
+      <!-- form index 0 -->
+      <div class="delivery__layout__loan__0" *ngSwitchCase="0">
+        <app-input-codebar
+          (codeBarRead)="getEquipmentByCodeBar($event)"
+          [label]="'Escanear'"
+          placeholder="Escanear Código"
+          srcIcon="assets/icon/barcode.png"
+          typeInput="text"
+        ></app-input-codebar>
+        <app-card-detail-equipment
+          [brand]="toolFindByCodeBar?.brand?.name"
+          [categoryName]="toolFindByCodeBar?.category?.name"
+          [reference]="toolFindByCodeBar?.reference"
+          [serial]="toolFindByCodeBar?.serial"
+          [isOwned]="true"
+        ></app-card-detail-equipment>
       </div>
 
-      <app-input-observations placeholder="Actividad"></app-input-observations>
-      <app-input-observations
-        placeholder="Observación"
-      ></app-input-observations>
-    </div>
+      <!-- form index 1 -->
+      <div class="delivery__layout__loan__1" *ngSwitchCase="1">
+        <!-- Entregado por -->
+        <app-input-label-nfc
+          [label]="'Entregado por'"
+          srcIcon="assets/icon/nfc.svg"
+          (nfcValue)="getUserByToken($event)"
+        ></app-input-label-nfc>
+        <app-input-general
+          [label]="'Contratista'"
+          typeInput="text"
+          [value]="deliveredByUser?.name?.first + deliveredByUser?.name?.last"
+        ></app-input-general>
 
-    <button (click)="nextStep()">{{stepEnd ? 'Entregar' : 'Continuar'}}</button>
-  </div>
+        <!-- Entregado a -->
+        <app-input-label-nfc
+          [label]="'Entregado a'"
+          srcIcon="assets/icon/nfc.svg"
+          (nfcValue)="getUserByToken($event)"
+        ></app-input-label-nfc>
+        <app-input-general
+          [label]="'Contratista'"
+          typeInput="text"
+          [value]="recivedByUser?.name?.first + recivedByUser?.name?.last"
+        ></app-input-general>
+
+        <div class="delivery__layout__loan__1__quan">
+          <app-box-quantity
+            label="Cantidad"
+            (valueInput)="inputChange($event, 'quantity')"
+          ></app-box-quantity>
+          <app-box-quantity
+            label="Días"
+            (valueInput)="inputChange($event, 'days')"
+          ></app-box-quantity>
+        </div>
+
+        <app-input-observations
+          (valueInput)="inputChange($event, 'tasks')"
+          placeholder="Actividad"
+        ></app-input-observations>
+        <app-input-observations
+          (valueInput)="inputChange($event, 'remark')"
+          placeholder="Observación"
+        ></app-input-observations>
+      </div>
+
+      <button (click)="nextStep()">
+        {{stepEnd ? 'Entregar' : 'Continuar'}}
+      </button>
+    </div>
+  </form>
 </ion-content>

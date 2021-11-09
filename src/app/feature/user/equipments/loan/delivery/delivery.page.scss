@@ -24,7 +24,7 @@
       app-input-label-nfc {
         display: flex;
         margin: 10px;
-        height: 70px;
+        height: 50px;
         justify-content: center;
         align-items: center;
       }
@@ -32,7 +32,7 @@
         display: flex;
         width: 90%;
         margin: 0 auto;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
       }
       &__quan {
         position: relative;
@@ -55,10 +55,14 @@
       background-color: var(--primary-color);
       font-weight: bold;
       color: white;
-      width: 100%;
+      width: 95%;
       height: 50px;
       border-radius: 5px;
       font-size: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
     }
   }
 }

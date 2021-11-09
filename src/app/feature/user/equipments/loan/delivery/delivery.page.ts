@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CreateLoanBody } from 'src/app/core/models/Loan';
 import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
+import { User } from 'src/app/core/models/User';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 import { ToastService } from 'src/app/core/services/toast.service';
@@ -16,6 +18,8 @@ export class DeliveryPage implements OnInit {
   menuFormStep: string[] = ['Equipo', 'Usuario'];
   stepEnd = false;
   toolFindByCodeBar: ToolByBarcodeResponseService;
+  deliveredByUser: User;
+  recivedByUser: User;
 
   constructor(
     private loadingService: LoadingService,
@@ -47,16 +51,18 @@ export class DeliveryPage implements OnInit {
   }
 
   getEquipmentByCodeBar(codebar: string): void {
-    // this.loadingService.initLoading('Obtiendo equipo');
     this.sicaApiService.getToolByCodeBar(codebar).subscribe(
       (data) => {
         this.loadingService.endLoading();
         this.toolFindByCodeBar = data;
-        console.log(this.toolFindByCodeBar)
+        console.log(this.toolFindByCodeBar);
       },
       (err) => {
         this.loadingService.endLoading();
-        this.toastrService.createToast('No se ha encontrado datos del equipo', 'warning');
+        this.toastrService.createToast(
+          'No se ha encontrado datos del equipo',
+          'warning'
+        );
         console.error(err);
       }
     );
@@ -64,16 +70,60 @@ export class DeliveryPage implements OnInit {
 
   getUserByToken(token: string): void {
     console.log(token);
+    this.sicaApiService.getUserByToken(token).subscribe(
+      (data) => {
+        debugger;
+          this.deliveredByUser = data;
+          this.recivedByUser = data;
+      },
+      (err) => {
+        this.toastrService.createToast(
+          'No se ha encontrado información',
+          'warning'
+        );
+      }
+    );
   }
+
+
 
   private sendRequest(): void {
     console.log('soy form', this.formDelivery.value);
-    alert('Equipo entregado');
+    const valuesForm = this.formDelivery.value;
+    const body: CreateLoanBody = {
+      deliveredBy: this.deliveredByUser?.id,
+      receivedBy: this.recivedByUser?.id,
+      quantity: valuesForm.quantity,
+      days: valuesForm.days,
+      tasks: valuesForm.tasks,
+      remark: valuesForm.remark,
+      tool: this.toolFindByCodeBar?.id,
+    };
+    this.sicaApiService.createLoan(body).subscribe(
+      (data) => {
+        this.toastrService.createToast(
+          'Se ha entregado el equipo con éxito',
+          'success'
+        );
+      },
+      (err) => {
+        this.toastrService.createToast(
+          'No se ha podido entregar el equipo',
+          'warning'
+        );
+      }
+    );
   }
 
   private buildForm(): void {
     this.formDelivery = new FormGroup({
       codebar: new FormControl('', Validators.required),
+      deliveredBy: new FormControl('', Validators.required),
+      receivedBy: new FormControl('', Validators.required),
+      quantity: new FormControl('', Validators.required),
+      days: new FormControl('', Validators.required),
+      tasks: new FormControl('', Validators.required),
+      remark: new FormControl('', Validators.required),
     });
   }
 }

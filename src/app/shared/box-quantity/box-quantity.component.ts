@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-box-quantity',
@@ -7,8 +7,13 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class BoxQuantityComponent implements OnInit {
   @Input() label: string;
+  @Output() valueInput: EventEmitter<string> = new EventEmitter<string>();
   constructor() { }
 
   ngOnInit() {}
+
+  handleInput(event): void {
+    this.valueInput.emit(event?.target?.value);
+  }
 
 }

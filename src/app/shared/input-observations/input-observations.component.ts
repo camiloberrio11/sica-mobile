@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-input-observations',
@@ -7,9 +7,13 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class InputObservationsComponent implements OnInit {
   @Input() placeholder: string;
+  @Output() valueInput: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {}
 
+  handleInput(event): void {
+    this.valueInput.emit(event?.target?.value);
+  }
 }
