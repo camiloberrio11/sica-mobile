@@ -14,6 +14,7 @@ const ID_SIMULATE_USER = 'abc123YKNDKH8IYHJM31214DASA';
 export class CreatePage {
   nfcSubs: Subscription;
   identification: string;
+  exist = false;
   constructor(
     private nfc: NFC,
     private ndef: Ndef,
@@ -27,18 +28,20 @@ export class CreatePage {
   }
 
   handleClick(event: boolean): void {
-    this.loadingService.initLoading('Obteniendo información');
+    // this.loadingService.initLoading('Obteniendo información');
     this.sicaBackendService.getTokenByDocument(this.identification).subscribe(
       (data) => {
+        this.exist = true;
         this.loadingService.endLoading();
         this.listenerAndWriteNfc(data?.token);
       },
       (error) => {
+        this.loadingService.endLoading();
+        this.exist = false;
         this.toastrService.createToast(
           'No se ha encontrado registros',
           'warning'
         );
-        this.loadingService.endLoading();
       }
     );
   }
@@ -59,7 +62,8 @@ export class CreatePage {
         try {
           const result = await this.nfc.write(message);
           this.toastrService.createToast('Token creado', 'success');
-          console.log('Result', result);
+          this.exist = false;
+          this.identification = '';
         } catch (error) {
           this.toastrService.createToast(
             'No se ha podido escribir el token',
