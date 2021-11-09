@@ -52,6 +52,10 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
     this.readerMode$?.unsubscribe();
   }
 
+  ionViewWillLeave() {
+    this.readerMode$.unsubscribe();
+  }
+
   sendChildren(tokenDecode: string): void {
     if (tokenDecode) {
       this.nfcValue.emit(tokenDecode);

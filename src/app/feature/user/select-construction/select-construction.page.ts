@@ -36,7 +36,7 @@ export class SelectConstructionPage  {
   }
 
   getConstruction() {
-    this.loadingService.initLoading('Cargando construcciones');
+    // this.loadingService.initLoading('Cargando construcciones');
     this.sicaApi.getConstruiction().subscribe(
       (constr) => {
         this.loadingService.endLoading();
