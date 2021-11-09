@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,12 +11,17 @@ export class ButtonItemMenuComponent implements OnInit {
   @Input() srcImg: string;
   @Input() srcImgTwo: string;
   @Input() urlRedirecet: string;
+  @Output() clickedBtn: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private router: Router) {}
 
   ngOnInit() {}
 
   redirect(): void {
-    this.router.navigate([this.urlRedirecet]);
+    if (this.urlRedirecet) {
+      this.router.navigate([this.urlRedirecet]);
+    } else {
+      this.clickedBtn.emit(true);
+    }
   }
 }
