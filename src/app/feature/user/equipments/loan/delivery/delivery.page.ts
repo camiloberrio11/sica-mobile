@@ -101,6 +101,7 @@ export class DeliveryPage implements OnInit {
     };
     this.sicaApiService.createLoan(body).subscribe(
       (data) => {
+        this.formDelivery.reset();
         this.toastrService.createToast(
           'Se ha entregado el equipo con éxito',
           'success'
