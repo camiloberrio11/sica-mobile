@@ -5,6 +5,7 @@ import { Construction } from '../models/Construction';
 import { environment } from 'src/environments/environment.prod';
 import { ConstructionService } from './construction.service';
 import { ToolByBarcodeResponseService } from '../models/Tool';
+import { User } from '../models/User';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +33,12 @@ export class SicaBackendService {
   getTokenByDocument(doc: string): Observable<{ token: string }> {
     return this.http.get<{ token: string }>(
       `${environment.urlApi}/api/token/${doc}`
+    );
+  }
+
+  getUserByToken(token: string): Observable<User> {
+    return this.http.get<User>(
+      `${environment.urlApi}/api/user/${token}`
     );
   }
 }
