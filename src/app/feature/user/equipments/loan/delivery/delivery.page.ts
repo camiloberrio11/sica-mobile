@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-delivery',
@@ -18,7 +19,8 @@ export class DeliveryPage implements OnInit {
 
   constructor(
     private loadingService: LoadingService,
-    private sicaApiService: SicaBackendService
+    private sicaApiService: SicaBackendService,
+    private toastrService: ToastService
   ) {
     this.buildForm();
   }
@@ -45,15 +47,16 @@ export class DeliveryPage implements OnInit {
   }
 
   getEquipmentByCodeBar(codebar: string): void {
-    this.loadingService.initLoading('Obtiendo equipo');
+    // this.loadingService.initLoading('Obtiendo equipo');
     this.sicaApiService.getToolByCodeBar(codebar).subscribe(
       (data) => {
         this.loadingService.endLoading();
         this.toolFindByCodeBar = data;
-        console.log(data);
+        console.log(this.toolFindByCodeBar)
       },
       (err) => {
         this.loadingService.endLoading();
+        this.toastrService.createToast('No se ha encontrado datos del equipo', 'warning');
         console.error(err);
       }
     );
