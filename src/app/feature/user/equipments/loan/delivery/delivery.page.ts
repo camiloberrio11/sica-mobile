@@ -72,7 +72,6 @@ export class DeliveryPage implements OnInit {
     console.log(token);
     this.sicaApiService.getUserByToken(token).subscribe(
       (data) => {
-        debugger;
           this.deliveredByUser = data;
           this.recivedByUser = data;
       },

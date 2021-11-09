@@ -17,7 +17,7 @@ export class LoanPage implements OnInit {
     {
       title: 'Devolución',
       srcImg: 'assets/icon/materiales.svg',
-      routePath: '/loan-equipment/delivery',
+      routePath: 'auth/loan-equipment/return',
     },
     {
       title: 'Informe',
