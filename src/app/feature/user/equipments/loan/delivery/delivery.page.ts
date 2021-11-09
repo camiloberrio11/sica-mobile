@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 
@@ -13,6 +14,7 @@ export class DeliveryPage implements OnInit {
   indexStep = 0;
   menuFormStep: string[] = ['Equipo', 'Usuario'];
   stepEnd = false;
+  toolFindByCodeBar: ToolByBarcodeResponseService;
 
   constructor(
     private loadingService: LoadingService,
@@ -47,6 +49,7 @@ export class DeliveryPage implements OnInit {
     this.sicaApiService.getToolByCodeBar(codebar).subscribe(
       (data) => {
         this.loadingService.endLoading();
+        this.toolFindByCodeBar = data;
         console.log(data);
       },
       (err) => {

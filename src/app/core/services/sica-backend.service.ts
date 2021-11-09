@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Construction } from '../models/Construction';
 import { environment } from 'src/environments/environment.prod';
 import { ConstructionService } from './construction.service';
-import { ToolResponseService } from '../models/Tool';
+import { ToolByBarcodeResponseService } from '../models/Tool';
 
 @Injectable({
   providedIn: 'root',
@@ -21,15 +21,16 @@ export class SicaBackendService {
     );
   }
 
-  getToolByCodeBar(code: string): Observable<ToolResponseService> {
-    const idConstruction = this.constructionService.getConstructionSelected()?.id;
-    return this.http.get<ToolResponseService>(
+  getToolByCodeBar(code: string): Observable<ToolByBarcodeResponseService> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.get<ToolByBarcodeResponseService>(
       `${environment.urlApi}/api/${idConstruction}/tool/${code}`
     );
   }
 
-  getTokenByDocument(doc: string): Observable<{token: string}> {
-    return this.http.get<{token: string}>(
+  getTokenByDocument(doc: string): Observable<{ token: string }> {
+    return this.http.get<{ token: string }>(
       `${environment.urlApi}/api/token/${doc}`
     );
   }

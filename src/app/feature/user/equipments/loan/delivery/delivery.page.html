@@ -18,7 +18,13 @@
           srcIcon="assets/icon/barcode.png"
           typeInput="text"
         ></app-input-codebar>
-        <app-card-detail-equipment></app-card-detail-equipment>
+        <app-card-detail-equipment
+          [brand]="toolFindByCodeBar?.brand?.name"
+          [categoryName]="toolFindByCodeBar?.category?.name"
+          [reference]="toolFindByCodeBar?.reference"
+          [serial]="toolFindByCodeBar?.serial"
+          [isOwned]="true"
+        ></app-card-detail-equipment>
       </div>
 
       <!-- form index 1 -->
