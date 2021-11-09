@@ -1,0 +1,30 @@
+.createtoken {
+  height: 100%;
+  &__identification {
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+    p {
+      text-transform: uppercase;
+      color: gray;
+      font-weight: bold;
+      font-size: 16px;
+
+    }
+    input {
+      border: 1px solid var(--primary-color);
+      height: 40px;
+      width: 60%;
+      border-radius: 5px;
+    }
+  }
+  app-button-item-menu {
+    display: flex;
+    margin: 0 auto;
+    height: 30%;
+    width: 50%;
+  }
+}

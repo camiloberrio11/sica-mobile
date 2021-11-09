@@ -27,8 +27,13 @@ const routes: Routes = [
         path: 'loan-equipment',
         loadChildren: () => import('./equipments/loan/loan.module').then( m => m.LoanPageModule)
       },
+      {
+        path: 'create-token',
+        loadChildren: () => import('./tokens/create/create.module').then( m => m.CreatePageModule)
+      },
     ],
   },
+
 
 
 
