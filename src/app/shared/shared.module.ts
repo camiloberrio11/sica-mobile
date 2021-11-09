@@ -8,6 +8,7 @@ import { InputGeneralComponent } from './input-general/input-general.component';
 import { CardDetailEquipmentComponent } from './card-detail-equipment/card-detail-equipment.component';
 import { InputObservationsComponent } from './input-observations/input-observations.component';
 import { BoxQuantityComponent } from './box-quantity/box-quantity.component';
+import { InputCodebarComponent } from './input-codebar/input-codebar.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { BoxQuantityComponent } from './box-quantity/box-quantity.component';
     InputGeneralComponent,
     CardDetailEquipmentComponent,
     InputObservationsComponent,
-    BoxQuantityComponent
+    BoxQuantityComponent,
+    InputCodebarComponent
   ],
   imports: [CommonModule, IonicModule],
   exports: [
@@ -27,7 +29,8 @@ import { BoxQuantityComponent } from './box-quantity/box-quantity.component';
     InputGeneralComponent,
     CardDetailEquipmentComponent,
     InputObservationsComponent,
-    BoxQuantityComponent
+    BoxQuantityComponent,
+    InputCodebarComponent
   ],
 })
 export class SharedModule {}

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { LoadingService } from 'src/app/core/services/loading.service';
+import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 
 @Component({
   selector: 'app-delivery',
@@ -12,17 +14,25 @@ export class DeliveryPage implements OnInit {
   menuFormStep: string[] = ['Equipo', 'Usuario'];
   stepEnd = false;
 
-  constructor() {
+  constructor(
+    private loadingService: LoadingService,
+    private sicaApiService: SicaBackendService
+  ) {
     this.buildForm();
   }
 
   ngOnInit() {}
 
-  inputChange(event: string, formcontrolname?: string): void {
+  inputChange(
+    event: string,
+    formcontrolname?: string
+  ): void {
     this.formDelivery.patchValue({
       [formcontrolname]: event,
     });
   }
+
+
 
   currentIndexStepForm(event: number) {
     this.stepEnd = this.indexStep + 1 === this.menuFormStep?.length;
@@ -35,6 +45,22 @@ export class DeliveryPage implements OnInit {
       return;
     }
     this.indexStep = this.indexStep + 1;
+  }
+
+
+
+   getEquipmentByCodeBar(codebar: string): void {
+    this.loadingService.initLoading('Obtiendo equipo');
+    this.sicaApiService.getToolByCodeBar(codebar).subscribe(
+      (data) => {
+        this.loadingService.endLoading();
+        console.log(data);
+      },
+      (err) => {
+        this.loadingService.endLoading();
+        console.error(err);
+      }
+    );
   }
 
   private sendRequest(): void {

@@ -9,17 +9,15 @@
 
   <form [formGroup]="formDelivery">
     <div class="delivery__layout" [ngSwitch]="indexStep">
-
       <!-- form index 0 -->
       <div class="delivery__layout__loan__0" *ngSwitchCase="0">
-        <app-input-general
-          (inputChange)="inputChange($event, 'codebar')"
-          [isCodeBarInput]="true"
+        <app-input-codebar
+          (codeBarRead)="getEquipmentByCodeBar($event)"
           [label]="'Escanear'"
           placeholder="Escanear Código"
           srcIcon="assets/icon/barcode.png"
           typeInput="text"
-        ></app-input-general>
+        ></app-input-codebar>
         <app-card-detail-equipment></app-card-detail-equipment>
       </div>
 
