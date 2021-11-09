@@ -1,6 +1,14 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NFC } from '@ionic-native/nfc/ngx';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-input-label-nfc',
@@ -15,7 +23,7 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
   @Output() nfcValue: EventEmitter<string> = new EventEmitter<string>();
   readerMode$: Subscription;
 
-  constructor(private nfc: NFC) {}
+  constructor(private nfc: NFC, private toastrService: ToastService) {}
 
   ngOnInit() {
     this.readerMode$ = this.nfc
@@ -28,8 +36,12 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
         }
       )
       .subscribe((event) => {
+        if (!event.tag?.ndefMessage) {
+          this.toastrService.createToast('NFC vacío', 'warning');
+          return;
+        }
         const decodeNfc = this.nfc
-          .bytesToString(event.tag.ndefMessage[0].payload)
+          .bytesToString(event.tag?.ndefMessage[0]?.payload)
           ?.split('en')
           ?.pop();
         this.sendChildren(decodeNfc);
