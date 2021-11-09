@@ -5,7 +5,8 @@
     height: 90%;
     width: 100%;
     &__loan__0 {
-      app-input-general, app-input-codebar {
+      app-input-general,
+      app-input-codebar {
         display: flex;
         margin: 10px;
         height: 140px;
@@ -19,7 +20,8 @@
       }
     }
     &__loan__1 {
-      app-input-general {
+      app-input-general,
+      app-input-label-nfc {
         display: flex;
         margin: 10px;
         height: 70px;

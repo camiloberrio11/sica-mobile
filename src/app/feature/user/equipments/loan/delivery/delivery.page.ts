@@ -63,6 +63,10 @@ export class DeliveryPage implements OnInit {
     );
   }
 
+  getUserByToken(token: string): void {
+    console.log(token);
+  }
+
   private sendRequest(): void {
     console.log('soy form', this.formDelivery.value);
     alert('Equipo entregado');

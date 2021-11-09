@@ -65,7 +65,7 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
   }
   }
 
-  private scanBarcode(event: CustomEvent): void {
+  private scanBarcode(event: any | CustomEvent<any>): void {
     console.log(event?.detail?.scanCode);
     const value = event?.detail?.scanCode;
     if (value) {

@@ -23,11 +23,11 @@
 
       <!-- form index 1 -->
       <div class="delivery__layout__loan__1" *ngSwitchCase="1">
-        <app-input-general
+        <app-input-label-nfc
           [label]="'Entregado a'"
           srcIcon="assets/icon/nfc.svg"
-          typeInput="text"
-        ></app-input-general>
+          (nfcValue)="getUserByToken($event)"
+        ></app-input-label-nfc>
 
         <app-input-general
           [label]="'Contratista'"

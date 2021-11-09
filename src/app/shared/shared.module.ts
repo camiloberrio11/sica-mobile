@@ -9,6 +9,7 @@ import { CardDetailEquipmentComponent } from './card-detail-equipment/card-detai
 import { InputObservationsComponent } from './input-observations/input-observations.component';
 import { BoxQuantityComponent } from './box-quantity/box-quantity.component';
 import { InputCodebarComponent } from './input-codebar/input-codebar.component';
+import { InputLabelNfcComponent } from './input-label-nfc/input-label-nfc.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { InputCodebarComponent } from './input-codebar/input-codebar.component';
     CardDetailEquipmentComponent,
     InputObservationsComponent,
     BoxQuantityComponent,
-    InputCodebarComponent
+    InputCodebarComponent,
+    InputLabelNfcComponent
   ],
   imports: [CommonModule, IonicModule],
   exports: [
@@ -30,7 +32,8 @@ import { InputCodebarComponent } from './input-codebar/input-codebar.component';
     CardDetailEquipmentComponent,
     InputObservationsComponent,
     BoxQuantityComponent,
-    InputCodebarComponent
+    InputCodebarComponent,
+    InputLabelNfcComponent
   ],
 })
 export class SharedModule {}

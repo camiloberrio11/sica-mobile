@@ -7,6 +7,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { NFC, Ndef } from '@ionic-native/nfc/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,7 +18,11 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     HttpClientModule,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    NFC,
+    Ndef,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
