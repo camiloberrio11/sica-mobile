@@ -1,0 +1,17 @@
+<div class="selectcustom">
+  <p>{{ label }}</p>
+  <ion-list>
+    <ion-item>
+      <ion-select
+        [placeholder]="placeholder"
+        okText="Seleccionar"
+        cancelText="Cancelar"
+        (ionChange)="select($event)"
+      >
+        <ion-select-option *ngFor="let item of optionsList" [value]="item.id">{{
+          item?.value
+        }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+</div>

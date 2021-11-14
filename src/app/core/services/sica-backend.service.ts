@@ -1,3 +1,4 @@
+import { Supplier } from './../models/Supplier';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -38,17 +39,19 @@ export class SicaBackendService {
   }
 
   getUserByToken(token: string): Observable<User> {
-    return this.http.get<User>(
-      `${environment.urlApi}/api/user/${token}`
-    );
+    return this.http.get<User>(`${environment.urlApi}/api/user/${token}`);
   }
 
+  getSupplier(): Observable<Supplier[]> {
+    return this.http.get<Supplier[]>(`${environment.urlApi}/api/supplier`);
+  }
 
-  createLoan(body: CreateLoanBody): Observable<{id: string}> {
+  createLoan(body: CreateLoanBody): Observable<{ id: string }> {
     const idConstruction =
-    this.constructionService.getConstructionSelected()?.id;
-    return this.http.post<{id: string}>(
-      `${environment.urlApi}/api/${idConstruction}/tool/loan`, body
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.post<{ id: string }>(
+      `${environment.urlApi}/api/${idConstruction}/tool/loan`,
+      body
     );
   }
 }

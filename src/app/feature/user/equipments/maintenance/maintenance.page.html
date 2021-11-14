@@ -1,9 +1,8 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>maintenance</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<app-header [title]="'Mantenimiento'"></app-header>
+<ion-content [fullscreen]="true" class="maintenance">
+  <app-select-custom
+    label="Proveedor"
+    placeholder="Selecciona proveedor"
+    [optionsList]="listSupplier"
+  ></app-select-custom>
 </ion-content>

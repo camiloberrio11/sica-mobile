@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { MaintenancePageRoutingModule } from './maintenance-routing.module';
 
 import { MaintenancePage } from './maintenance.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MaintenancePageRoutingModule
+    MaintenancePageRoutingModule,
+    SharedModule
   ],
   declarations: [MaintenancePage]
 })
