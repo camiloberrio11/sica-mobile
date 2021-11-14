@@ -1,8 +1,106 @@
 <app-header [title]="'Mantenimiento'"></app-header>
 <ion-content [fullscreen]="true" class="maintenance">
-  <app-select-custom
-    label="Proveedor"
-    placeholder="Selecciona proveedor"
-    [optionsList]="listSupplier"
-  ></app-select-custom>
+  <app-form-step
+    [listItems]="menuFormStep"
+    [currentIndexInForm]="indexStep"
+    (indexCurrent)="currentIndexStepForm($event)"
+  ></app-form-step>
+
+  <div class="maintenance__layout" [ngSwitch]="indexStep">
+    <!-- form index 0 -->
+    <div class="maintenance__layout__0" *ngSwitchCase="0">
+      <app-select-custom
+        label="Proveedor"
+        placeholder="Selecciona proveedor"
+        [optionsList]="listSupplier"
+      ></app-select-custom>
+      <div class="maintenance__layout__0__quan">
+        <app-box-quantity
+          label="Fecha"
+          (valueInput)="inputChange($event, 'quantity')"
+        ></app-box-quantity>
+        <app-box-quantity
+          label="Factura"
+          (valueInput)="inputChange($event, 'quantity')"
+        ></app-box-quantity>
+        <app-box-quantity
+          label="Valor"
+          (valueInput)="inputChange($event, 'quantity')"
+        ></app-box-quantity>
+      </div>
+      <app-input-codebar
+        [label]="'Escanear'"
+        placeholder="Escanear Código"
+        srcIcon="assets/icon/barcode.png"
+        typeInput="text"
+      ></app-input-codebar>
+      <app-input-general
+        [label]="'Equipo'"
+        [disable]="true"
+        typeInput="text"
+        [value]="'Taladro'"
+      ></app-input-general>
+      <app-input-general
+        [label]="'Marca'"
+        typeInput="text"
+        [disable]="true"
+        [value]="'Boch'"
+      ></app-input-general>
+      <app-input-general
+        [label]="'Referencia'"
+        typeInput="text"
+        [disable]="true"
+        [value]="'AA123432'"
+      ></app-input-general>
+      <app-input-general
+        [label]="'Serie'"
+        typeInput="text"
+        [disable]="true"
+        [value]="'08482748'"
+      ></app-input-general>
+
+      <div class="maintenance__layout__0__chk">
+        <app-checkbox
+          id="reparation"
+          label="Reparación"
+          [checked]="typeMaintenance === 'reparation'"
+          (changeCheckBox)="changeCheckbox($event)"
+        ></app-checkbox>
+        <app-checkbox
+          id="maintenance"
+          label="Mantenimiento"
+          [checked]="typeMaintenance === 'maintenance'"
+          (changeCheckBox)="changeCheckbox($event)"
+        ></app-checkbox>
+      </div>
+
+      <app-input-general
+        [label]="'Garantía'"
+        typeInput="text"
+        placeholder="Garantía (meses)"
+      ></app-input-general>
+
+      <app-input-general
+        [label]="'Descontar a'"
+        typeInput="text"
+        placeholder="nombre"
+      ></app-input-general>
+
+      <app-input-general
+        [label]="'Obsservaciones'"
+        typeInput="text"
+        placeholder="Digite observaciones"
+      ></app-input-general>
+
+      <app-input-general
+        [label]="'Valor'"
+        typeInput="text"
+        placeholder="Digite valor"
+      ></app-input-general>
+    </div>
+    <button (click)="nextStep()">{{stepEnd ? 'Entregar' : 'Continuar'}}</button>
+    <button *ngIf="stepEnd" (click)="sendEmail()">
+      <ion-icon slot="start" name="mail-outline"></ion-icon> Enviar email
+    </button>
+  </div>
 </ion-content>

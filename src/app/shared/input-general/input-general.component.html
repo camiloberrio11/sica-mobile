@@ -1,5 +1,11 @@
 <div class="inputgeneral">
   <p>{{ label }}</p>
-  <input [type]="typeInput" (keyup)="handleInput($event)"/>
+  <input
+    [type]="typeInput"
+    (keyup)="handleInput($event)"
+    [disabled]="disable"
+    [readonly]="disable"
+    [placeholder]="placeholder"
+  />
   <img *ngIf="srcIcon" [src]="srcIcon" alt="icon" />
 </div>

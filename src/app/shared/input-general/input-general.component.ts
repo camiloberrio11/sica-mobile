@@ -16,8 +16,9 @@ import {
 })
 export class InputGeneralComponent implements OnInit, OnDestroy {
   @Input() label: string;
-  @Input() placeholder: string;
+  @Input() placeholder: string = '';
   @Input() value: string;
+  @Input() disable: boolean;
   @Input() srcIcon: string;
   @Input() typeInput: 'text' | 'password';
   // @Input() isCodeBarInput: boolean;
