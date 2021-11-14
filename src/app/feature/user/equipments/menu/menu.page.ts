@@ -15,7 +15,7 @@ export class MenuPage implements OnInit {
     {
       srcImg: 'assets/icon/materiales.svg',
       title: 'Mantenimiento',
-      routePath: 'auth/loan-equipment',
+      routePath: 'auth/maintenance',
     },
     {
       srcImg: 'assets/icon/equipo-alquilado.svg',

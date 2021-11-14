@@ -35,15 +35,15 @@ export class SelectConstructionPage  {
     }
   }
 
-  getConstruction() {
-    // this.loadingService.initLoading('Cargando construcciones');
+  async getConstruction() {
+    await this.loadingService.initLoading('Cargando construcciones');
     this.sicaApi.getConstruiction().subscribe(
-      (constr) => {
-        this.loadingService.endLoading();
+      async (constr) => {
+        await this.loadingService.endLoading();
         this.listConstruction = constr;
       },
-      (err) => {
-        this.loadingService.endLoading();
+      async (err) => {
+        await this.loadingService.endLoading();
         this.toastrService.createToast('Ocurrió un error obteniendo las obras', 'danger');
       }
     );

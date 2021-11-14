@@ -31,8 +31,13 @@ const routes: Routes = [
         path: 'create-token',
         loadChildren: () => import('./tokens/create/create.module').then( m => m.CreatePageModule)
       },
+      {
+        path: 'maintenance',
+        loadChildren: () => import('./equipments/maintenance/maintenance.module').then( m => m.MaintenancePageModule)
+      },
     ],
   },
+
 
 
 
