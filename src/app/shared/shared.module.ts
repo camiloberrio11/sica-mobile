@@ -1,3 +1,4 @@
+import { CheckboxComponent } from './checkbox/checkbox.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
@@ -21,7 +22,8 @@ import { InputLabelNfcComponent } from './input-label-nfc/input-label-nfc.compon
     InputObservationsComponent,
     BoxQuantityComponent,
     InputCodebarComponent,
-    InputLabelNfcComponent
+    InputLabelNfcComponent,
+    CheckboxComponent
   ],
   imports: [CommonModule, IonicModule],
   exports: [
@@ -33,7 +35,8 @@ import { InputLabelNfcComponent } from './input-label-nfc/input-label-nfc.compon
     InputObservationsComponent,
     BoxQuantityComponent,
     InputCodebarComponent,
-    InputLabelNfcComponent
+    InputLabelNfcComponent,
+    CheckboxComponent
   ],
 })
 export class SharedModule {}

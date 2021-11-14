@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
 import { User } from 'src/app/core/models/User';
 import { LoadingService } from 'src/app/core/services/loading.service';
@@ -19,6 +19,7 @@ export class ReturnPage implements OnInit {
   formReturn: FormGroup;
   deliveredByUser: User;
   recivedByUser: User;
+  statusEquipment = true;
 
   constructor(
     private loadingService: LoadingService,
@@ -26,7 +27,9 @@ export class ReturnPage implements OnInit {
     private toastrService: ToastService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.buildForm();
+  }
 
   currentIndexStepForm(event: number) {
     this.stepEnd = this.indexStep + 1 === this.menuFormStep?.length;
@@ -37,6 +40,10 @@ export class ReturnPage implements OnInit {
     this.formReturn.patchValue({
       [formcontrolname]: event,
     });
+  }
+
+  changeCheckbox(event: string) {
+    this.statusEquipment = event === 'return-good';
   }
 
   getEquipmentByCodeBar(codebar: string): void {
@@ -79,5 +86,11 @@ export class ReturnPage implements OnInit {
         );
       }
     );
+  }
+
+  private buildForm(): void {
+    this.formReturn = new FormGroup({
+      codebar: new FormControl('', Validators.required),
+    });
   }
 }

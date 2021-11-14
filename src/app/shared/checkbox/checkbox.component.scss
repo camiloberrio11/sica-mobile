@@ -1,0 +1,9 @@
+.check {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  label {
+    margin-left: 5px;
+    color: var(--primary-color);
+  }
+}

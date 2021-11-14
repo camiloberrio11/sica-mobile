@@ -1,0 +1,9 @@
+<div class="check">
+  <input
+    type="checkbox"
+    [id]="id"
+    (change)="handleChange($event)"
+    [checked]="checked"
+  />
+  <label [for]="id">{{ label }}</label>
+</div>
