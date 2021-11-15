@@ -1,9 +1,71 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>send</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header [title]="'Envío'"></app-header>
+<ion-content [fullscreen]="true" class="send">
+  <app-form-step
+    [listItems]="menuFormStep"
+    [currentIndexInForm]="indexStep"
+    (indexCurrent)="currentIndexStepForm($event)"
+  ></app-form-step>
+  <div class="send__layout" [ngSwitch]="indexStep">
+    <!-- form index 0 -->
+    <div class="send__layout__0" *ngSwitchCase="0">
+      <app-input-codebar
+        [label]="'Escanear'"
+        placeholder="Escanear Código"
+        srcIcon="assets/icon/barcode.png"
+        typeInput="text"
+      ></app-input-codebar>
+      <app-input-general
+        label="Equipo"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+      <app-input-general
+        label="Marca"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+      <app-input-general
+        label="Referencia"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+      <app-input-general
+        label="Serie"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+      <app-input-general
+        label="Fecha de compra"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+      <app-input-general
+        label="Garantía"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+    </div>
 
-<ion-content>
-
-</ion-content>
+    <!-- form index 1 -->
+    <div class="send__layout__0" *ngSwitchCase="1">
+      <app-select-custom
+        label="Destino"
+        placeholder="Seleccione destino"
+      ></app-select-custom>
+      <app-select-custom
+        label="Motivo"
+        placeholder="Seleccione motivo"
+      ></app-select-custom>
+      <app-input-general
+        label="Fecha aprox devolución"
+        [isTypeDate]="true"
+        srcIcon="assets/icon/Calendar.svg"
+        placeholder="Digite fecha DD/MM/AAAA"
+      ></app-input-general>
+      <app-capture-reader-nfc></app-capture-reader-nfc>
+    </div>
+    <button class="send__layout__btngeneral" (click)="nextStep()">
+      {{stepEnd ? 'Finalizar' : 'Continuar'}}
+    </button>
+  </div></ion-content
+>

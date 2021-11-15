@@ -1,3 +1,4 @@
+import { CaptureReaderNfcComponent } from './capture-reader-nfc/capture-reader-nfc.component';
 import { CaptureImageComponent } from './capture-image/capture-image.component';
 import { ButtonAddComponent } from './button-add/button-add.component';
 import { SelectCustomComponent } from './select-custom/select-custom.component';
@@ -29,7 +30,8 @@ import { InputLabelNfcComponent } from './input-label-nfc/input-label-nfc.compon
     CheckboxComponent,
     SelectCustomComponent,
     ButtonAddComponent,
-    CaptureImageComponent
+    CaptureImageComponent,
+    CaptureReaderNfcComponent
   ],
   imports: [CommonModule, IonicModule],
   exports: [
@@ -45,7 +47,8 @@ import { InputLabelNfcComponent } from './input-label-nfc/input-label-nfc.compon
     CheckboxComponent,
     SelectCustomComponent,
     ButtonAddComponent,
-    CaptureImageComponent
+    CaptureImageComponent,
+    CaptureReaderNfcComponent
   ],
 })
 export class SharedModule {}

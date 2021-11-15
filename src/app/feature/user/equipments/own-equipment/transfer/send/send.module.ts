@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { SendPageRoutingModule } from './send-routing.module';
 
 import { SendPage } from './send.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SendPageRoutingModule
+    SendPageRoutingModule,
+    SharedModule
   ],
   declarations: [SendPage]
 })
