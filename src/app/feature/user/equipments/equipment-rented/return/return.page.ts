@@ -6,10 +6,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./return.page.scss'],
 })
 export class ReturnPage implements OnInit {
+  listAddedEquipments: {name: string}[] = [];
+  constructor() {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  addEquipment(): void {
+    this.listAddedEquipments.push({name: `Test prueba agregado ${this.listAddedEquipments?.length + 1}`});
   }
 
+  save(): void {
+    alert('Guardado');
+  }
+
+  sendEmail(): void {
+    alert('Correo enviado');
+  }
 }

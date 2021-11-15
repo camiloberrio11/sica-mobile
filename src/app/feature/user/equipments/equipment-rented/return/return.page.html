@@ -1,9 +1,55 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>return</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header [title]="'Devolución'"></app-header>
+<ion-content [fullscreen]="true">
+  <div class="return">
+    <app-select-custom
+      label="Proveedor"
+      placeholder="Seleccione proveedor"
+    ></app-select-custom>
+    <app-select-custom
+      label="N. Devolucion"
+      placeholder="Ingrese # devoluciíon"
+    ></app-select-custom>
+    <h6 *ngIf="listAddedEquipments?.length > 0" class="return__subtitle">Equipos agregados</h6>
+    <app-input-general
+    *ngFor="let item of listAddedEquipments"
+    [label]="'Equipo'"
+    typeInput="text"
+    [disable]="true"
+    [value]="item?.name"
+  ></app-input-general>
 
-<ion-content>
+    <h6 class="return__subtitle">Ingrese equipo</h6>
+    <app-input-codebar
+      [label]="'Escanear'"
+      placeholder="Escanear Código"
+      srcIcon="assets/icon/barcode.png"
+      typeInput="text"
+    ></app-input-codebar>
+    <app-input-general
+      [label]="'Equipo'"
+      typeInput="text"
+      [disable]="true"
+    ></app-input-general>
+    <app-input-general
+      [label]="'Fecha'"
+      typeInput="text"
+      [disable]="true"
+    ></app-input-general>
 
+    <div class="return__quan">
+      <app-box-quantity label="Cantidad disponible"></app-box-quantity>
+      <app-box-quantity label="Cantidad devolver"></app-box-quantity>
+    </div>
+
+    <app-capture-reader-nfc></app-capture-reader-nfc>
+    <div class="return__add">
+      <app-button-add (handleClick)="addEquipment()"></app-button-add>
+    </div>
+    <button class="return__btngeneral" (click)="save()">
+      Guardar
+    </button>
+    <button (click)="sendEmail()" class="return__btngeneral">
+      <ion-icon slot="start" name="mail-outline"></ion-icon> Enviar email
+    </button>
+  </div>
 </ion-content>

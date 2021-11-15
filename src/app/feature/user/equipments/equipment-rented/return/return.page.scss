@@ -1,0 +1,65 @@
+.return {
+  width: 100%;
+  app-select-custom,
+  app-input-codebar,
+  app-input-general {
+    display: flex;
+    margin: 10px;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
+  }
+  &__subtitle {
+    text-align: center;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-transform: uppercase;
+  }
+  &__quan {
+    position: relative;
+    width: 100%;
+    margin-top: 35px;
+    margin-bottom: 35px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    app-box-quantity {
+      float: left;
+      display: flex;
+      justify-content: center;
+      width: 50%;
+    }
+  }
+  &__add {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    app-button-add {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  &__btngeneral {
+    background-color: var(--primary-color);
+    font-weight: bold;
+    color: white;
+    width: 95%;
+    height: 50px;
+    border-radius: 5px;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    ion-icon {
+      margin-right: 5px;
+    }
+  }
+}
