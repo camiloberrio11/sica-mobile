@@ -6,10 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./history.page.scss'],
 })
 export class HistoryPage implements OnInit {
+  constructor() {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  send(): void {
+    alert('Informe enviado');
   }
-
 }

@@ -1,1 +1,74 @@
 <app-header [title]="'Hoja de vida'" [backgroundBlue]="true"></app-header>
+<ion-content [fullscreen]="true" class="history">
+  <div class="history__layout">
+    <div class="history__layout__image">
+      <img src="assets/icon/prestamo-logo.svg" alt="logo" />
+    </div>
+    <app-input-codebar
+      [label]="'Escanear'"
+      placeholder="Escanear Código"
+      srcIcon="assets/icon/barcode.png"
+      typeInput="text"
+    ></app-input-codebar>
+    <app-input-general
+      [label]="'Equipo'"
+      typeInput="text"
+      [disable]="true"
+    ></app-input-general>
+    <app-input-general
+      [label]="'Marca'"
+      typeInput="text"
+      [disable]="true"
+    ></app-input-general>
+    <app-input-general
+      [label]="'Referencia'"
+      typeInput="text"
+      [disable]="true"
+    ></app-input-general>
+    <app-input-general
+      [label]="'Serie'"
+      typeInput="text"
+      [disable]="true"
+    ></app-input-general>
+    <app-input-general
+      [label]="'Fecha de compra'"
+      typeInput="text"
+      [disable]="true"
+    ></app-input-general>
+    <app-input-general
+    [label]="'Garantía'"
+    typeInput="text"
+    [disable]="true"
+  ></app-input-general>
+    <app-input-general
+      [label]="'Valor de compra'"
+      typeInput="text"
+      [disable]="true"
+    ></app-input-general>
+    <app-input-general
+      [label]="'Valor de mantenimiento'"
+      typeInput="text"
+      [disable]="true"
+    ></app-input-general>
+    <app-input-general
+      [label]="'Valor de reparaciones'"
+      typeInput="text"
+      [disable]="true"
+    ></app-input-general>
+    <app-input-general
+      [label]="'Cantidad de servicios'"
+      typeInput="text"
+      [disable]="true"
+    ></app-input-general>
+    <app-input-general
+      [label]="'Días en taller'"
+      typeInput="text"
+      [disable]="true"
+    ></app-input-general>
+
+
+    <button (click)="send()">
+      <ion-icon slot="start" name="mail-outline"></ion-icon> Enviar email
+    </button>
+  </div>
+</ion-content>
