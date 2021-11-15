@@ -7,6 +7,14 @@ const routes: Routes = [
   {
     path: '',
     component: TransferPage
+  },
+  {
+    path: 'reception',
+    loadChildren: () => import('./reception/reception.module').then( m => m.ReceptionPageModule)
+  },
+  {
+    path: 'send',
+    loadChildren: () => import('./send/send.module').then( m => m.SendPageModule)
   }
 ];
 

@@ -19,7 +19,7 @@ export class RegisterPage implements OnInit {
 
   constructor(
     private loadingService: LoadingService,
-    private sicaBackend: SicaBackendService
+    private sicaBackend: SicaBackendService,
   ) {}
 
   ngOnInit() {
@@ -41,6 +41,8 @@ export class RegisterPage implements OnInit {
     }
     this.indexStep = this.indexStep + 1;
   }
+
+
 
   private async getBrand(): Promise<void> {
     await this.loadingService.initLoading('Obteniendo marcas');

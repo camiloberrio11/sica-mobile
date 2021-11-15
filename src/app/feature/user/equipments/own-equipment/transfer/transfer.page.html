@@ -1,9 +1,8 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>transfer</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<app-header [title]="'Equipos'"></app-header>
+<ion-content [fullscreen]="true" class="transfer">
+  <app-button-item-menu *ngFor="let item of menuItems"
+    [srcImg]="item?.srcImg"
+    [title]="item?.title"
+    [urlRedirecet]="item?.routePath"
+  ></app-button-item-menu>
 </ion-content>

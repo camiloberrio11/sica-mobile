@@ -8,6 +8,7 @@ import {
   Inject,
   OnDestroy,
 } from '@angular/core';
+import { StringTransformService } from 'src/app/core/services/string-transform.service';
 
 @Component({
   selector: 'app-input-general',
@@ -19,54 +20,23 @@ export class InputGeneralComponent implements OnInit, OnDestroy {
   @Input() placeholder = '';
   @Input() value = '';
   @Input() disable: boolean;
+  @Input() isTypeDate: boolean;
   @Input() srcIcon: string;
   @Input() typeInput: 'text' | 'password';
-  // @Input() isCodeBarInput: boolean;
+
   @Output() inputChange: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(
-    // @Inject(DOCUMENT) private document: Document,
-    // private toastrService: ToastService
-  ) {}
+  constructor(private stringTransformService: StringTransformService) {}
 
-  // ionViewDidEnter() {
-  //   if (this.isCodeBarInput) {
-  //     setTimeout(() => {
-  //       this.sInput.setFocus();
-  //     }, 150);
-  //   }
-  // }
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
-  //   if (this.isCodeBarInput) {
-  //   this.document.addEventListener('scan', (event) => this.scanBarcode(event));
-  //   onScan.attachTo(document, {
-  //     minLength: 1,
-  //     reactToPaste: false,
-  //     keyCodeMapper: (event) => {
-  //       if (event.which === 191) {
-  //         return '/';
-  //       }
-  //       if (event.which === 32) {
-  //         return ' ';
-  //       }
-  //       return onScan.decodeKeyEvent(event);
-  //     },
-  //   });
-  // }
-  }
-
-  ngOnDestroy(): void {
-    // this.document.removeEventListener('scan', () =>
-    //   console.log('Event scan removed')
-    // );
-  }
+  ngOnDestroy(): void {}
 
   handleInput(event: any): void {
-    this.inputChange.emit(event?.target?.value);
+    let value = event?.target?.value;
+    if (this.isTypeDate) {
+      value = this.stringTransformService.formatDate(event?.target?.value);
+    }
+    this.inputChange.emit(value);
   }
-
-  // private scanBarcode(event: CustomEvent ): void {
-  //   this.handleInput(event?.detail?.scanCode);
-  // }
 }
