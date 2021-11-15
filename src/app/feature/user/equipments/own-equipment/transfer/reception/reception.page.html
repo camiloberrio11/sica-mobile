@@ -1,9 +1,77 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>reception</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header [title]="'Recepción'"></app-header>
+<ion-content [fullscreen]="true" class="reception">
+  <app-form-step
+    [listItems]="menuFormStep"
+    [currentIndexInForm]="indexStep"
+    (indexCurrent)="currentIndexStepForm($event)"
+  ></app-form-step>
+  <div class="reception__layout" [ngSwitch]="indexStep">
+    <!-- form index 0 -->
+    <div class="reception__layout__0" *ngSwitchCase="0">
+      <app-input-codebar
+        [label]="'Escanear'"
+        placeholder="Escanear Código"
+        srcIcon="assets/icon/barcode.png"
+        typeInput="text"
+      ></app-input-codebar>
+      <app-input-general
+        label="Equipo"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+      <app-input-general
+        label="Marca"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+      <app-input-general
+        label="Referencia"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+      <app-input-general
+        label="Serie"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+      <app-input-general
+        label="Fecha de compra"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+      <app-input-general
+        label="Garantía"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+    </div>
 
-<ion-content>
-
-</ion-content>
+    <!-- form index 1 -->
+    <div class="reception__layout__0" *ngSwitchCase="1">
+      <app-input-general
+        label="Procede de"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+      <app-input-general
+        label="Motivo"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+      <app-input-general
+        label="Envía"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+      <app-input-general
+        label="Fecha estimada"
+        [value]="''"
+        [disable]="true"
+      ></app-input-general>
+      <app-capture-reader-nfc></app-capture-reader-nfc>
+    </div>
+    <button class="reception__layout__btngeneral" (click)="nextStep()">
+      {{stepEnd ? 'Finalizar' : 'Continuar'}}
+    </button>
+  </div></ion-content
+>
