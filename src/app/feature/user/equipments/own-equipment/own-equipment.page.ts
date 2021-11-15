@@ -13,12 +13,12 @@ export class OwnEquipmentPage implements OnInit {
     {
       srcImg: 'assets/icon/prestamo-logo.svg',
       title: 'Registro',
-      routePath: 'auth/loan-equipment',
+      routePath: 'auth/own-equipment/register',
     },
     {
       srcImg: 'assets/icon/materiales.svg',
       title: 'Traslado',
-      routePath: 'auth/maintenance',
+      routePath: 'auth/own-equipment/transfer',
     },
     {
       srcImg: 'assets/icon/equipo-alquilado.svg',
@@ -28,7 +28,7 @@ export class OwnEquipmentPage implements OnInit {
     {
       srcImg: 'assets/icon/equipopropio.svg',
       title: 'Informes',
-      routePath: 'auth/loan-equipment',
+      routePath: 'auth/own-equipment/reports',
     },
   ];
   constructor(private constructionService: ConstructionService) { }

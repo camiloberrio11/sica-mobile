@@ -13,22 +13,22 @@ export class EquipmentRentedPage implements OnInit {
     {
       srcImg: 'assets/icon/prestamo-logo.svg',
       title: 'Ingreso',
-      routePath: 'auth/loan-equipment',
+      routePath: 'auth/equipment-rented/entry',
     },
     {
       srcImg: 'assets/icon/materiales.svg',
       title: 'Devolución',
-      routePath: 'auth/maintenance',
+      routePath: 'auth/equipment-rented/return',
     },
     {
       srcImg: 'assets/icon/equipo-alquilado.svg',
       title: 'Preliquidación',
-      routePath: 'auth/equipment-rented',
+      routePath: 'auth/equipment-rented/pre-settlement',
     },
     {
       srcImg: 'assets/icon/equipopropio.svg',
       title: 'Informes',
-      routePath: 'auth/loan-equipment',
+      routePath: 'auth/equipment-rented/reports',
     },
   ];
   constructor(private constructionService: ConstructionService) { }

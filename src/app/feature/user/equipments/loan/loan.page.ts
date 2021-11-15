@@ -22,7 +22,7 @@ export class LoanPage implements OnInit {
     {
       title: 'Informe',
       srcImg: 'assets/icon/equipo-alquilado.svg',
-      routePath: '/delivery',
+      routePath: 'auth/loan-equipment/reports',
     },
   ];
   constructionSelected: Construction;

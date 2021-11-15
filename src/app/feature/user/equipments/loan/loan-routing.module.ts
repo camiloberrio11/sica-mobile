@@ -15,6 +15,10 @@ const routes: Routes = [
   {
     path: 'return',
     loadChildren: () => import('./return/return.module').then( m => m.ReturnPageModule)
+  },
+  {
+    path: 'reports',
+    loadChildren: () => import('./reports/reports.module').then( m => m.ReportsPageModule)
   }
 ];
 

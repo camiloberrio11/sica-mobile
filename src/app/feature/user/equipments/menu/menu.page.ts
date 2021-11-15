@@ -30,7 +30,7 @@ export class MenuPage implements OnInit {
     {
       srcImg: 'assets/icon/inventario.svg',
       title: 'Inventario',
-      routePath: 'auth/loan-equipment',
+      routePath: 'auth/inventory',
     },
   ];
   constructor() {}

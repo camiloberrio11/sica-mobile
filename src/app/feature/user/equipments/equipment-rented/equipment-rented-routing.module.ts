@@ -11,6 +11,18 @@ const routes: Routes = [
   {
     path: 'entry',
     loadChildren: () => import('./entry/entry.module').then( m => m.EntryPageModule)
+  },
+  {
+    path: 'return',
+    loadChildren: () => import('./return/return.module').then( m => m.ReturnPageModule)
+  },
+  {
+    path: 'pre-settlement',
+    loadChildren: () => import('./pre-settlement/pre-settlement.module').then( m => m.PreSettlementPageModule)
+  },
+  {
+    path: 'reports',
+    loadChildren: () => import('./reports/reports.module').then( m => m.ReportsPageModule)
   }
 ];
 

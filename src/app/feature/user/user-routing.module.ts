@@ -43,8 +43,13 @@ const routes: Routes = [
         path: 'own-equipment',
         loadChildren: () => import('./equipments/own-equipment/own-equipment.module').then( m => m.OwnEquipmentPageModule)
       },
+      {
+        path: 'inventory',
+        loadChildren: () => import('./equipments/inventory/inventory.module').then( m => m.InventoryPageModule)
+      },
     ],
   },
+
 
 
 
