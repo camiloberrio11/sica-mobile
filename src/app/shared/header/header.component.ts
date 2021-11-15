@@ -9,6 +9,8 @@ import { filter } from 'rxjs/operators';
 })
 export class HeaderComponent implements OnInit {
   @Input() title: string;
+  @Input() backgroundBlue: boolean;
+
   previousUrl: string;
 
   constructor(private router: Router) {

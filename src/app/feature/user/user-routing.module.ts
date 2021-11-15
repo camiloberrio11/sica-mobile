@@ -39,8 +39,13 @@ const routes: Routes = [
         path: 'equipment-rented',
         loadChildren: () => import('./equipments/equipment-rented/equipment-rented.module').then( m => m.EquipmentRentedPageModule)
       },
+      {
+        path: 'own-equipment',
+        loadChildren: () => import('./equipments/own-equipment/own-equipment.module').then( m => m.OwnEquipmentPageModule)
+      },
     ],
   },
+
 
 
 

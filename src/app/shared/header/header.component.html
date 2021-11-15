@@ -1,9 +1,9 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar [ngClass]="backgroundBlue ? 'headercustom' : ''">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
       <ion-back-button [defaultHref]="previousUrl"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{title}}</ion-title>
+    <ion-title>{{ title }}</ion-title>
   </ion-toolbar>
 </ion-header>

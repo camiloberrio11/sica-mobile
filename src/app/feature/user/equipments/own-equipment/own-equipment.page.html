@@ -1,0 +1,10 @@
+<app-header [title]="constructionSelected?.name || ''"></app-header>
+<ion-content [fullscreen]="true" class="ownequipment">
+  <h4>Equipo alquilado</h4>
+  <app-button-item-menu
+    *ngFor="let item of menuItems"
+    [srcImg]="item?.srcImg"
+    [title]="item?.title"
+    [urlRedirecet]="item?.routePath"
+  ></app-button-item-menu>
+</ion-content>

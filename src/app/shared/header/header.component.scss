@@ -3,3 +3,16 @@ ion-title {
   color: var(--primary-color);
   font-weight: bold;
 }
+
+.headercustom {
+  --background: linear-gradient(
+    to bottom,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  ion-title,
+  ion-menu-button,
+  ion-back-button {
+    color: white;
+  }
+}
