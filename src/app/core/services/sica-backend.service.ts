@@ -1,3 +1,4 @@
+import { CategoryTool } from './../models/CategoryTool';
 import { Brand } from './../models/Brand';
 import { Supplier } from './../models/Supplier';
 import { Injectable } from '@angular/core';
@@ -49,6 +50,10 @@ export class SicaBackendService {
 
   getBrand(): Observable<Brand[]> {
     return this.http.get<Brand[]>(`${environment.urlApi}/api/brand`);
+  }
+
+  getCategoryTool(): Observable<CategoryTool[]> {
+    return this.http.get<CategoryTool[]>(`${environment.urlApi}/api/category`);
   }
 
   createLoan(body: CreateLoanBody): Observable<{ id: string }> {

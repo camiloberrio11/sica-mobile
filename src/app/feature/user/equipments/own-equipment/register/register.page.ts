@@ -14,6 +14,8 @@ export class RegisterPage implements OnInit {
 
   listSupplier: {id: string; value: string}[] = [];
   listBrand: {id: string; value: string}[] = [];
+  listCategoryTool: {id: string; value: string}[] = [];
+
 
   constructor(
     private loadingService: LoadingService,
@@ -52,9 +54,10 @@ export class RegisterPage implements OnInit {
           return item;
         });
         await this.loadingService.endLoading();
-        // this.getBrand();
+        this.getCategoryTool();
       },
       async (err) => {
+        this.listBrand = [];
         await this.loadingService.endLoading();
       }
     );
@@ -76,6 +79,27 @@ export class RegisterPage implements OnInit {
         this.getBrand();
       },
       async (err) => {
+        this.listSupplier = [];
+        await this.loadingService.endLoading();
+      }
+    );
+  }
+
+  private async getCategoryTool(): Promise<void> {
+    await this.loadingService.initLoading('Obteniendo categorías');
+    this.sicaBackend.getCategoryTool().subscribe(
+      async (sup) => {
+        this.listCategoryTool = sup.map((it) => {
+          const item = {
+            id: it.id,
+            value: it.name,
+          };
+          return item;
+        });
+        await this.loadingService.endLoading();
+      },
+      async (err) => {
+        this.listCategoryTool = [];
         await this.loadingService.endLoading();
       }
     );
