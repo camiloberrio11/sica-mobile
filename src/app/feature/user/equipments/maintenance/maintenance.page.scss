@@ -42,7 +42,39 @@
         }
       }
     }
-    button {
+    &__1 {
+      app-input-general {
+        display: flex;
+        margin: 10px;
+        height: 60px;
+        justify-content: center;
+        align-items: center;
+      }
+      &__add {
+        width: 100%;
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        &__btn {
+          width: 55px;
+          border-radius: 50%;
+          background-color: var(--primary-color);
+          font-weight: bold;
+          font-size: 25px;
+          height: 50px;
+          color: white;
+        }
+        p {
+          margin: 0;
+          font-weight: bold;
+          color: var(--primary-color);
+        }
+      }
+
+    }
+    &__btngeneral {
       background-color: var(--primary-color);
       font-weight: bold;
       color: white;

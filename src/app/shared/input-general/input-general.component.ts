@@ -16,8 +16,8 @@ import {
 })
 export class InputGeneralComponent implements OnInit, OnDestroy {
   @Input() label: string;
-  @Input() placeholder: string = '';
-  @Input() value: string;
+  @Input() placeholder = '';
+  @Input() value = '';
   @Input() disable: boolean;
   @Input() srcIcon: string;
   @Input() typeInput: 'text' | 'password';

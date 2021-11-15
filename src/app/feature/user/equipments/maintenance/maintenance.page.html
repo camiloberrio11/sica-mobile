@@ -38,25 +38,21 @@
         [label]="'Equipo'"
         [disable]="true"
         typeInput="text"
-        [value]="'Taladro'"
       ></app-input-general>
       <app-input-general
         [label]="'Marca'"
         typeInput="text"
         [disable]="true"
-        [value]="'Boch'"
       ></app-input-general>
       <app-input-general
         [label]="'Referencia'"
         typeInput="text"
         [disable]="true"
-        [value]="'AA123432'"
       ></app-input-general>
       <app-input-general
         [label]="'Serie'"
         typeInput="text"
         [disable]="true"
-        [value]="'08482748'"
       ></app-input-general>
 
       <div class="maintenance__layout__0__chk">
@@ -98,8 +94,35 @@
         placeholder="Digite valor"
       ></app-input-general>
     </div>
-    <button (click)="nextStep()">{{stepEnd ? 'Entregar' : 'Continuar'}}</button>
-    <button *ngIf="stepEnd" (click)="sendEmail()">
+
+    <!-- form index 1 -->
+    <div class="maintenance__layout__1" *ngSwitchCase="1">
+      <app-input-general
+        *ngFor="let item of listAddedEquipment"
+        [label]="'Equipo'"
+        typeInput="text"
+        placeholder="Digite valor"
+        [value]="item?.name"
+      ></app-input-general>
+
+      <div class="maintenance__layout__1__add">
+        <button
+          class="maintenance__layout__1__add__btn"
+          (click)="addEquipment()"
+        >
+          +
+        </button>
+        <p>Agregar equipo</p>
+      </div>
+    </div>
+    <button class="maintenance__layout__btngeneral" (click)="nextStep()">
+      {{stepEnd ? 'Entregar' : 'Continuar'}}
+    </button>
+    <button
+      *ngIf="stepEnd"
+      (click)="sendEmail()"
+      class="maintenance__layout__btngeneral"
+    >
       <ion-icon slot="start" name="mail-outline"></ion-icon> Enviar email
     </button>
   </div>
