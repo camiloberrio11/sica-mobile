@@ -1,6 +1,9 @@
 <div class="capture">
-  <button>
-    <img src="assets/icon/prestamo-logo.svg" alt="logo-camera" />
-    Capturar foto
+  <button (click)="takePhoto()">
+    <img
+      [src]="srcImgCapture ? srcImgCapture : 'assets/icon/prestamo-logo.svg'"
+      alt="logo-camera"
+    />
+    {{ srcImgCapture ? "Volver a tomar foto" : "Capturar foto" }}
   </button>
 </div>

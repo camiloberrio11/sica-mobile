@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NFC, Ndef } from '@ionic-native/nfc/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +23,8 @@ import { NFC, Ndef } from '@ionic-native/nfc/ngx';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     NFC,
     Ndef,
+    Camera,
+
   ],
   bootstrap: [AppComponent],
 })
