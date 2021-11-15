@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: EquipmentRentedPage
+  },
+  {
+    path: 'entry',
+    loadChildren: () => import('./entry/entry.module').then( m => m.EntryPageModule)
   }
 ];
 

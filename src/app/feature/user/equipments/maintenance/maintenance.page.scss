@@ -52,25 +52,17 @@
       }
       &__add {
         width: 100%;
-        height: 120px;
+        height: 70px;
         display: flex;
         justify-content: center;
         align-items: center;
-        flex-direction: column;
-        &__btn {
-          width: 55px;
-          border-radius: 50%;
-          background-color: var(--primary-color);
-          font-weight: bold;
-          font-size: 25px;
-          height: 50px;
-          color: white;
+        app-button-add {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
         }
-        p {
-          margin: 0;
-          font-weight: bold;
-          color: var(--primary-color);
-        }
+
       }
 
     }

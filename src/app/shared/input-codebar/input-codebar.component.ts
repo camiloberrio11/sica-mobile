@@ -18,7 +18,7 @@ import onScan from 'onscan.js';
 })
 export class InputCodebarComponent implements OnInit, OnDestroy {
   @Input() label: string;
-  @Input() placeholder: string;
+  @Input() placeholder = '';
   @Input() value: string;
   @Input() srcIcon: string;
   @Output() codeBarRead: EventEmitter<string> = new EventEmitter<string>();

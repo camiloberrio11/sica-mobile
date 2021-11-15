@@ -1,0 +1,58 @@
+<app-header [title]="'Ingreso'"></app-header>
+<ion-content [fullscreen]="true" class="entry">
+  <div class="entry__layout">
+    <app-select-custom
+      label="Proveedor"
+      placeholder="Selecciona proveedor"
+      [optionsList]="listSupplier"
+    ></app-select-custom>
+    <app-input-general
+      [label]="'Remisión'"
+      typeInput="text"
+      placeholder="Digite la remisión"
+    ></app-input-general>
+    <h6 *ngIf="listAddedEquipments?.length > 0" class="entry__layout__subtitle">Equipos Agregados</h6>
+    <app-input-general
+    *ngFor="let item of listAddedEquipments"
+    [label]="'Equipo'"
+    typeInput="text"
+    [disable]="true"
+    [value]="item?.name"
+  ></app-input-general>
+
+    <h6 class="entry__layout__subtitle">Ingrese equipo</h6>
+    <app-input-codebar
+      [label]="'Escanear'"
+      placeholder="Escanear Código"
+      srcIcon="assets/icon/barcode.png"
+      typeInput="text"
+    ></app-input-codebar>
+    <app-input-general
+      [label]="'Equipo'"
+      typeInput="text"
+      [disable]="true"
+    ></app-input-general>
+    <app-input-general
+      [label]="'Cantidad'"
+      typeInput="text"
+      placeholder="Ingrese cantidad"
+    ></app-input-general>
+    <app-input-general
+      [label]="'Identificador'"
+      typeInput="text"
+      placeholder="Ingrese identificador"
+    ></app-input-general>
+    <app-input-general
+      [label]="'Valor'"
+      typeInput="text"
+      placeholder="Ingrese valor del alquiler"
+    ></app-input-general>
+    <div class="entry__layout__add">
+      <app-button-add (handleClick)="handleAdd()"></app-button-add>
+    </div>
+    <button class="entry__layout__btngeneral" (click)="save()">Guardar</button>
+    <button (click)="sendEmail()" class="entry__layout__btngeneral">
+      <ion-icon slot="start" name="mail-outline"></ion-icon> Enviar email
+    </button>
+  </div>
+</ion-content>

@@ -106,13 +106,7 @@
       ></app-input-general>
 
       <div class="maintenance__layout__1__add">
-        <button
-          class="maintenance__layout__1__add__btn"
-          (click)="addEquipment()"
-        >
-          +
-        </button>
-        <p>Agregar equipo</p>
+        <app-button-add (handleClick)="addEquipment()"></app-button-add>
       </div>
     </div>
     <button class="maintenance__layout__btngeneral" (click)="nextStep()">

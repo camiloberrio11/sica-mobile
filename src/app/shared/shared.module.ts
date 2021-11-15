@@ -1,3 +1,4 @@
+import { ButtonAddComponent } from './button-add/button-add.component';
 import { SelectCustomComponent } from './select-custom/select-custom.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { NgModule } from '@angular/core';
@@ -25,7 +26,8 @@ import { InputLabelNfcComponent } from './input-label-nfc/input-label-nfc.compon
     InputCodebarComponent,
     InputLabelNfcComponent,
     CheckboxComponent,
-    SelectCustomComponent
+    SelectCustomComponent,
+    ButtonAddComponent
   ],
   imports: [CommonModule, IonicModule],
   exports: [
@@ -39,7 +41,8 @@ import { InputLabelNfcComponent } from './input-label-nfc/input-label-nfc.compon
     InputCodebarComponent,
     InputLabelNfcComponent,
     CheckboxComponent,
-    SelectCustomComponent
+    SelectCustomComponent,
+    ButtonAddComponent
   ],
 })
 export class SharedModule {}
