@@ -1,3 +1,4 @@
+import { Brand } from './../models/Brand';
 import { Supplier } from './../models/Supplier';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -44,6 +45,10 @@ export class SicaBackendService {
 
   getSupplier(): Observable<Supplier[]> {
     return this.http.get<Supplier[]>(`${environment.urlApi}/api/supplier`);
+  }
+
+  getBrand(): Observable<Brand[]> {
+    return this.http.get<Brand[]>(`${environment.urlApi}/api/brand`);
   }
 
   createLoan(body: CreateLoanBody): Observable<{ id: string }> {

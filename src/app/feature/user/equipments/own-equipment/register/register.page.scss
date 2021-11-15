@@ -1,0 +1,40 @@
+.register {
+  &__layout {
+    width: 100%;
+    app-select-custom,
+    app-input-codebar,
+    app-input-general {
+      display: flex;
+      margin: 10px;
+      height: 60px;
+      justify-content: center;
+      align-items: center;
+    }
+    app-capture-image {
+      display: flex;
+      margin: 10px;
+      height: 320px;
+      align-items: center;
+      justify-content: center;
+    }
+    &__0 {
+      app-input-codebar {
+        height: 150px;
+      }
+    }
+    &__btngeneral {
+      background-color: var(--primary-color);
+      font-weight: bold;
+      color: white;
+      width: 95%;
+      height: 50px;
+      border-radius: 5px;
+      font-size: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+      margin-top: 10px;
+    }
+  }
+}

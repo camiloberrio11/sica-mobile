@@ -1,9 +1,70 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>register</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header [title]="'Registro de equipos'"></app-header>
+<ion-content [fullscreen]="true" class="register">
+  <app-form-step
+    [listItems]="menuFormStep"
+    [currentIndexInForm]="indexStep"
+    (indexCurrent)="currentIndexStepForm($event)"
+  ></app-form-step>
+  <div class="register__layout" [ngSwitch]="indexStep">
+    <!-- form index 0 -->
+    <div class="register__layout__0" *ngSwitchCase="0">
+      <app-input-codebar
+        [label]="'Escanear'"
+        placeholder="Escanear Código"
+        srcIcon="assets/icon/barcode.png"
+        typeInput="text"
+      ></app-input-codebar>
+      <app-capture-image></app-capture-image>
+    </div>
 
-<ion-content>
+    <!-- form index 1 -->
+    <div class="register__layout__1" *ngSwitchCase="1">
+      <app-select-custom
+        label="Equipo"
+        placeholder="Seleccione equipo"
+      ></app-select-custom>
+      <app-select-custom
+        label="Marca"
+        [optionsList]="listBrand"
+        placeholder="Seleccione Marca"
+      ></app-select-custom>
+      <app-input-general
+        label="Referencia"
+        placeholder="Digite referencia"
+      ></app-input-general>
+      <app-input-general
+        label="Serie"
+        placeholder="Digite serie"
+      ></app-input-general>
+    </div>
 
+    <!-- form index 2 -->
+    <div class="register__layout__2" *ngSwitchCase="2">
+      <app-select-custom
+        label="Proveedor"
+        [optionsList]="listSupplier"
+        placeholder="Proveedor"
+      ></app-select-custom>
+      <app-input-general
+        label="No. FACT. / REM."
+        placeholder="Digite # de factura (Opcional)"
+      ></app-input-general>
+      <app-input-general
+        label="Valor"
+        placeholder="Digite valor"
+      ></app-input-general>
+      <app-input-general
+        label="Fecha"
+        placeholder="Digite fecha"
+      ></app-input-general>
+      <app-input-general
+        label="Garantía"
+        placeholder="En meses (Opcional)"
+      ></app-input-general>
+    </div>
+
+    <button class="register__layout__btngeneral" (click)="nextStep()">
+      {{stepEnd ? 'Guardar' : 'Continuar'}}
+    </button>
+  </div>
 </ion-content>
