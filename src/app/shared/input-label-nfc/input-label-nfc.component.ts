@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -31,29 +32,29 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
     private toastrService: ToastService,
     private readonly backendSicaService: SicaBackendService,
     private readonly loadingService: LoadingService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.readerMode$ = this.nfc
-      .addNdefListener(
-        () => {
-          console.log('successfully attached ndef listener');
-        },
-        (err) => {
-          console.log('error attaching ndef listener', err);
-        }
-      )
-      .subscribe((event) => {
-        if (!event.tag?.ndefMessage) {
+    const flags = this.nfc.FLAG_READER_NFC_A | this.nfc.FLAG_READER_NFC_V;
+    this.readerMode$ = this.nfc.readerMode(flags).subscribe(
+      (tag) => {
+        if (!tag?.ndefMessage) {
           this.toastrService.createToast('NFC vacío', 'warning');
           return;
         }
+
         const decodeNfc = this.nfc
-          .bytesToString(event.tag?.ndefMessage[0]?.payload)
+          .bytesToString(tag?.ndefMessage[0]?.payload)
           ?.split('en')
           ?.pop();
         this.sendChildren(decodeNfc);
-      });
+      },
+      (err) => {
+        console.log('Error reading tag', err);
+      }
+    );
+
   }
 
   ngOnDestroy(): void {
@@ -71,16 +72,22 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
   }
 
   private async getInfoByToken(code: string): Promise<void> {
+    this.valueInput = '';
+    this.cd.detectChanges();
     await this.loadingService.initLoading('Obteniendo información del token');
     this.backendSicaService.getUserByToken(code).subscribe(
       async (data) => {
         this.loadingService.endLoading();
         this.valueInput = `${data?.name?.first} ${data?.name?.last}`;
+        this.cd.detectChanges();
         this.nfcValue.emit(data);
       },
       async (err) => {
         this.loadingService.endLoading();
-        this.toastrService.createToast('No se ha encontrado información', 'warning');
+        this.toastrService.createToast(
+          'No se ha encontrado información',
+          'warning'
+        );
         this.valueInput = '';
       }
     );
