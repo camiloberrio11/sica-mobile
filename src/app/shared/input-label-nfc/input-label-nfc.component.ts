@@ -23,7 +23,9 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
   @Input() label: string;
   @Input() placeholder: string;
   @Input() srcIcon: string;
+  @Input() id: string;
   @Output() nfcValue: EventEmitter<User> = new EventEmitter<User>();
+
   readerMode$: Subscription;
   valueInput = '';
 
@@ -36,25 +38,7 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const flags = this.nfc.FLAG_READER_NFC_A | this.nfc.FLAG_READER_NFC_V;
-    this.readerMode$ = this.nfc.readerMode(flags).subscribe(
-      (tag) => {
-        if (!tag?.ndefMessage) {
-          this.toastrService.createToast('NFC vacío', 'warning');
-          return;
-        }
-
-        const decodeNfc = this.nfc
-          .bytesToString(tag?.ndefMessage[0]?.payload)
-          ?.split('en')
-          ?.pop();
-        this.sendChildren(decodeNfc);
-      },
-      (err) => {
-        console.log('Error reading tag', err);
-      }
-    );
-
+    this.startNfc();
   }
 
   ngOnDestroy(): void {
@@ -69,6 +53,26 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
     if (tokenDecode) {
       this.getInfoByToken(tokenDecode);
     }
+  }
+
+  private startNfc(): void {
+    const flags = this.nfc.FLAG_READER_NFC_A | this.nfc.FLAG_READER_NFC_V;
+    this.readerMode$ = this.nfc.readerMode(flags).subscribe(
+      (tag) => {
+        if (!tag?.ndefMessage) {
+          this.toastrService.createToast('NFC vacío', 'warning');
+          return;
+        }
+        const decodeNfc = this.nfc
+          .bytesToString(tag?.ndefMessage[0]?.payload)
+          ?.split('en')
+          ?.pop();
+        this.sendChildren(decodeNfc);
+      },
+      (err) => {
+        console.log('Error reading tag', err);
+      }
+    );
   }
 
   private async getInfoByToken(code: string): Promise<void> {
