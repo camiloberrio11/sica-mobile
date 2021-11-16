@@ -83,7 +83,7 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
         this.nfcValue.emit(data);
       },
       async (err) => {
-        this.loadingService.endLoading();
+        await this.loadingService.endLoading();
         this.toastrService.createToast(
           'No se ha encontrado información',
           'warning'

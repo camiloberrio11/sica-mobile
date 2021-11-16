@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CreateLoanBody } from 'src/app/core/models/Loan';
 import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
@@ -24,7 +24,8 @@ export class DeliveryPage implements OnInit {
   constructor(
     private loadingService: LoadingService,
     private sicaApiService: SicaBackendService,
-    private toastrService: ToastService
+    private toastrService: ToastService,
+    private cd: ChangeDetectorRef
   ) {
     this.buildForm();
   }
@@ -50,38 +51,13 @@ export class DeliveryPage implements OnInit {
     this.indexStep = this.indexStep + 1;
   }
 
-  getEquipmentByCodeBar(codebar: string): void {
-    this.sicaApiService.getToolByCodeBar(codebar).subscribe(
-      (data) => {
-        this.loadingService.endLoading();
-        this.toolFindByCodeBar = data;
-        console.log(this.toolFindByCodeBar);
-      },
-      (err) => {
-        this.loadingService.endLoading();
-        this.toastrService.createToast(
-          'No se ha encontrado datos del equipo',
-          'warning'
-        );
-        console.error(err);
-      }
-    );
+  getEquipmentByCodeBar(toolByBarcode: ToolByBarcodeResponseService): void {
+    this.toolFindByCodeBar = toolByBarcode;
+    this.cd?.detectChanges();
   }
 
   getUserByToken(user: User): void {
     console.log(user);
-    // this.sicaApiService.getUserByToken(token).subscribe(
-    //   (data) => {
-    //       this.deliveredByUser = data;
-    //       this.recivedByUser = data;
-    //   },
-    //   (err) => {
-    //     this.toastrService.createToast(
-    //       'No se ha encontrado información',
-    //       'warning'
-    //     );
-    //   }
-    // );
   }
 
 

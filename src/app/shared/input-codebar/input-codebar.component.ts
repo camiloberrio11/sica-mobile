@@ -1,3 +1,4 @@
+import { ToastService } from 'src/app/core/services/toast.service';
 import {
   Component,
   Input,
@@ -7,9 +8,13 @@ import {
   OnInit,
   Inject,
   OnDestroy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import onScan from 'onscan.js';
+import { LoadingService } from 'src/app/core/services/loading.service';
+import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
+import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
 
 @Component({
   selector: 'app-input-codebar',
@@ -19,13 +24,19 @@ import onScan from 'onscan.js';
 export class InputCodebarComponent implements OnInit, OnDestroy {
   @Input() label: string;
   @Input() placeholder = '';
-  @Input() value: string;
   @Input() srcIcon: string;
-  @Output() codeBarRead: EventEmitter<string> = new EventEmitter<string>();
+  @Output() codeBarRead: EventEmitter<ToolByBarcodeResponseService> = new EventEmitter<ToolByBarcodeResponseService>();
   @ViewChild('searchInput') sInput;
   render = false;
+  valueInput = '';
 
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private loadingService: LoadingService,
+    private backendServiceSica: SicaBackendService,
+    private cd: ChangeDetectorRef,
+    private readonly toastrService: ToastService
+  ) {}
 
   ionViewDidEnter() {
     setTimeout(() => {
@@ -43,32 +54,41 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
     onScan.detachFrom(this.document);
   }
 
-
   ngOnInit() {
     if (!this.render) {
       this.render = true;
-    this.document.addEventListener('scan', (event) => this.scanBarcode(event));
-    onScan.attachTo(document, {
-      minLength: 1,
-      reactToPaste: false,
-      keyCodeMapper: (event) => {
-        if (event.which === 191) {
-          return '/';
-        }
-        if (event.which === 32) {
-          return ' ';
-        }
-        return onScan.decodeKeyEvent(event);
-      },
-    });
-  }
+      this.document.addEventListener('scan', (event) =>
+        this.scanBarcode(event)
+      );
+      onScan.attachTo(document, {
+        minLength: 1,
+        reactToPaste: false,
+        keyCodeMapper: (event) => {
+          if (event.which === 191) {
+            return '/';
+          }
+          if (event.which === 32) {
+            return ' ';
+          }
+          return onScan.decodeKeyEvent(event);
+        },
+      });
+    }
   }
 
-  private scanBarcode(event: any | CustomEvent<any>): void {
-    console.log(event?.detail?.scanCode);
-    const value = event?.detail?.scanCode;
-    if (value) {
-      this.codeBarRead.emit(value);
-    }
+  private async scanBarcode(event: any | CustomEvent<any>): Promise<void> {
+    await this.loadingService.initLoading('Obteniendo información de equipo');
+    this.backendServiceSica.getToolByCodeBar('ABC12310').subscribe(
+      async (data) => {
+        await this.loadingService.endLoading();
+        this.valueInput = data?.barcode;
+        this.cd.detectChanges();
+        this.codeBarRead.emit(data);
+      },
+      async (err) => {
+        this.toastrService.createToast('No se ha encontrado el equipo', 'warning');
+        await this.loadingService.endLoading();
+      }
+    );
   }
 }
