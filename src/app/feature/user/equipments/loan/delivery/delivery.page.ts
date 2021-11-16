@@ -68,20 +68,20 @@ export class DeliveryPage implements OnInit {
     );
   }
 
-  getUserByToken(token: string): void {
-    console.log(token);
-    this.sicaApiService.getUserByToken(token).subscribe(
-      (data) => {
-          this.deliveredByUser = data;
-          this.recivedByUser = data;
-      },
-      (err) => {
-        this.toastrService.createToast(
-          'No se ha encontrado información',
-          'warning'
-        );
-      }
-    );
+  getUserByToken(user: User): void {
+    console.log(user);
+    // this.sicaApiService.getUserByToken(token).subscribe(
+    //   (data) => {
+    //       this.deliveredByUser = data;
+    //       this.recivedByUser = data;
+    //   },
+    //   (err) => {
+    //     this.toastrService.createToast(
+    //       'No se ha encontrado información',
+    //       'warning'
+    //     );
+    //   }
+    // );
   }
 
 

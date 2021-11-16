@@ -1,5 +1,5 @@
 <div class="inputnfc">
   <p>{{ label }}</p>
-  <input id="nfc" />
+  <input id="nfc" [value]="valueInput" readonly disabled />
   <img *ngIf="srcIcon" [src]="srcIcon" alt="icon" />
 </div>
