@@ -56,8 +56,8 @@ export class DeliveryPage implements OnInit {
     this.cd?.detectChanges();
   }
 
-  getUserByToken(user: User): void {
-    console.log(user);
+  getUserByToken(user: User, input: string): void {
+    console.log(`${input}-${JSON.stringify(user)}`);
   }
 
 
