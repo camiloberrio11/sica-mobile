@@ -21,7 +21,7 @@ import { User } from 'src/app/core/models/User';
 })
 export class InputLabelNfcComponent implements OnInit, OnDestroy {
   @Input() label: string;
-  @Input() placeholder: string;
+  @Input() placeholder = 'Toca para leer token';
   @Input() srcIcon: string;
   @Input() id: string;
   @Output() nfcValue: EventEmitter<User> = new EventEmitter<User>();
@@ -38,7 +38,6 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.startNfc();
   }
 
   ngOnDestroy(): void {
@@ -49,13 +48,7 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
     this.readerMode$.unsubscribe();
   }
 
-  sendChildren(tokenDecode: string): void {
-    if (tokenDecode) {
-      this.getInfoByToken(tokenDecode);
-    }
-  }
-
-  private startNfc(): void {
+  startNfc(): void {
     const flags = this.nfc.FLAG_READER_NFC_A | this.nfc.FLAG_READER_NFC_V;
     this.readerMode$ = this.nfc.readerMode(flags).subscribe(
       (tag) => {
@@ -67,7 +60,7 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
           .bytesToString(tag?.ndefMessage[0]?.payload)
           ?.split('en')
           ?.pop();
-        this.sendChildren(decodeNfc);
+        this.getInfoByToken(decodeNfc);
       },
       (err) => {
         console.log('Error reading tag', err);
@@ -76,6 +69,9 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
   }
 
   private async getInfoByToken(code: string): Promise<void> {
+    if (!code) {
+      return;
+    }
     this.valueInput = '';
     this.cd.detectChanges();
     await this.loadingService.initLoading('Obteniendo información del token');
