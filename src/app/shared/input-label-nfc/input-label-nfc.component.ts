@@ -49,7 +49,7 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
   }
 
   startNfc(): void {
-    const flags = this.nfc.FLAG_READER_NFC_A | this.nfc.FLAG_READER_NFC_V;
+    const flags = this.nfc.FLAG_READER_NFC_A || this.nfc.FLAG_READER_NFC_V;
     this.readerMode$ = this.nfc.readerMode(flags).subscribe(
       (tag) => {
         if (!tag?.ndefMessage) {
