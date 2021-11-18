@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { ReceiveToolBody } from './../../../../../../core/models/Movement';
+import { Movement, ReceiveToolBody } from './../../../../../../core/models/Movement';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
@@ -7,6 +7,8 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { User } from 'src/app/core/models/User';
+import { Construction } from 'src/app/core/models/Construction';
+import { ConstructionService } from 'src/app/core/services/construction.service';
 
 @Component({
   selector: 'app-reception',
@@ -19,17 +21,24 @@ export class ReceptionPage implements OnInit {
   stepEnd = false;
   toolFindByCodeBar: ToolByBarcodeResponseService;
   userNfc: User;
+  lastMovement: Movement;
+  // currentConstruction: Construction;
 
   constructor(
     private cd: ChangeDetectorRef,
     private loadingService: LoadingService,
     private sicaApiService: SicaBackendService,
     private toastrService: ToastService,
+    private readonly constructionService: ConstructionService,
     private router: Router
   ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
+
+  // ionViewDidEnter(): void {
+  //   this.currentConstruction =
+  //     this.constructionService?.getConstructionSelected();
+  // }
 
   nextStep(): void {
     if (this.stepEnd) {
@@ -44,6 +53,22 @@ export class ReceptionPage implements OnInit {
     this.cd?.detectChanges();
   }
 
+  async getEndMovementByEquipment(idTool: string): Promise<void> {
+    await this.loadingService.initLoading(
+      'Obteniendo ultimo movimiento del equipo leído'
+    );
+    this.sicaApiService.getLastMovement(idTool).subscribe(
+      async (data) => {
+        this.lastMovement = data;
+        await this.loadingService.endLoading();
+      },
+      async (err) => {
+        await this.loadingService.endLoading();
+
+      }
+    );
+  }
+
   currentIndexStepForm(event: number) {
     this.stepEnd = this.indexStep + 1 === this.menuFormStep?.length;
     this.indexStep = event;
@@ -56,17 +81,17 @@ export class ReceptionPage implements OnInit {
     await this.loadingService.initLoading('Recibiendo equipo');
     const body: ReceiveToolBody = {
       destination: {
-        user: this.userNfc.id
-      }
+        user: this.userNfc.id,
+      },
     };
-    this.sicaApiService.receiveTool(body, '').subscribe(
+    this.sicaApiService.receiveTool(body, this.lastMovement?.id).subscribe(
       async (data) => {
         await this.loadingService.endLoading();
         await this.toastrService.createToast(
           'Se ha entregado el equipo con éxito',
           'success'
-          );
-          this.router.navigate(['/auth/menu-equipments']);
+        );
+        this.router.navigate(['/auth/menu-equipments']);
       },
       async (err) => {
         await this.loadingService.endLoading();

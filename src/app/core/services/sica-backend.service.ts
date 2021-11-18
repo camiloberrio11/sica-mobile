@@ -1,4 +1,4 @@
-import { ReceiveToolBody } from './../models/Movement';
+import { Movement, ReceiveToolBody } from './../models/Movement';
 import { CategoryTool } from './../models/CategoryTool';
 import { Brand } from './../models/Brand';
 import { Supplier } from './../models/Supplier';
@@ -68,6 +68,12 @@ export class SicaBackendService {
 
   getReason(): Observable<Reason[]> {
     return this.http.get<Reason[]>(`${environment.urlApi}/api/reason`);
+  }
+
+  getLastMovement(toolId: string): Observable<Movement> {
+    const idConstruction =
+    this.constructionService.getConstructionSelected()?.id;
+    return this.http.get<Movement>(`${environment.urlApi}/api/${idConstruction}/tool/movement/last-of/${toolId}`);
   }
 
   getCategoryTool(): Observable<CategoryTool[]> {
