@@ -95,7 +95,7 @@ export class SicaBackendService {
     const idConstruction =
     this.constructionService.getConstructionSelected()?.id;
     return this.http.post<{ id: string }>(
-      `${environment.urlApi}/api/${idConstruction}tool/rented`,
+      `${environment.urlApi}/api/${idConstruction}/tool/rented`,
       body
     );
   }

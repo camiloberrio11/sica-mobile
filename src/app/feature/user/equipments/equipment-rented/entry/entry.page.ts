@@ -1,5 +1,5 @@
 import { ToastService } from './../../../../../core/services/toast.service';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SaveRentedToolBody } from 'src/app/core/models/RentedTool';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
@@ -16,9 +16,12 @@ export class EntryPage implements OnInit {
   listAddedEquipments: SaveRentedToolBody[] = [];
   formEntry: FormGroup;
 
+  currentCategory: CategoryTool;
+
   constructor(
     private loadingService: LoadingService,
     private sicaBackend: SicaBackendService,
+    private cd: ChangeDetectorRef,
     private toastrService: ToastService
   ) {}
 
@@ -47,6 +50,7 @@ export class EntryPage implements OnInit {
       this.listAddedEquipments = [];
       await this.loadingService.endLoading();
     } catch (error) {
+      await this.loadingService.endLoading();
       this.toastrService.createToast('Ocurrió un error guardando', 'danger');
     }
   }
@@ -79,6 +83,7 @@ export class EntryPage implements OnInit {
       },
     };
     this.listAddedEquipments.push(newEquipment);
+    this.toastrService.createToast('Agregado','success');
     this.formEntry.reset();
   }
 
@@ -96,7 +101,7 @@ export class EntryPage implements OnInit {
         await this.loadingService.endLoading();
       },
       async (err) => {
-        this.toastrService.createToast(
+        await this.toastrService.createToast(
           'Ocurrió error obteniendo proveedores',
           'warning'
         );
@@ -113,6 +118,8 @@ export class EntryPage implements OnInit {
 
   handleCategory(event: CategoryTool): void {
     this.updateField(event?.id, 'toolCategory');
+    this.currentCategory = event;
+    this.cd.detectChanges();
   }
 
   private buildForm(): void {
@@ -124,8 +131,8 @@ export class EntryPage implements OnInit {
       remisionSupplierId: new FormControl('', Validators.required),
       toolIdBySupplier: new FormControl('', Validators.required),
       toolQuantity: new FormControl('', Validators.required),
-      toolUserFor: new FormControl('', Validators.required),
-      toolImage: new FormControl('', Validators.required),
+      toolUserFor: new FormControl(''),
+      toolImage: new FormControl(''),
       toolCategory: new FormControl('', Validators.required),
     });
   }

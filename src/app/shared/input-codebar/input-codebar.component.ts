@@ -54,22 +54,24 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
 
   ionViewDidLeave(): void {
     this.render = false;
-    onScan.detachFrom(this.document);
   }
 
   ngOnDestroy(): void {
     this.render = false;
-    onScan.detachFrom(this.document);
   }
 
   ngOnInit() {}
+
+  handleBlur(): void {
+    this.document.removeEventListener('scan', () => console.log('removed'));
+    onScan.detachFrom(this.document);
+  }
 
   handleFocus(): void {
     if (!this.render) {
       this.render = true;
       this.document.addEventListener('scan', (event) => {
         this.scanBarcode(event);
-        this.document.removeEventListener('scan', () => console.log('removed'));
       });
       onScan.attachTo(document, {
         minLength: 1,
@@ -113,11 +115,11 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
         await this.loadingService.endLoading();
       },
       async (err) => {
-        this.toastrService.createToast(
+        await this.loadingService.endLoading();
+        await this.toastrService.createToast(
           'No se ha encontrado el equipo',
           'warning'
         );
-        await this.loadingService.endLoading();
       }
     );
   }
@@ -134,11 +136,11 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
         await this.loadingService.endLoading();
       },
       async (err) => {
-        this.toastrService.createToast(
+        await this.loadingService.endLoading();
+        await this.toastrService.createToast(
           'No se ha encontrado categoría',
           'warning'
         );
-        await this.loadingService.endLoading();
       }
     );
   }

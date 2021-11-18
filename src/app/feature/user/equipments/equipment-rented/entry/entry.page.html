@@ -13,6 +13,7 @@
         typeInput="text"
         placeholder="Digite la remisión"
         (inputChange)="updateField($event, 'remisionNumber')"
+        [value]="formEntry?.get('remisionNumber')?.value"
       ></app-input-general>
 
       <h6
@@ -26,7 +27,7 @@
         [label]="'Equipo'"
         typeInput="text"
         [disable]="true"
-        [value]="'item?.name'"
+        [value]="currentCategory?.name + '-' + (listAddedEquipments?.length)?.toString()"
       ></app-input-general>
 
       <h6 class="entry__layout__subtitle">Ingrese equipo</h6>
@@ -36,44 +37,49 @@
         [isCategory]="true"
         srcIcon="assets/icon/barcode.png"
         typeInput="text"
-   
+        (barcodeCategory)="handleCategory($event)"
       ></app-input-codebar>
       <app-input-general
         [label]="'Equipo'"
         typeInput="text"
         [disable]="true"
-        [value]="'cambiar valor'"
+        [value]="currentCategory?.name"
       ></app-input-general>
       <app-input-general
         [label]="'Fecha de alquiler'"
         [isTypeDate]="true"
         srcIcon="assets/icon/Calendar.svg"
         placeholder="Digite fecha DD/MM/AAAA"
-        (inputChange)="updateField($event, 'rentedFrom')"
+        (inputChange)="updateField($event, 'remisionRentedFrom')"
+        [value]="formEntry?.get('remisionRentedFrom')?.value"
       ></app-input-general>
       <app-input-general
         [label]="'Cantidad'"
         typeInput="text"
         placeholder="Ingrese cantidad"
         (inputChange)="updateField($event, 'toolQuantity')"
+        [value]="formEntry?.get('toolQuantity')?.value"
       ></app-input-general>
       <app-input-general
         [label]="'Alquiler días'"
         typeInput="text"
         placeholder="Ingrese alquiler estimado (días)"
         (inputChange)="updateField($event, 'remisionEstimatedRentalDays')"
+        [value]="formEntry?.get('remisionEstimatedRentalDays')?.value"
       ></app-input-general>
       <app-input-general
         [label]="'Identificador'"
         typeInput="text"
         placeholder="Ingrese identificador proveedor"
         (inputChange)="updateField($event, 'toolIdBySupplier')"
+        [value]="formEntry?.get('toolIdBySupplier')?.value"
       ></app-input-general>
       <app-input-general
         [label]="'Precio por día'"
         typeInput="text"
         placeholder="Digite precio por día"
         (inputChange)="updateField($event, 'remisionDailyPrice')"
+        [value]="formEntry?.get('remisionDailyPrice')?.value"
       ></app-input-general>
       <div class="entry__layout__add">
         <app-button-add (handleClick)="handleAdd()"></app-button-add>
