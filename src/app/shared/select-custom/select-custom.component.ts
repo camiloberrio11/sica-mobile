@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component,EventEmitter, Input, OnInit, Output } from '@angular/core';
+
 
 @Component({
   selector: 'app-select-custom',
@@ -9,12 +10,17 @@ export class SelectCustomComponent implements OnInit {
   @Input() label: string;
   @Input() placeholder: string;
   @Input() optionsList: { id: string; value: string }[];
+  @Output() selectItem: EventEmitter<string> = new EventEmitter<string>();
+
 
   constructor() {}
 
   ngOnInit() {}
 
   select(event: any) {
-    console.log('Select item in select custom component', event?.detail);
+    const value = event?.detail?.value;
+    if (value) {
+      this.selectItem.emit(value);
+    }
   }
 }

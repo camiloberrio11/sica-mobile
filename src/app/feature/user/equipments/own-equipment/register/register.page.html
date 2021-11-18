@@ -5,69 +5,84 @@
     [currentIndexInForm]="indexStep"
     (indexCurrent)="currentIndexStepForm($event)"
   ></app-form-step>
-  <div class="register__layout" [ngSwitch]="indexStep">
-    <!-- form index 0 -->
-    <div class="register__layout__0" *ngSwitchCase="0">
-      <app-input-codebar
-        [label]="'Escanear'"
-        placeholder="Escanear Código"
-        srcIcon="assets/icon/barcode.png"
-        typeInput="text"
-      ></app-input-codebar>
-      <app-capture-image></app-capture-image>
-    </div>
+  <form [formGroup]="formRegister">
+    <div class="register__layout" [ngSwitch]="indexStep">
+      <!-- form index 0 -->
+      <div class="register__layout__0" *ngSwitchCase="0">
+        <app-input-codebar
+          [label]="'Escanear'"
+          (registerResult)="getEquipmentByCodeBar($event)"
+          placeholder="Toca para escanear código"
+          [isRegister]="true"
+          srcIcon="assets/icon/barcode.png"
+          typeInput="text"
+        ></app-input-codebar>
+        <app-capture-image
+          (dataPhoto)="getDataTakePhoto($event)"
+        ></app-capture-image>
+      </div>
 
-    <!-- form index 1 -->
-    <div class="register__layout__1" *ngSwitchCase="1">
-      <app-select-custom
-        label="Equipo"
-        placeholder="Seleccione equipo"
-        [optionsList]="listCategoryTool"
-      ></app-select-custom>
-      <app-select-custom
-        label="Marca"
-        [optionsList]="listBrand"
-        placeholder="Seleccione Marca"
-      ></app-select-custom>
-      <app-input-general
-        label="Referencia"
-        placeholder="Digite referencia"
-      ></app-input-general>
-      <app-input-general
-        label="Serie"
-        placeholder="Digite serie"
-      ></app-input-general>
-    </div>
+      <!-- form index 1 -->
+      <div class="register__layout__1" *ngSwitchCase="1">
+        <app-select-custom
+          label="Equipo"
+          placeholder="Seleccione equipo"
+          [optionsList]="listCategoryTool"
+          (selectItem)="handleSelect($event, 'toolCategoryId')"
+        ></app-select-custom>
+        <app-select-custom
+          label="Marca"
+          [optionsList]="listBrand"
+          placeholder="Seleccione Marca"
+          (selectItem)="handleSelect($event, 'toolBrandId')"
+        ></app-select-custom>
+        <app-input-general
+          label="Referencia"
+          placeholder="Digite referencia"
+          (inputChange)="handleSelect($event,'toolReference')"
+        ></app-input-general>
+        <app-input-general
+          label="Serie"
+          placeholder="Digite serie"
+          (inputChange)="handleSelect($event,'toolSerial')"
+        ></app-input-general>
+      </div>
 
-    <!-- form index 2 -->
-    <div class="register__layout__2" *ngSwitchCase="2">
-      <app-select-custom
-        label="Proveedor"
-        [optionsList]="listSupplier"
-        placeholder="Proveedor"
-      ></app-select-custom>
-      <app-input-general
-        label="No. FACT. / REM."
-        placeholder="Digite # de factura (Opcional)"
-      ></app-input-general>
-      <app-input-general
-        label="Valor"
-        placeholder="Digite valor"
-      ></app-input-general>
-      <app-input-general
-        label="Fecha"
-        srcIcon="assets/icon/Calendar.svg"
-        placeholder="Digite fecha DD/MM/AAAA"
-        [isTypeDate]="true"
-      ></app-input-general>
-      <app-input-general
-        label="Garantía"
-        placeholder="En meses (Opcional)"
-      ></app-input-general>
-    </div>
+      <!-- form index 2 -->
+      <div class="register__layout__2" *ngSwitchCase="2">
+        <app-select-custom
+          label="Proveedor"
+          [optionsList]="listSupplier"
+          placeholder="Proveedor"
+          (selectItem)="handleSelect($event, 'invoiceSupplierId')"
+        ></app-select-custom>
+        <app-input-general
+          label="No. FACT. / REM."
+          placeholder="Digite # de factura (Opcional)"
+          (inputChange)="handleSelect($event,'invoiceNumber')"
+        ></app-input-general>
+        <app-input-general
+          label="Valor"
+          placeholder="Digite valor"
+          (inputChange)="handleSelect($event,'invoicePrice')"
+        ></app-input-general>
+        <app-input-general
+          label="Fecha"
+          srcIcon="assets/icon/Calendar.svg"
+          placeholder="Digite fecha DD/MM/AAAA"
+          [isTypeDate]="true"
+          (inputChange)="handleSelect($event,'invoiceDate')"
+        ></app-input-general>
+        <app-input-general
+          label="Garantía"
+          placeholder="En meses (Opcional)"
+          (inputChange)="handleSelect($event,'invoiceWarranty')"
+        ></app-input-general>
+      </div>
 
-    <button class="register__layout__btngeneral" (click)="nextStep()">
-      {{stepEnd ? 'Guardar' : 'Continuar'}}
-    </button>
-  </div>
+      <button class="register__layout__btngeneral" (click)="nextStep()">
+        {{stepEnd ? 'Guardar' : 'Continuar'}}
+      </button>
+    </div>
+  </form>
 </ion-content>

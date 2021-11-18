@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ToastService } from './../../../../../core/services/toast.service';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { SaveRentedToolBody } from 'src/app/core/models/RentedTool';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CategoryTool } from 'src/app/core/models/CategoryTool';
 
 @Component({
   selector: 'app-entry',
@@ -9,22 +13,46 @@ import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 })
 export class EntryPage implements OnInit {
   listSupplier: { id: string; value: string }[] = [];
-  listAddedEquipments: {name: string}[] = [];
+  listAddedEquipments: SaveRentedToolBody[] = [];
+  formEntry: FormGroup;
+
+  currentCategory: CategoryTool;
 
   constructor(
     private loadingService: LoadingService,
-    private sicaBackend: SicaBackendService
+    private sicaBackend: SicaBackendService,
+    private cd: ChangeDetectorRef,
+    private toastrService: ToastService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.buildForm();
   }
 
   ionViewDidEnter(): void {
+    this.listAddedEquipments = [];
     this.getSupplier();
   }
 
-  save(): void {
-    alert('Guardado');
+  async save(): Promise<void> {
+    if (this.listAddedEquipments?.length < 1) {
+      this.toastrService.createToast(
+        'No hay equipos previamente agregados',
+        'secondary'
+      );
+      return;
+    }
+    try {
+      await this.loadingService.initLoading('Guardando...');
+      for (const equipment of this.listAddedEquipments) {
+        await this.sicaBackend.createRentedTool(equipment).toPromise();
+      }
+      this.listAddedEquipments = [];
+      await this.loadingService.endLoading();
+    } catch (error) {
+      await this.loadingService.endLoading();
+      this.toastrService.createToast('Ocurrió un error guardando', 'danger');
+    }
   }
 
   sendEmail(): void {
@@ -32,7 +60,31 @@ export class EntryPage implements OnInit {
   }
 
   handleAdd(): void {
-    this.listAddedEquipments.push({name: `Prueba agregada ${this.listAddedEquipments.length + 1}`});
+    if (this.formEntry?.invalid) {
+      this.toastrService.createToast('Completa el formulario', 'medium');
+      return;
+    }
+    const formValue = this.formEntry.value;
+    const newEquipment: SaveRentedToolBody = {
+      remission: {
+        number: +formValue?.remisionNumber,
+        dailyPrice: +formValue?.remisionDailyPrice,
+        rentedFrom: formValue?.remisionRentedFrom,
+        estimatedRentalDays: +formValue?.remisionEstimatedRentalDays,
+        supplier: formValue?.remisionSupplierId,
+      },
+      tool: {
+        idBySupplier: formValue?.toolIdBySupplier,
+        quantity: +formValue?.toolQuantity,
+        usedFor: 'herramientas necesarias para terminar obra',
+        image:
+          'https://d25rq8gxcq0p71.cloudfront.net/dictionary-images/324/5ce52792-a3d5-410e-9586-c29f21c48344.jpg',
+        category: formValue?.toolCategory,
+      },
+    };
+    this.listAddedEquipments.push(newEquipment);
+    this.toastrService.createToast('Agregado','success');
+    this.formEntry.reset();
   }
 
   async getSupplier(): Promise<void> {
@@ -49,9 +101,39 @@ export class EntryPage implements OnInit {
         await this.loadingService.endLoading();
       },
       async (err) => {
+        await this.toastrService.createToast(
+          'Ocurrió error obteniendo proveedores',
+          'warning'
+        );
         await this.loadingService.endLoading();
       }
     );
   }
 
+  updateField(value: string, formcontrol: string): void {
+    this.formEntry.patchValue({
+      [formcontrol]: value,
+    });
+  }
+
+  handleCategory(event: CategoryTool): void {
+    this.updateField(event?.id, 'toolCategory');
+    this.currentCategory = event;
+    this.cd.detectChanges();
+  }
+
+  private buildForm(): void {
+    this.formEntry = new FormGroup({
+      remisionNumber: new FormControl('', Validators.required),
+      remisionDailyPrice: new FormControl('', Validators.required),
+      remisionRentedFrom: new FormControl('', Validators.required),
+      remisionEstimatedRentalDays: new FormControl('', Validators.required),
+      remisionSupplierId: new FormControl('', Validators.required),
+      toolIdBySupplier: new FormControl('', Validators.required),
+      toolQuantity: new FormControl('', Validators.required),
+      toolUserFor: new FormControl(''),
+      toolImage: new FormControl(''),
+      toolCategory: new FormControl('', Validators.required),
+    });
+  }
 }

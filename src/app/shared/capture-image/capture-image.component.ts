@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ToastService } from 'src/app/core/services/toast.service';
 
@@ -8,6 +8,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
   styleUrls: ['./capture-image.component.scss'],
 })
 export class CaptureImageComponent implements OnInit {
+  @Output() dataPhoto: EventEmitter<string> = new EventEmitter<string>();
   srcImgCapture = '';
   options: CameraOptions = {
     quality: 100,
@@ -24,8 +25,10 @@ export class CaptureImageComponent implements OnInit {
 
   async takePhoto(): Promise<void> {
     try {
+      this.srcImgCapture = '';
       const result = await this.camera.getPicture(this.options);
       this.srcImgCapture = `data:image/jpeg;base64,${result}`;
+      this.dataPhoto.emit(result);
     } catch (error) {
         this.toastrService.createToast(
           'Ocurrió un error capturando la foto',

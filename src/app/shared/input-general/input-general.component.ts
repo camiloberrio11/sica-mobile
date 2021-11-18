@@ -2,7 +2,6 @@ import {
   Component,
   Input,
   Output,
-  ViewChild,
   EventEmitter,
   OnInit,
   Inject,
@@ -23,12 +22,15 @@ export class InputGeneralComponent implements OnInit, OnDestroy {
   @Input() isTypeDate: boolean;
   @Input() srcIcon: string;
   @Input() typeInput: 'text' | 'password';
-
   @Output() inputChange: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private stringTransformService: StringTransformService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (!this.value || this.value === '0') {
+      this.value = '';
+    }
+  }
 
   ngOnDestroy(): void {}
 
@@ -36,6 +38,7 @@ export class InputGeneralComponent implements OnInit, OnDestroy {
     let value = event?.target?.value;
     if (this.isTypeDate) {
       value = this.stringTransformService.formatDate(event?.target?.value);
+      this.value = value;
     }
     this.inputChange.emit(value);
   }

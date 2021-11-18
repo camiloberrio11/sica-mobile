@@ -8,12 +8,12 @@ import { Component, OnInit } from '@angular/core';
 export class TransferPage implements OnInit {
   menuItems = [
     {
-      srcImg: 'assets/icon/prestamo-logo.svg',
+      srcImg: 'assets/icon/devolucionn.svg',
       title: 'Recepción',
       routePath: 'auth/own-equipment/transfer/reception',
     },
     {
-      srcImg: 'assets/icon/materiales.svg',
+      srcImg: 'assets/icon/devolucion.svg',
       title: 'Envío',
       routePath: 'auth/own-equipment/transfer/send',
     },

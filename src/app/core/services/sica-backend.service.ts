@@ -7,9 +7,10 @@ import { Observable } from 'rxjs';
 import { Construction } from '../models/Construction';
 import { environment } from 'src/environments/environment.prod';
 import { ConstructionService } from './construction.service';
-import { ToolByBarcodeResponseService } from '../models/Tool';
+import { CreateToolBody, ToolByBarcodeResponseService } from '../models/Tool';
 import { User } from '../models/User';
-import { CreateLoanBody } from '../models/Loan';
+import { CreateLoanBody, UpdateLoanBody } from '../models/Loan';
+import { SaveRentedToolBody } from '../models/RentedTool';
 
 @Injectable({
   providedIn: 'root',
@@ -56,11 +57,45 @@ export class SicaBackendService {
     return this.http.get<CategoryTool[]>(`${environment.urlApi}/api/category`);
   }
 
+  getCategoryToolByBarcode(barcode: string): Observable<CategoryTool> {
+    return this.http.get<CategoryTool>(`${environment.urlApi}/api/category/${barcode}`);
+  }
+
   createLoan(body: CreateLoanBody): Observable<{ id: string }> {
     const idConstruction =
       this.constructionService.getConstructionSelected()?.id;
     return this.http.post<{ id: string }>(
       `${environment.urlApi}/api/${idConstruction}/tool/loan`,
+      body
+    );
+  }
+
+  createTool(body: CreateToolBody): Observable<{ id: string }> {
+    const idConstruction =
+    this.constructionService.getConstructionSelected()?.id;
+    return this.http.post<{ id: string }>(
+      `${environment.urlApi}/api/${idConstruction}/tool`,
+      body
+    );
+  }
+
+  updateLoan(
+    body: UpdateLoanBody,
+    loanId: string
+  ): Observable<{ updated: boolean }> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.patch<{ updated: boolean }>(
+      `${environment.urlApi}/api/${idConstruction}/tool/loan/${loanId}/return-tool`,
+      body
+    );
+  }
+
+  createRentedTool(body: SaveRentedToolBody):  Observable<{ id: string }> {
+    const idConstruction =
+    this.constructionService.getConstructionSelected()?.id;
+    return this.http.post<{ id: string }>(
+      `${environment.urlApi}/api/${idConstruction}/tool/rented`,
       body
     );
   }

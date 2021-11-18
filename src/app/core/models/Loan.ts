@@ -6,4 +6,16 @@ export interface CreateLoanBody {
   tasks: string;
   remark: string;
   tool: string;
-};
+}
+
+export interface UpdateLoanBody {
+  return: {
+    deliveredBy: string;
+    receivedBy: string;
+    detail: {
+      status: string;
+      quantity: number;
+    };
+    remark: string;
+  };
+}

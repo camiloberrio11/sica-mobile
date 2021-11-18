@@ -14,7 +14,7 @@
         <app-input-codebar
           (codeBarRead)="getEquipmentByCodeBar($event)"
           [label]="'Escanear'"
-          placeholder="Escanear Código"
+          placeholder="Toca para escanear Código"
           srcIcon="assets/icon/barcode.png"
           typeInput="text"
         ></app-input-codebar>
@@ -33,19 +33,14 @@
         <app-input-label-nfc
           [label]="'Entregado por'"
           srcIcon="assets/icon/nfc.svg"
-          (nfcValue)="getUserByToken($event, 'delivered')"
+          (nfcValue)="getUserByToken($event, 'delivery')"
         ></app-input-label-nfc>
-        <app-input-general
-          [label]="'Contratista'"
-          typeInput="text"
-          [value]="deliveredByUser?.name?.first + deliveredByUser?.name?.last"
-        ></app-input-general>
 
         <!-- Entregado a -->
         <app-input-label-nfc
           [label]="'Entregado a'"
           srcIcon="assets/icon/nfc.svg"
-          (nfcValue)="getUserByToken($event, 'receive')"
+          (nfcValue)="getUserByToken($event, 'received')"
         ></app-input-label-nfc>
         <app-input-general
           [label]="'Contratista'"
