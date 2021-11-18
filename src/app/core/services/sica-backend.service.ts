@@ -13,6 +13,7 @@ import { User } from '../models/User';
 import { CreateLoanBody, UpdateLoanBody } from '../models/Loan';
 import { SaveRentedToolBody } from '../models/RentedTool';
 import { SendEToolBody } from '../models/Movement';
+import { Reason } from '../models/Reason';
 
 @Injectable({
   providedIn: 'root',
@@ -63,6 +64,10 @@ export class SicaBackendService {
 
   getBrand(): Observable<Brand[]> {
     return this.http.get<Brand[]>(`${environment.urlApi}/api/brand`);
+  }
+
+  getReason(): Observable<Reason[]> {
+    return this.http.get<Reason[]>(`${environment.urlApi}/api/reason`);
   }
 
   getCategoryTool(): Observable<CategoryTool[]> {
