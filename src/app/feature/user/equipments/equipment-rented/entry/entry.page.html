@@ -11,19 +11,21 @@
       typeInput="text"
       placeholder="Digite la remisión"
     ></app-input-general>
-    <h6 *ngIf="listAddedEquipments?.length > 0" class="entry__layout__subtitle">Equipos Agregados</h6>
+    <h6 *ngIf="listAddedEquipments?.length > 0" class="entry__layout__subtitle">
+      Equipos Agregados
+    </h6>
     <app-input-general
-    *ngFor="let item of listAddedEquipments"
-    [label]="'Equipo'"
-    typeInput="text"
-    [disable]="true"
-    [value]="item?.name"
-  ></app-input-general>
+      *ngFor="let item of listAddedEquipments"
+      [label]="'Equipo'"
+      typeInput="text"
+      [disable]="true"
+      [value]="item?.name"
+    ></app-input-general>
 
     <h6 class="entry__layout__subtitle">Ingrese equipo</h6>
     <app-input-codebar
       [label]="'Escanear'"
-      placeholder="Escanear Código"
+      placeholder="Toca para escanear categoría"
       srcIcon="assets/icon/barcode.png"
       typeInput="text"
     ></app-input-codebar>

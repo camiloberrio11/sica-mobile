@@ -56,6 +56,10 @@ export class SicaBackendService {
     return this.http.get<CategoryTool[]>(`${environment.urlApi}/api/category`);
   }
 
+  getCategoryToolByBarcode(barcode: string): Observable<CategoryTool> {
+    return this.http.get<CategoryTool>(`${environment.urlApi}/api/category/${barcode}`);
+  }
+
   createLoan(body: CreateLoanBody): Observable<{ id: string }> {
     const idConstruction =
       this.constructionService.getConstructionSelected()?.id;

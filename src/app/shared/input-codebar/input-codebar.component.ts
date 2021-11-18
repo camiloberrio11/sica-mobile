@@ -15,6 +15,7 @@ import onScan from 'onscan.js';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
+import { CategoryTool } from 'src/app/core/models/CategoryTool';
 
 @Component({
   selector: 'app-input-codebar',
@@ -24,9 +25,11 @@ import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
 export class InputCodebarComponent implements OnInit, OnDestroy {
   @Input() label: string;
   @Input() isRegister: boolean;
+  @Input() isCategory: boolean;
   @Input() placeholder = '';
   @Input() srcIcon: string;
   @Output() codeBarRead: EventEmitter<ToolByBarcodeResponseService> = new EventEmitter<ToolByBarcodeResponseService>();
+  @Output() barcodeCategory?: EventEmitter<CategoryTool> = new EventEmitter<CategoryTool>();
   @Output() registerResult?: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('searchInput') sInput;
@@ -89,6 +92,10 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
       this.registerResult.emit(value);
       return;
     }
+    if (this.isCategory) {
+      this.findCategoryBarcode(value);
+      return;
+    }
     await this.loadingService.initLoading('Obteniendo información de equipo');
     this.backendServiceSica.getToolByCodeBar(value).subscribe(
       async (data) => {
@@ -99,6 +106,22 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
       },
       async (err) => {
         this.toastrService.createToast('No se ha encontrado el equipo', 'warning');
+        await this.loadingService.endLoading();
+      }
+    );
+  }
+
+  private async findCategoryBarcode(barcode: string): Promise<void> {
+    await this.loadingService.initLoading('Obteniendo información de categoría');
+    this.backendServiceSica.getCategoryToolByBarcode(barcode).subscribe(
+      async (data) => {
+        this.valueInput = data?.barcode;
+        this.cd.detectChanges();
+        this.barcodeCategory.emit(data);
+        await this.loadingService.endLoading();
+      },
+      async (err) => {
+        this.toastrService.createToast('No se ha encontrado categoría', 'warning');
         await this.loadingService.endLoading();
       }
     );
