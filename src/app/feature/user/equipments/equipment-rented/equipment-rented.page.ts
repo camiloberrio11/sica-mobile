@@ -11,22 +11,22 @@ export class EquipmentRentedPage implements OnInit {
   constructionSelected: Construction;
   menuItems = [
     {
-      srcImg: 'assets/icon/prestamo-logo.svg',
+      srcImg: 'assets/icon/ingreso.svg',
       title: 'Ingreso',
       routePath: 'auth/equipment-rented/entry',
     },
     {
-      srcImg: 'assets/icon/materiales.svg',
+      srcImg: 'assets/icon/devolucion.svg',
       title: 'Devolución',
       routePath: 'auth/equipment-rented/return',
     },
     {
-      srcImg: 'assets/icon/equipo-alquilado.svg',
+      srcImg: 'assets/icon/preliquidacion.svg',
       title: 'Preliquidación',
       routePath: 'auth/equipment-rented/pre-settlement',
     },
     {
-      srcImg: 'assets/icon/equipopropio.svg',
+      srcImg: 'assets/icon/informe.svg',
       title: 'Informes',
       routePath: 'auth/equipment-rented/reports',
     },

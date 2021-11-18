@@ -11,17 +11,17 @@ export class LoanPage implements OnInit {
   loanMenu = [
     {
       title: 'Entrega',
-      srcImg: 'assets/icon/prestamo-logo.svg',
+      srcImg: 'assets/icon/entrega.svg',
       routePath: 'auth/loan-equipment/delivery',
     },
     {
       title: 'Devolución',
-      srcImg: 'assets/icon/materiales.svg',
+      srcImg: 'assets/icon/devolucionn.svg',
       routePath: 'auth/loan-equipment/return',
     },
     {
       title: 'Informe',
-      srcImg: 'assets/icon/equipo-alquilado.svg',
+      srcImg: 'assets/icon/informe.svg',
       routePath: 'auth/loan-equipment/reports',
     },
   ];
