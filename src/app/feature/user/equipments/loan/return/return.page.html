@@ -7,7 +7,7 @@
     (indexCurrent)="currentIndexStepForm($event)"
   ></app-form-step>
 
-  <form [formGroup]="formReturn">
+
     <div class="return__layout" [ngSwitch]="indexStep">
       <!-- form index 0 -->
 
@@ -32,14 +32,14 @@
       <div class="return__layout__loan__1" *ngSwitchCase="1">
         <!-- Entregado por -->
         <app-input-label-nfc
-          [label]="'Entregado por'"
+          [label]="'Entregado a'"
           srcIcon="assets/icon/nfc.svg"
           (nfcValue)="getUserByToken($event)"
         ></app-input-label-nfc>
 
-        <!-- Entregado a -->
+        <!-- Entregado por -->
         <app-input-label-nfc
-          [label]="'Entregado a'"
+          [label]="'Entregado por'"
           srcIcon="assets/icon/nfc.svg"
           (nfcValue)="getUserByToken($event)"
         ></app-input-label-nfc>
@@ -83,5 +83,5 @@
         <ion-icon slot="start" name="mail-outline"></ion-icon> Enviar email
       </button>
     </div>
-  </form>
+
 </ion-content>

@@ -70,7 +70,6 @@ export class DeliveryPage implements OnInit {
 
 
   private sendRequest(): void {
-    console.log('soy form', this.formDelivery.value);
     const valuesForm = this.formDelivery.value;
     const body: CreateLoanBody = {
       deliveredBy: this.deliveredByUser?.id,

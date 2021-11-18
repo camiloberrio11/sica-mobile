@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment.prod';
 import { ConstructionService } from './construction.service';
 import { ToolByBarcodeResponseService } from '../models/Tool';
 import { User } from '../models/User';
-import { CreateLoanBody } from '../models/Loan';
+import { CreateLoanBody, UpdateLoanBody } from '../models/Loan';
 
 @Injectable({
   providedIn: 'root',
@@ -61,6 +61,18 @@ export class SicaBackendService {
       this.constructionService.getConstructionSelected()?.id;
     return this.http.post<{ id: string }>(
       `${environment.urlApi}/api/${idConstruction}/tool/loan`,
+      body
+    );
+  }
+
+  updateLoan(
+    body: UpdateLoanBody,
+    loanId: string
+  ): Observable<{ updated: boolean }> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.patch<{ updated: boolean }>(
+      `${environment.urlApi}/api/${idConstruction}/tool/loan/${loanId}/return-tool`,
       body
     );
   }
