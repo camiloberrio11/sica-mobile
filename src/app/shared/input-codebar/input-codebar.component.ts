@@ -77,13 +77,19 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
   }
 
   private async scanBarcode(event: any | CustomEvent<any>): Promise<void> {
+    const value = event?.detail?.scanCode;
+    if (!value) {
+      this.toastrService.createToast('No se ha encontrado valor para el código de barras', 'secondary');
+      return;
+    }
     await this.loadingService.initLoading('Obteniendo información de equipo');
-    this.backendServiceSica.getToolByCodeBar('ABC12310').subscribe(
+    this.backendServiceSica.getToolByCodeBar(value).subscribe(
       async (data) => {
         await this.loadingService.endLoading();
         this.valueInput = data?.barcode;
         this.cd.detectChanges();
         this.codeBarRead.emit(data);
+        await this.loadingService.endLoading();
       },
       async (err) => {
         this.toastrService.createToast('No se ha encontrado el equipo', 'warning');

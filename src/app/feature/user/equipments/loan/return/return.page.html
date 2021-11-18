@@ -34,14 +34,14 @@
         <app-input-label-nfc
           [label]="'Entregado a'"
           srcIcon="assets/icon/nfc.svg"
-          (nfcValue)="getUserByToken($event)"
+          (nfcValue)="getUserByToken($event, 'received')"
         ></app-input-label-nfc>
 
         <!-- Entregado por -->
         <app-input-label-nfc
           [label]="'Entregado por'"
           srcIcon="assets/icon/nfc.svg"
-          (nfcValue)="getUserByToken($event)"
+          (nfcValue)="getUserByToken($event, 'delivery')"
         ></app-input-label-nfc>
         <app-input-general
           [label]="'Contratista'"
