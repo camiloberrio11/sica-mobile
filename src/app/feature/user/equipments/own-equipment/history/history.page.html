@@ -6,7 +6,8 @@
     </div>
     <app-input-codebar
       [label]="'Escanear'"
-      placeholder="Escanear Código"
+      (codeBarRead)="getEquipmentByCodeBar($event)"
+      placeholder="Toca para escanear Código"
       srcIcon="assets/icon/barcode.png"
       typeInput="text"
     ></app-input-codebar>
@@ -14,56 +15,67 @@
       [label]="'Equipo'"
       typeInput="text"
       [disable]="true"
+      [value]="toolFindByCodeBar?.brand?.name"
     ></app-input-general>
     <app-input-general
       [label]="'Marca'"
       typeInput="text"
       [disable]="true"
+      [value]="toolFindByCodeBar?.brand?.name"
     ></app-input-general>
     <app-input-general
       [label]="'Referencia'"
       typeInput="text"
       [disable]="true"
+      [value]="toolFindByCodeBar?.reference"
     ></app-input-general>
     <app-input-general
       [label]="'Serie'"
       typeInput="text"
       [disable]="true"
+      [value]="toolFindByCodeBar?.serial"
     ></app-input-general>
     <app-input-general
       [label]="'Fecha de compra'"
       typeInput="text"
       [disable]="true"
+      [value]="toolFindByCodeBar?.invoices?.pop()?.date?.split('T')[0]"
     ></app-input-general>
     <app-input-general
     [label]="'Garantía'"
     typeInput="text"
     [disable]="true"
+    [value]="toolFindByCodeBar?.warrantyExpirationDate?.split('T')[0]"
   ></app-input-general>
     <app-input-general
       [label]="'Valor de compra'"
       typeInput="text"
       [disable]="true"
+      [value]="toolFindByCodeBar?.invoices?.pop()?.price?.toString()"
     ></app-input-general>
     <app-input-general
       [label]="'Valor de mantenimiento'"
       typeInput="text"
       [disable]="true"
+      value="0"
     ></app-input-general>
     <app-input-general
       [label]="'Valor de reparaciones'"
       typeInput="text"
       [disable]="true"
+      value="0"
     ></app-input-general>
     <app-input-general
       [label]="'Cantidad de servicios'"
       typeInput="text"
       [disable]="true"
+      value="0"
     ></app-input-general>
     <app-input-general
       [label]="'Días en taller'"
       typeInput="text"
       [disable]="true"
+      value="0"
     ></app-input-general>
 
 
