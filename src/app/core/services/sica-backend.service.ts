@@ -21,6 +21,16 @@ export class SicaBackendService {
     private constructionService: ConstructionService
   ) {}
 
+  login(bodyLogin: {
+    username: string;
+    password: string;
+  }): Observable<{ authToken: string }> {
+    return this.http.post<{ authToken: string }>(
+      `${environment.urlApi}/api/login`,
+      bodyLogin
+    );
+  }
+
   getConstruiction(): Observable<Construction[]> {
     return this.http.get<Construction[]>(
       `${environment.urlApi}/api/construction`
@@ -58,7 +68,9 @@ export class SicaBackendService {
   }
 
   getCategoryToolByBarcode(barcode: string): Observable<CategoryTool> {
-    return this.http.get<CategoryTool>(`${environment.urlApi}/api/category/${barcode}`);
+    return this.http.get<CategoryTool>(
+      `${environment.urlApi}/api/category/${barcode}`
+    );
   }
 
   createLoan(body: CreateLoanBody): Observable<{ id: string }> {
@@ -72,7 +84,7 @@ export class SicaBackendService {
 
   createTool(body: CreateToolBody): Observable<{ id: string }> {
     const idConstruction =
-    this.constructionService.getConstructionSelected()?.id;
+      this.constructionService.getConstructionSelected()?.id;
     return this.http.post<{ id: string }>(
       `${environment.urlApi}/api/${idConstruction}/tool`,
       body
@@ -91,9 +103,9 @@ export class SicaBackendService {
     );
   }
 
-  createRentedTool(body: SaveRentedToolBody):  Observable<{ id: string }> {
+  createRentedTool(body: SaveRentedToolBody): Observable<{ id: string }> {
     const idConstruction =
-    this.constructionService.getConstructionSelected()?.id;
+      this.constructionService.getConstructionSelected()?.id;
     return this.http.post<{ id: string }>(
       `${environment.urlApi}/api/${idConstruction}/tool/rented`,
       body
