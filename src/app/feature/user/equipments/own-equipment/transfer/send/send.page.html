@@ -10,39 +10,46 @@
     <div class="send__layout__0" *ngSwitchCase="0">
       <app-input-codebar
         [label]="'Escanear'"
-        placeholder="Escanear Código"
+        placeholder="Toca para activar escanear código"
         srcIcon="assets/icon/barcode.png"
+        (codeBarRead)="getEquipmentByCodeBar($event)"
         typeInput="text"
       ></app-input-codebar>
       <app-input-general
         label="Equipo"
         [value]="''"
         [disable]="true"
+        [value]="toolFindByCodeBar?.category?.name"
       ></app-input-general>
       <app-input-general
         label="Marca"
         [value]="''"
         [disable]="true"
+        [value]="toolFindByCodeBar?.brand?.name"
       ></app-input-general>
       <app-input-general
         label="Referencia"
         [value]="''"
         [disable]="true"
+        [value]="toolFindByCodeBar?.reference"
       ></app-input-general>
       <app-input-general
         label="Serie"
         [value]="''"
         [disable]="true"
+        [value]="toolFindByCodeBar?.serial"
       ></app-input-general>
       <app-input-general
         label="Fecha de compra"
         [value]="''"
         [disable]="true"
+        [value]="toolFindByCodeBar?.invoices?.pop()?.date?.split('T')[0]"
       ></app-input-general>
       <app-input-general
         label="Garantía"
         [value]="''"
         [disable]="true"
+        [value]="toolFindByCodeBar?.invoices?.pop()?.warranty?.toString()"
       ></app-input-general>
     </div>
 
@@ -51,18 +58,24 @@
       <app-select-custom
         label="Destino"
         placeholder="Seleccione destino"
+        [optionsList]="listConstruction"
+        (selectItem)="handleSelect($event, 'construction')"
       ></app-select-custom>
       <app-select-custom
         label="Motivo"
         placeholder="Seleccione motivo"
+        [optionsList]="listReason"
+        (selectItem)="handleSelect($event, 'reason')"
       ></app-select-custom>
       <app-input-general
         label="Fecha aprox devolución"
         [isTypeDate]="true"
         srcIcon="assets/icon/Calendar.svg"
         placeholder="Digite fecha DD/MM/AAAA"
+        (inputChange)="handleInput($event)"
+        [value]="formState?.dateReturn"
       ></app-input-general>
-      <app-capture-reader-nfc></app-capture-reader-nfc>
+      <app-capture-reader-nfc (userNfcValue)="handleUserNfc($event)"></app-capture-reader-nfc>
     </div>
     <button class="send__layout__btngeneral" (click)="nextStep()">
       {{stepEnd ? 'Finalizar' : 'Continuar'}}

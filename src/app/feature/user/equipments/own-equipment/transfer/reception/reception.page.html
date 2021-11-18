@@ -5,12 +5,15 @@
     [currentIndexInForm]="indexStep"
     (indexCurrent)="currentIndexStepForm($event)"
   ></app-form-step>
+
+
   <div class="reception__layout" [ngSwitch]="indexStep">
     <!-- form index 0 -->
     <div class="reception__layout__0" *ngSwitchCase="0">
       <app-input-codebar
         [label]="'Escanear'"
-        placeholder="Escanear Código"
+        (codeBarRead)="getEquipmentByCodeBar($event)"
+        placeholder="Toca para escanear código"
         srcIcon="assets/icon/barcode.png"
         typeInput="text"
       ></app-input-codebar>
@@ -18,31 +21,37 @@
         label="Equipo"
         [value]="''"
         [disable]="true"
+        [value]="toolFindByCodeBar?.category?.name"
       ></app-input-general>
       <app-input-general
         label="Marca"
         [value]="''"
         [disable]="true"
+        [value]="toolFindByCodeBar?.brand?.name"
       ></app-input-general>
       <app-input-general
         label="Referencia"
         [value]="''"
         [disable]="true"
+        [value]="toolFindByCodeBar?.reference"
       ></app-input-general>
       <app-input-general
         label="Serie"
         [value]="''"
         [disable]="true"
+        [value]="toolFindByCodeBar?.serial"
       ></app-input-general>
       <app-input-general
         label="Fecha de compra"
         [value]="''"
         [disable]="true"
+        [value]="toolFindByCodeBar?.invoices?.pop()?.date?.split('T')[0]"
       ></app-input-general>
       <app-input-general
         label="Garantía"
         [value]="''"
         [disable]="true"
+        [value]="toolFindByCodeBar?.invoices?.pop()?.warranty?.toString()"
       ></app-input-general>
     </div>
 
@@ -68,10 +77,11 @@
         [value]="''"
         [disable]="true"
       ></app-input-general>
-      <app-capture-reader-nfc></app-capture-reader-nfc>
+      <app-capture-reader-nfc (userNfcValue)="handleUserNfc($event)"></app-capture-reader-nfc>
     </div>
     <button class="reception__layout__btngeneral" (click)="nextStep()">
       {{stepEnd ? 'Finalizar' : 'Continuar'}}
     </button>
-  </div></ion-content
+  </div>
+  </ion-content
 >

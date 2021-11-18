@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ReceiveToolBody } from './../../../../../../core/models/Movement';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
+import { ToastService } from 'src/app/core/services/toast.service';
+import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
+import { LoadingService } from 'src/app/core/services/loading.service';
+import { User } from 'src/app/core/models/User';
 
 @Component({
   selector: 'app-reception',
@@ -9,18 +17,31 @@ export class ReceptionPage implements OnInit {
   indexStep = 0;
   menuFormStep: string[] = ['Equipo', 'Destino'];
   stepEnd = false;
+  toolFindByCodeBar: ToolByBarcodeResponseService;
+  userNfc: User;
 
-  constructor() { }
+  constructor(
+    private cd: ChangeDetectorRef,
+    private loadingService: LoadingService,
+    private sicaApiService: SicaBackendService,
+    private toastrService: ToastService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
   }
 
   nextStep(): void {
     if (this.stepEnd) {
-      // this.sendRequest();
+      this.sendRequest();
       return;
     }
     this.indexStep = this.indexStep + 1;
+  }
+
+  getEquipmentByCodeBar(toolByBarcode: ToolByBarcodeResponseService): void {
+    this.toolFindByCodeBar = toolByBarcode;
+    this.cd?.detectChanges();
   }
 
   currentIndexStepForm(event: number) {
@@ -28,4 +49,32 @@ export class ReceptionPage implements OnInit {
     this.indexStep = event;
   }
 
+  handleUserNfc(event: User): void {
+    this.userNfc = event;
+  }
+  private async sendRequest(): Promise<void> {
+    await this.loadingService.initLoading('Recibiendo equipo');
+    const body: ReceiveToolBody = {
+      destination: {
+        user: this.userNfc.id
+      }
+    };
+    this.sicaApiService.receiveTool(body, '').subscribe(
+      async (data) => {
+        await this.loadingService.endLoading();
+        await this.toastrService.createToast(
+          'Se ha entregado el equipo con éxito',
+          'success'
+          );
+          this.router.navigate(['/auth/menu-equipments']);
+      },
+      async (err) => {
+        await this.loadingService.endLoading();
+        this.toastrService.createToast(
+          'No se ha podido entregar el equipo',
+          'warning'
+        );
+      }
+    );
+  }
 }

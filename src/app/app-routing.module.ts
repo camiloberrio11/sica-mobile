@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
-    // redirectTo: 'auth/equipment-rented/return',
+    // redirectTo: 'auth/select-construction',
     pathMatch: 'full',
   },
   {
