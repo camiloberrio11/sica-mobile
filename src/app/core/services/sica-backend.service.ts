@@ -1,3 +1,4 @@
+import { ReceiveToolBody } from './../models/Movement';
 import { CategoryTool } from './../models/CategoryTool';
 import { Brand } from './../models/Brand';
 import { Supplier } from './../models/Supplier';
@@ -11,6 +12,7 @@ import { CreateToolBody, ToolByBarcodeResponseService } from '../models/Tool';
 import { User } from '../models/User';
 import { CreateLoanBody, UpdateLoanBody } from '../models/Loan';
 import { SaveRentedToolBody } from '../models/RentedTool';
+import { SendEToolBody } from '../models/Movement';
 
 @Injectable({
   providedIn: 'root',
@@ -110,5 +112,17 @@ export class SicaBackendService {
       `${environment.urlApi}/api/${idConstruction}/tool/rented`,
       body
     );
+  }
+
+  sendTool(body: SendEToolBody): Observable<any>{
+    const idConstruction =
+    this.constructionService.getConstructionSelected()?.id;
+    return this.http.post<any>(`${environment?.urlApi}/api/${idConstruction}/tool/movement/send-tool`, body);
+  }
+
+  receiveTool(body: ReceiveToolBody, movementId: string): Observable<any>{
+    const idConstruction =
+    this.constructionService.getConstructionSelected()?.id;
+    return this.http.patch<any>(`${environment?.urlApi}/api/${idConstruction}/tool/movement/${movementId}/receive-tool`, body);
   }
 }
