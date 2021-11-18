@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CreateLoanBody } from 'src/app/core/models/Loan';
@@ -6,6 +7,7 @@ import { User } from 'src/app/core/models/User';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 import { ToastService } from 'src/app/core/services/toast.service';
+type TypeUserNfc = 'delivery' | 'received';
 
 @Component({
   selector: 'app-delivery',
@@ -25,7 +27,8 @@ export class DeliveryPage implements OnInit {
     private loadingService: LoadingService,
     private sicaApiService: SicaBackendService,
     private toastrService: ToastService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router
   ) {
     this.buildForm();
   }
@@ -56,8 +59,12 @@ export class DeliveryPage implements OnInit {
     this.cd?.detectChanges();
   }
 
-  getUserByToken(user: User, input: string): void {
-    console.log(`${input}-${JSON.stringify(user)}`);
+  getUserByToken(user: User, input: TypeUserNfc): void {
+    if (input === 'delivery') {
+      this.deliveredByUser = user;
+      return;
+    }
+    this.recivedByUser = user;
   }
 
 
@@ -76,11 +83,12 @@ export class DeliveryPage implements OnInit {
     };
     this.sicaApiService.createLoan(body).subscribe(
       (data) => {
-        this.formDelivery.reset();
         this.toastrService.createToast(
           'Se ha entregado el equipo con éxito',
           'success'
-        );
+          );
+          this.formDelivery.reset();
+          this.router.navigate(['/auth/menu-equipments']);
       },
       (err) => {
         this.toastrService.createToast(

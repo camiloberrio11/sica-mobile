@@ -28,7 +28,11 @@ export class InputGeneralComponent implements OnInit, OnDestroy {
 
   constructor(private stringTransformService: StringTransformService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (!this.value || this.value === '0') {
+      this.value = '';
+    }
+  }
 
   ngOnDestroy(): void {}
 
