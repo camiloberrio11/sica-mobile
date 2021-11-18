@@ -28,6 +28,7 @@ export class SendPage implements OnInit {
   listReason: { id: string; value: string }[] = [];
   listConstruction: { id: string; value: string }[] = [];
   formState: FormSimulate;
+  idConstructionCurrent: string;
 
   constructor(
     private loadingService: LoadingService,
@@ -40,6 +41,10 @@ export class SendPage implements OnInit {
 
   ngOnInit() {
     this.getReasons();
+  }
+
+  ionViewWillEnter() {
+    this.idConstructionCurrent = this.constructionService?.getConstructionSelected()?.id;
   }
 
   nextStep(): void {
@@ -113,6 +118,7 @@ export class SendPage implements OnInit {
           };
           return item;
         });
+        this.listConstruction = this.listConstruction.filter(it => it?.id !== this.idConstructionCurrent);
         await this.loadingService.endLoading();
       },
       async (err) => {
@@ -132,7 +138,7 @@ export class SendPage implements OnInit {
       devolutionEstimatedDate: this.formState.dateReturn,
       origin: {
         user: this.formState?.userId,
-        construction: this.constructionService?.getConstructionSelected()?.id,
+        construction: this.idConstructionCurrent,
       },
       destination: {
         construction: this.formState?.constructionId,
