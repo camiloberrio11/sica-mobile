@@ -27,5 +27,9 @@
     float: left;
     height: 100%;
     border: 1px solid var(--secondary-color);
+    font-size: 13px;
+    &::placeholder {
+      font-size: 13px;
+    }
   }
 }

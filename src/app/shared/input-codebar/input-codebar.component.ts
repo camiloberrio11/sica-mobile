@@ -28,8 +28,10 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
   @Input() isCategory: boolean;
   @Input() placeholder = '';
   @Input() srcIcon: string;
-  @Output() codeBarRead: EventEmitter<ToolByBarcodeResponseService> = new EventEmitter<ToolByBarcodeResponseService>();
-  @Output() barcodeCategory?: EventEmitter<CategoryTool> = new EventEmitter<CategoryTool>();
+  @Output() codeBarRead: EventEmitter<ToolByBarcodeResponseService> =
+    new EventEmitter<ToolByBarcodeResponseService>();
+  @Output() barcodeCategory?: EventEmitter<CategoryTool> =
+    new EventEmitter<CategoryTool>();
   @Output() registerResult?: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('searchInput') sInput;
@@ -60,12 +62,15 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
     onScan.detachFrom(this.document);
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  handleFocus(): void {
     if (!this.render) {
       this.render = true;
-      this.document.addEventListener('scan', (event) =>
-        this.scanBarcode(event)
-      );
+      this.document.addEventListener('scan', (event) => {
+        this.scanBarcode(event);
+        this.document.removeEventListener('scan', () => console.log('removed'));
+      });
       onScan.attachTo(document, {
         minLength: 1,
         reactToPaste: false,
@@ -85,7 +90,10 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
   private async scanBarcode(event: any | CustomEvent<any>): Promise<void> {
     const value = event?.detail?.scanCode;
     if (!value) {
-      this.toastrService.createToast('No se ha encontrado valor para el código de barras', 'secondary');
+      this.toastrService.createToast(
+        'No se ha encontrado valor para el código de barras',
+        'secondary'
+      );
       return;
     }
     if (this.isRegister) {
@@ -105,14 +113,19 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
         await this.loadingService.endLoading();
       },
       async (err) => {
-        this.toastrService.createToast('No se ha encontrado el equipo', 'warning');
+        this.toastrService.createToast(
+          'No se ha encontrado el equipo',
+          'warning'
+        );
         await this.loadingService.endLoading();
       }
     );
   }
 
   private async findCategoryBarcode(barcode: string): Promise<void> {
-    await this.loadingService.initLoading('Obteniendo información de categoría');
+    await this.loadingService.initLoading(
+      'Obteniendo información de categoría'
+    );
     this.backendServiceSica.getCategoryToolByBarcode(barcode).subscribe(
       async (data) => {
         this.valueInput = data?.barcode;
@@ -121,7 +134,10 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
         await this.loadingService.endLoading();
       },
       async (err) => {
-        this.toastrService.createToast('No se ha encontrado categoría', 'warning');
+        this.toastrService.createToast(
+          'No se ha encontrado categoría',
+          'warning'
+        );
         await this.loadingService.endLoading();
       }
     );

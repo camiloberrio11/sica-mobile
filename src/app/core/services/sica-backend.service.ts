@@ -10,6 +10,7 @@ import { ConstructionService } from './construction.service';
 import { CreateToolBody, ToolByBarcodeResponseService } from '../models/Tool';
 import { User } from '../models/User';
 import { CreateLoanBody, UpdateLoanBody } from '../models/Loan';
+import { SaveRentedToolBody } from '../models/RentedTool';
 
 @Injectable({
   providedIn: 'root',
@@ -86,6 +87,15 @@ export class SicaBackendService {
       this.constructionService.getConstructionSelected()?.id;
     return this.http.patch<{ updated: boolean }>(
       `${environment.urlApi}/api/${idConstruction}/tool/loan/${loanId}/return-tool`,
+      body
+    );
+  }
+
+  createRentedTool(body: SaveRentedToolBody):  Observable<{ id: string }> {
+    const idConstruction =
+    this.constructionService.getConstructionSelected()?.id;
+    return this.http.post<{ id: string }>(
+      `${environment.urlApi}/api/${idConstruction}tool/rented`,
       body
     );
   }

@@ -2,7 +2,6 @@ import {
   Component,
   Input,
   Output,
-  ViewChild,
   EventEmitter,
   OnInit,
   Inject,
@@ -23,7 +22,6 @@ export class InputGeneralComponent implements OnInit, OnDestroy {
   @Input() isTypeDate: boolean;
   @Input() srcIcon: string;
   @Input() typeInput: 'text' | 'password';
-
   @Output() inputChange: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private stringTransformService: StringTransformService) {}

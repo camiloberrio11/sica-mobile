@@ -1,5 +1,5 @@
 <div class="inputcodebar">
   <p>{{ label }}</p>
-  <input #searchInput [placeholder]="placeholder"  [value]="valueInput"/>
+  <input #searchInput [placeholder]="placeholder"  [value]="valueInput" (focus)="handleFocus()"/>
   <img *ngIf="srcIcon" [src]="srcIcon" alt="icon" />
 </div>
