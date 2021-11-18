@@ -51,6 +51,7 @@ export class ReceptionPage implements OnInit {
   getEquipmentByCodeBar(toolByBarcode: ToolByBarcodeResponseService): void {
     this.toolFindByCodeBar = toolByBarcode;
     this.cd?.detectChanges();
+    this.getEndMovementByEquipment(toolByBarcode?.id);
   }
 
   async getEndMovementByEquipment(idTool: string): Promise<void> {

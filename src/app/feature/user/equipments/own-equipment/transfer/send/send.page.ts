@@ -98,11 +98,11 @@ export class SendPage implements OnInit {
       },
       async (err) => {
         this.listReason = [];
+        await this.loadingService.endLoading();
         this.toastrService.createToast(
           'Ocurrió un error obteniendo motivos',
           'warning'
         );
-        await this.loadingService.endLoading();
       }
     );
   }

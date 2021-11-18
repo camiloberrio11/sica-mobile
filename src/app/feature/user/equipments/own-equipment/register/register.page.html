@@ -11,11 +11,11 @@
       <div class="register__layout__0" *ngSwitchCase="0">
         <app-input-codebar
           [label]="'Escanear'"
-          (registerResult)="getEquipmentByCodeBar($event)"
           placeholder="Toca para escanear código"
           [isRegister]="true"
           srcIcon="assets/icon/barcode.png"
           typeInput="text"
+          (registerResult)="getEquipmentByCodeBar($event)"
         ></app-input-codebar>
         <app-capture-image
           (dataPhoto)="getDataTakePhoto($event)"
