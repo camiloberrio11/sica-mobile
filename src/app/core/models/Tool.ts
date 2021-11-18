@@ -12,6 +12,25 @@ export interface ToolByBarcodeResponseService {
   warrantyExpirationDate: string;
 }
 
+export interface CreateToolBody {
+  invoice: {
+    date: string;
+    number: number;
+    supplier: string;
+    price: number;
+    warranty: number;
+  };
+  tool: {
+    image: string;
+    barcode: string;
+    reference: string;
+    serial: string;
+    category: string;
+    brand: string;
+    profile: string;
+  };
+}
+
 interface Category {
   id: string;
   barcode: string;

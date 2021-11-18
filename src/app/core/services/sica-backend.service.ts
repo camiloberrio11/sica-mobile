@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { Construction } from '../models/Construction';
 import { environment } from 'src/environments/environment.prod';
 import { ConstructionService } from './construction.service';
-import { ToolByBarcodeResponseService } from '../models/Tool';
+import { CreateToolBody, ToolByBarcodeResponseService } from '../models/Tool';
 import { User } from '../models/User';
 import { CreateLoanBody, UpdateLoanBody } from '../models/Loan';
 
@@ -61,6 +61,15 @@ export class SicaBackendService {
       this.constructionService.getConstructionSelected()?.id;
     return this.http.post<{ id: string }>(
       `${environment.urlApi}/api/${idConstruction}/tool/loan`,
+      body
+    );
+  }
+
+  createTool(body: CreateToolBody): Observable<{ id: string }> {
+    const idConstruction =
+    this.constructionService.getConstructionSelected()?.id;
+    return this.http.post<{ id: string }>(
+      `${environment.urlApi}/api/${idConstruction}/tool`,
       body
     );
   }

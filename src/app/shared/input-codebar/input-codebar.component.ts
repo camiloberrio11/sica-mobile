@@ -23,9 +23,12 @@ import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
 })
 export class InputCodebarComponent implements OnInit, OnDestroy {
   @Input() label: string;
+  @Input() isRegister: boolean;
   @Input() placeholder = '';
   @Input() srcIcon: string;
   @Output() codeBarRead: EventEmitter<ToolByBarcodeResponseService> = new EventEmitter<ToolByBarcodeResponseService>();
+  @Output() registerResult?: EventEmitter<string> = new EventEmitter<string>();
+
   @ViewChild('searchInput') sInput;
   render = false;
   valueInput = '';
@@ -82,10 +85,13 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
       this.toastrService.createToast('No se ha encontrado valor para el código de barras', 'secondary');
       return;
     }
+    if (this.isRegister) {
+      this.registerResult.emit(value);
+      return;
+    }
     await this.loadingService.initLoading('Obteniendo información de equipo');
     this.backendServiceSica.getToolByCodeBar(value).subscribe(
       async (data) => {
-        await this.loadingService.endLoading();
         this.valueInput = data?.barcode;
         this.cd.detectChanges();
         this.codeBarRead.emit(data);

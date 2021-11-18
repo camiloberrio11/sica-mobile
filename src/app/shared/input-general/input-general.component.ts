@@ -40,6 +40,7 @@ export class InputGeneralComponent implements OnInit, OnDestroy {
     let value = event?.target?.value;
     if (this.isTypeDate) {
       value = this.stringTransformService.formatDate(event?.target?.value);
+      this.value = value;
     }
     this.inputChange.emit(value);
   }
