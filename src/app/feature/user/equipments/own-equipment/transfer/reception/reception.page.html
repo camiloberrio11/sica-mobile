@@ -5,7 +5,7 @@
     [currentIndexInForm]="indexStep"
     (indexCurrent)="currentIndexStepForm($event)"
   ></app-form-step>
-  <form [formGroup]="formReception">
+
 
   <div class="reception__layout" [ngSwitch]="indexStep">
     <!-- form index 0 -->
@@ -83,6 +83,5 @@
       {{stepEnd ? 'Finalizar' : 'Continuar'}}
     </button>
   </div>
-  </form>
   </ion-content
 >
