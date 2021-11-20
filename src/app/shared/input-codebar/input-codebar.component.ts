@@ -78,9 +78,6 @@ export class InputCodebarComponent {
         },
       });
     }
-    setTimeout(() => {
-      onScan.simulate(this.document, '123456767');
-    }, 3000);
   }
 
   private async scanBarcode(event: any | CustomEvent<any>): Promise<void> {
