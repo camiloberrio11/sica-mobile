@@ -1,3 +1,4 @@
+import { SharedModule } from './../../../../../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +14,8 @@ import { PreSettlementPage } from './pre-settlement.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    PreSettlementPageRoutingModule
+    PreSettlementPageRoutingModule,
+    SharedModule
   ],
   declarations: [PreSettlementPage]
 })

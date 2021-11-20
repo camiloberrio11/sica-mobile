@@ -9,6 +9,8 @@
       (codeBarRead)="getEquipmentByCodeBar($event)"
       placeholder="Toca para escanear Código"
       srcIcon="assets/icon/barcode.png"
+      [isCategory]="false"
+      [isRegister]="false"
       typeInput="text"
     ></app-input-codebar>
     <app-input-general
@@ -42,11 +44,11 @@
       [value]="toolFindByCodeBar?.invoices?.pop()?.date?.split('T')[0]"
     ></app-input-general>
     <app-input-general
-    [label]="'Garantía'"
-    typeInput="text"
-    [disable]="true"
-    [value]="toolFindByCodeBar?.warrantyExpirationDate?.split('T')[0]"
-  ></app-input-general>
+      [label]="'Garantía'"
+      typeInput="text"
+      [disable]="true"
+      [value]="toolFindByCodeBar?.warrantyExpirationDate?.split('T')[0]"
+    ></app-input-general>
     <app-input-general
       [label]="'Valor de compra'"
       typeInput="text"
@@ -77,7 +79,6 @@
       [disable]="true"
       value="0"
     ></app-input-general>
-
 
     <button (click)="send()">
       <ion-icon slot="start" name="mail-outline"></ion-icon> Enviar email

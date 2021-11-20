@@ -9,6 +9,7 @@ import {
   Inject,
   OnDestroy,
   ChangeDetectorRef,
+  HostListener,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import onScan from 'onscan.js';
@@ -22,7 +23,7 @@ import { CategoryTool } from 'src/app/core/models/CategoryTool';
   templateUrl: './input-codebar.component.html',
   styleUrls: ['./input-codebar.component.scss'],
 })
-export class InputCodebarComponent implements OnInit, OnDestroy {
+export class InputCodebarComponent {
   @Input() label: string;
   @Input() isRegister: boolean;
   @Input() isCategory: boolean;
@@ -33,8 +34,6 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
   @Output() barcodeCategory?: EventEmitter<CategoryTool> =
     new EventEmitter<CategoryTool>();
   @Output() registerResult?: EventEmitter<string> = new EventEmitter<string>();
-
-  @ViewChild('searchInput') sInput;
   render = false;
   valueInput = '';
 
@@ -46,34 +45,26 @@ export class InputCodebarComponent implements OnInit, OnDestroy {
     private readonly toastrService: ToastService
   ) {}
 
-  ionViewDidEnter() {
-    setTimeout(() => {
-      this.sInput.setFocus();
-    }, 150);
+  @HostListener('document:scan', ['$event'])
+  onKeyUp(ev: any | CustomEvent<any>) {
+    this.scanBarcode(ev);
   }
 
   ionViewDidLeave(): void {
     this.render = false;
+    onScan.detachFrom(this.document);
   }
 
-  ngOnDestroy(): void {
-    this.render = false;
-  }
-
-  ngOnInit() {}
 
   handleBlur(): void {
-    this.document.removeEventListener('scan', () => console.log('removed'));
+    this.render = false;
     onScan.detachFrom(this.document);
   }
 
   handleFocus(): void {
     if (!this.render) {
       this.render = true;
-      this.document.addEventListener('scan', (event) => {
-        this.scanBarcode(event);
-      });
-      onScan.attachTo(document, {
+      onScan.attachTo(this.document, {
         minLength: 1,
         reactToPaste: false,
         keyCodeMapper: (event) => {
