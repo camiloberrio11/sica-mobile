@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class BoxQuantityComponent implements OnInit {
   @Input() label: string;
+  @Input() value  = '';
   @Output() valueInput: EventEmitter<string> = new EventEmitter<string>();
   constructor() { }
 

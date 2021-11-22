@@ -11,7 +11,7 @@ import { ConstructionService } from './construction.service';
 import { CreateToolBody, ToolByBarcodeResponseService } from '../models/Tool';
 import { User } from '../models/User';
 import { CreateLoanBody, Loan, UpdateLoanBody } from '../models/Loan';
-import { SaveRentedToolBody } from '../models/RentedTool';
+import { RentedTool, SaveRentedToolBody } from '../models/RentedTool';
 import { SendEToolBody } from '../models/Movement';
 import { Reason } from '../models/Reason';
 
@@ -145,9 +145,12 @@ export class SicaBackendService {
     );
   }
 
-  getRentedToolWith(constructionId: string, categoryBarcode: string) {
-    return this.http.get(
-      `{{host}}/api/${constructionId}}/tool/rented/${categoryBarcode}`
+  getRentedToolWith(
+    constructionId: string,
+    categoryBarcode: string
+  ): Observable<RentedTool> {
+    return this.http.get<RentedTool>(
+      `${environment?.urlApi}/api/${constructionId}}/tool/rented/${categoryBarcode}`
     );
   }
 

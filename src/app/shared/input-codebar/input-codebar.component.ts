@@ -3,11 +3,8 @@ import {
   Component,
   Input,
   Output,
-  ViewChild,
   EventEmitter,
-  OnInit,
   Inject,
-  OnDestroy,
   ChangeDetectorRef,
   HostListener,
 } from '@angular/core';

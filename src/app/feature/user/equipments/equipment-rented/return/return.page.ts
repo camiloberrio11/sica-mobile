@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
+import { User } from 'src/app/core/models/User';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 import { ToastService } from 'src/app/core/services/toast.service';
@@ -8,20 +10,23 @@ import { ToastService } from 'src/app/core/services/toast.service';
   templateUrl: './return.page.html',
   styleUrls: ['./return.page.scss'],
 })
-export class ReturnPage implements OnInit {
-  listAddedEquipments: {name: string}[] = [];
+export class ReturnPage {
+  listAddedEquipments: { name: string }[] = [];
   listSupplier: { id: string; value: string }[] = [];
   constructor(
     private loadingService: LoadingService,
     private sicaBackend: SicaBackendService,
     private toastrService: ToastService
-
   ) {}
 
-  ngOnInit() {}
+  ionViewDidEnter() {
+    this.getSupplier();
+  }
 
   addEquipment(): void {
-    this.listAddedEquipments.push({name: `Test prueba agregado ${this.listAddedEquipments?.length + 1}`});
+    this.listAddedEquipments.push({
+      name: `Test prueba agregado ${this.listAddedEquipments?.length + 1}`,
+    });
   }
 
   save(): void {
@@ -32,6 +37,13 @@ export class ReturnPage implements OnInit {
     alert('Correo enviado');
   }
 
+  handleCodebar(result: ToolByBarcodeResponseService): void {
+    console.log(result);
+  }
+
+  handleInpput(value: string) {}
+
+  handleNfc(nfcValue: User) {}
   async getSupplier(): Promise<void> {
     await this.loadingService.initLoading('Obteniendo proveedor');
     this.sicaBackend.getSupplier().subscribe(
