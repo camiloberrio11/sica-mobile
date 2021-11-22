@@ -3,12 +3,13 @@
   <div class="return">
     <app-select-custom
       label="Proveedor"
+      [optionsList]="listSupplier"
       placeholder="Seleccione proveedor"
     ></app-select-custom>
-    <app-select-custom
+    <app-input-general
       label="N. Devolucion"
-      placeholder="Ingrese # devoluciíon"
-    ></app-select-custom>
+      placeholder="Ingrese devoluciíon"
+    ></app-input-general>
     <h6 *ngIf="listAddedEquipments?.length > 0" class="return__subtitle">Equipos agregados</h6>
     <app-input-general
     *ngFor="let item of listAddedEquipments"

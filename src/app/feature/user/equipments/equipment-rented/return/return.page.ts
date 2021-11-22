@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { LoadingService } from 'src/app/core/services/loading.service';
+import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-return',
@@ -7,7 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReturnPage implements OnInit {
   listAddedEquipments: {name: string}[] = [];
-  constructor() {}
+  listSupplier: { id: string; value: string }[] = [];
+  constructor(
+    private loadingService: LoadingService,
+    private sicaBackend: SicaBackendService,
+    private toastrService: ToastService
+
+  ) {}
 
   ngOnInit() {}
 
@@ -21,5 +30,28 @@ export class ReturnPage implements OnInit {
 
   sendEmail(): void {
     alert('Correo enviado');
+  }
+
+  async getSupplier(): Promise<void> {
+    await this.loadingService.initLoading('Obteniendo proveedor');
+    this.sicaBackend.getSupplier().subscribe(
+      async (sup) => {
+        this.listSupplier = sup.map((it) => {
+          const item = {
+            id: it.id,
+            value: it.name,
+          };
+          return item;
+        });
+        await this.loadingService.endLoading();
+      },
+      async (err) => {
+        await this.toastrService.createToast(
+          'Ocurrió error obteniendo proveedores',
+          'warning'
+        );
+        await this.loadingService.endLoading();
+      }
+    );
   }
 }
