@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment.prod';
 import { ConstructionService } from './construction.service';
 import { CreateToolBody, ToolByBarcodeResponseService } from '../models/Tool';
 import { User } from '../models/User';
-import { CreateLoanBody, UpdateLoanBody } from '../models/Loan';
+import { CreateLoanBody, Loan, UpdateLoanBody } from '../models/Loan';
 import { SaveRentedToolBody } from '../models/RentedTool';
 import { SendEToolBody } from '../models/Movement';
 import { Reason } from '../models/Reason';
@@ -72,8 +72,10 @@ export class SicaBackendService {
 
   getLastMovement(toolId: string): Observable<Movement> {
     const idConstruction =
-    this.constructionService.getConstructionSelected()?.id;
-    return this.http.get<Movement>(`${environment.urlApi}/api/${idConstruction}/tool/movement/last-of/${toolId}`);
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.get<Movement>(
+      `${environment.urlApi}/api/${idConstruction}/tool/movement/last-of/${toolId}`
+    );
   }
 
   getCategoryTool(): Observable<CategoryTool[]> {
@@ -125,15 +127,33 @@ export class SicaBackendService {
     );
   }
 
-  sendTool(body: SendEToolBody): Observable<any>{
+  sendTool(body: SendEToolBody): Observable<any> {
     const idConstruction =
-    this.constructionService.getConstructionSelected()?.id;
-    return this.http.post<any>(`${environment?.urlApi}/api/${idConstruction}/tool/movement/send-tool`, body);
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.post<any>(
+      `${environment?.urlApi}/api/${idConstruction}/tool/movement/send-tool`,
+      body
+    );
   }
 
-  receiveTool(body: ReceiveToolBody, movementId: string): Observable<any>{
+  receiveTool(body: ReceiveToolBody, movementId: string): Observable<any> {
     const idConstruction =
-    this.constructionService.getConstructionSelected()?.id;
-    return this.http.patch<any>(`${environment?.urlApi}/api/${idConstruction}/tool/movement/${movementId}/receive-tool`, body);
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.patch<any>(
+      `${environment?.urlApi}/api/${idConstruction}/tool/movement/${movementId}/receive-tool`,
+      body
+    );
+  }
+
+  getRentedToolWith(constructionId: string, categoryBarcode: string) {
+    return this.http.get(
+      `{{host}}/api/${constructionId}}/tool/rented/${categoryBarcode}`
+    );
+  }
+
+  getLastLoanOfTool(constructionId: string, toolId: string): Observable<Loan> {
+    return this.http.get<Loan>(
+      `${environment?.urlApi}/api/${constructionId}}/tool/loan/last-of/${toolId}`
+    );
   }
 }
