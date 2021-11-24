@@ -41,9 +41,13 @@ export class ReturnPage {
     console.log(result);
   }
 
-  handleInpput(value: string) {}
+  handleInpput(value: string) {
+    console.log(value);
+  }
 
-  handleNfc(nfcValue: User) {}
+  handleNfc(nfcValue: User) {
+    console.log(nfcValue);
+  }
   async getSupplier(): Promise<void> {
     await this.loadingService.initLoading('Obteniendo proveedor');
     this.sicaBackend.getSupplier().subscribe(

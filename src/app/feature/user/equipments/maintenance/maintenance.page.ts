@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MaintenanceBodyCreate } from 'src/app/core/models/Maintenance';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
+import { ToastService } from 'src/app/core/services/toast.service';
 type MaintenanceType = 'maintenance' | 'reparation';
 
 interface Equipment {
@@ -18,10 +20,11 @@ export class MaintenancePage implements OnInit {
   stepEnd = false;
   typeMaintenance: MaintenanceType = 'reparation';
   listSupplier: { id: string; value: string }[] = [];
-  listAddedEquipment: Equipment[] = [{ name: 'TALADRO - 1 - 543' }];
+  listAddedEquipment: MaintenanceBodyCreate[] = [];
   constructor(
     private loadingService: LoadingService,
-    private sicaBackend: SicaBackendService
+    private sicaBackend: SicaBackendService,
+    private toastrService: ToastService
   ) {}
 
   ngOnInit() {
@@ -41,7 +44,7 @@ export class MaintenancePage implements OnInit {
 
   nextStep(): void {
     if (this.stepEnd) {
-      // this.sendRequest();
+      this.sendRequest();
       return;
     }
     this.indexStep = this.indexStep + 1;
@@ -57,11 +60,23 @@ export class MaintenancePage implements OnInit {
   }
 
   addEquipment(): void {
-    this.listAddedEquipment.push({name: 'TEST PRUEBA ADD ITEM'})
+    const body: MaintenanceBodyCreate = {
+      invoice: {
+        date: '23Nov21',
+        number: 1123,
+        supplier: '{{supplierId1}}',
+        price: 80000,
+        warranty: 6,
+      },
+      remark: '',
+      construction: '{{constructionId2}}',
+      tool: '{{toolId1}}',
+    };
+    this.listAddedEquipment.push(body);
   }
 
   async getSupplier(): Promise<void> {
-    // this.loadingService.initLoading('Obteniendo proveedor');
+    await this.loadingService.initLoading('Obteniendo proveedor');
     this.sicaBackend.getSupplier().subscribe(
       async (sup) => {
         this.listSupplier = sup.map((it) => {
@@ -71,11 +86,26 @@ export class MaintenancePage implements OnInit {
           };
           return item;
         });
-        this.loadingService.endLoading();
+        await this.loadingService.endLoading();
       },
       async (err) => {
-        this.loadingService.endLoading();
+        await this.loadingService.endLoading();
       }
     );
+  }
+
+  private async sendRequest(): Promise<void> {
+    if (this.listAddedEquipment?.length < 0) {
+      this.toastrService.createToast('No has agregado ningún equipo', 'warning');
+      return;
+    }
+    for (const iterator of this.listAddedEquipment) {
+      await this.loadingService.initLoading('Enviando a mantenimiento');
+      try {
+        await this.sicaBackend.createMaintenance(iterator)?.toPromise();
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 }

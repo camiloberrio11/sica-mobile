@@ -14,6 +14,7 @@ import { CreateLoanBody, Loan, UpdateLoanBody } from '../models/Loan';
 import { RentedTool, SaveRentedToolBody } from '../models/RentedTool';
 import { SendEToolBody } from '../models/Movement';
 import { Reason } from '../models/Reason';
+import { Maintenance, MaintenanceBodyCreate } from '../models/Maintenance';
 
 @Injectable({
   providedIn: 'root',
@@ -88,11 +89,28 @@ export class SicaBackendService {
     );
   }
 
+  getMaintenance(): Observable<Maintenance[]> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.get<Maintenance[]>(
+      `${environment?.urlApi}api/${idConstruction}/tool/maintenance`
+    );
+  }
+
   createLoan(body: CreateLoanBody): Observable<{ id: string }> {
     const idConstruction =
       this.constructionService.getConstructionSelected()?.id;
     return this.http.post<{ id: string }>(
       `${environment.urlApi}/api/${idConstruction}/tool/loan`,
+      body
+    );
+  }
+
+  createMaintenance(body: MaintenanceBodyCreate): Observable<{ id: string }> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.post<{ id: string }>(
+      `${environment?.urlApi}/api/${idConstruction}/tool/maintenance`,
       body
     );
   }
