@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CategoryTool } from 'src/app/core/models/CategoryTool';
+import { RentedTool } from 'src/app/core/models/RentedTool';
 import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
 import { User } from 'src/app/core/models/User';
 import { LoadingService } from 'src/app/core/services/loading.service';
@@ -13,6 +15,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 export class ReturnPage {
   listAddedEquipments: { name: string }[] = [];
   listSupplier: { id: string; value: string }[] = [];
+  lastMovementCategory: RentedTool;
   constructor(
     private loadingService: LoadingService,
     private sicaBackend: SicaBackendService,
@@ -37,16 +40,28 @@ export class ReturnPage {
     alert('Correo enviado');
   }
 
-  handleCodebar(result: ToolByBarcodeResponseService): void {
-    console.log(result);
-  }
-
   handleInpput(value: string) {
     console.log(value);
   }
 
   handleNfc(nfcValue: User) {
     console.log(nfcValue);
+  }
+
+  async handleCodebar(event: CategoryTool) {
+    await this.loadingService.initLoading(
+      'Obteniendo ultimo movimiento de la categoría'
+    );
+    this.sicaBackend.getLastLoanRentedTool(event?.id).subscribe(
+      async (data) => {
+        this.lastMovementCategory = data;
+        await this.loadingService.endLoading();
+      },
+      async (err) => {
+        this.lastMovementCategory = null;
+        await this.loadingService.endLoading();
+      }
+    );
   }
   async getSupplier(): Promise<void> {
     await this.loadingService.initLoading('Obteniendo proveedor');

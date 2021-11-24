@@ -132,6 +132,7 @@ export class MaintenancePage implements OnInit {
         console.log(error);
       }
     }
+    this.listAddedEquipment = [];
   }
 
   private formBuild(): void {

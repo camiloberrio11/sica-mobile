@@ -89,6 +89,14 @@ export class SicaBackendService {
     );
   }
 
+  getLastLoanRentedTool(categoryId: string): Observable<RentedTool> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.get<RentedTool>(
+      `${environment?.urlApi}/api/${idConstruction}/tool/loan-rented/last-of/${categoryId}`
+    );
+  }
+
   getMaintenance(): Observable<Maintenance[]> {
     const idConstruction =
       this.constructionService.getConstructionSelected()?.id;

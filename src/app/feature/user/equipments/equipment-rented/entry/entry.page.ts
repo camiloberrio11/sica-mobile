@@ -59,6 +59,8 @@ export class EntryPage implements OnInit {
     alert('Enviado al correo');
   }
 
+
+
   handleAdd(): void {
     if (this.formEntry?.invalid) {
       this.toastrService.createToast('Completa el formulario', 'medium');

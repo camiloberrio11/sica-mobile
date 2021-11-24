@@ -24,12 +24,12 @@
     <h6 class="return__subtitle">Ingrese equipo</h6>
     <app-input-codebar
       [label]="'Escanear'"
-      [isCategory]="false"
+      [isCategory]="true"
       [isRegister]="false"
-      placeholder="Escanear Código"
+      placeholder="Tocar para leer categoria"
       srcIcon="assets/icon/barcode.png"
       typeInput="text"
-      (codeBarRead)="handleCodebar($event)"
+      (barcodeCategory)="handleCodebar($event)"
     ></app-input-codebar>
     <app-input-general
       [label]="'Equipo'"
