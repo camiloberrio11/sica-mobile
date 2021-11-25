@@ -27,16 +27,16 @@ export class CreatePage {
     this.nfcSubs.unsubscribe();
   }
 
-  handleClick(event: boolean): void {
-    // this.loadingService.initLoading('Obteniendo información');
+  async handleClick(event: boolean): Promise<void> {
+    await this.loadingService.initLoading('Obteniendo información');
     this.sicaBackendService.getTokenByDocument(this.identification).subscribe(
-      (data) => {
+      async (data) => {
+        await this.loadingService.endLoading();
         this.exist = true;
-        this.loadingService.endLoading();
         this.listenerAndWriteNfc(data?.token);
       },
-      (error) => {
-        this.loadingService.endLoading();
+      async (error) => {
+        await this.loadingService.endLoading();
         this.exist = false;
         this.toastrService.createToast(
           'No se ha encontrado registros',

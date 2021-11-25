@@ -6,7 +6,9 @@ import { User } from 'src/app/core/models/User';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { UpdateLoanBody } from 'src/app/core/models/Loan';
+import { Loan, UpdateLoanBody } from 'src/app/core/models/Loan';
+import { ConstructionService } from 'src/app/core/services/construction.service';
+import { Construction } from 'src/app/core/models/Construction';
 type TypeUserNfc = 'delivery' | 'received';
 type InputForm = 'remark' | 'quantity';
 
@@ -23,6 +25,8 @@ export class ReturnPage {
   deliveredByUser: User;
   recivedByUser: User;
   statusEquipment = true;
+  currentConstruction: Construction;
+  lastLoan: Loan;
 
   // Properties form
   quantity = 0;
@@ -33,14 +37,19 @@ export class ReturnPage {
     private sicaApiService: SicaBackendService,
     private toastrService: ToastService,
     private cd: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private constructionService: ConstructionService
   ) {}
+
+  ionViewDidEnter() {
+    this.currentConstruction =
+      this.constructionService.getConstructionSelected();
+  }
 
   currentIndexStepForm(event: number) {
     this.stepEnd = this.indexStep + 1 === this.menuFormStep?.length;
     this.indexStep = event;
   }
-
 
   changeCheckbox(event: string) {
     this.statusEquipment = event === 'return-good';
@@ -49,6 +58,7 @@ export class ReturnPage {
   getEquipmentByCodeBar(toolByBarcode: ToolByBarcodeResponseService): void {
     this.toolFindByCodeBar = toolByBarcode;
     this.cd?.detectChanges();
+    this.getLastLoan(toolByBarcode?.id);
   }
 
   nextStep(): void {
@@ -65,7 +75,6 @@ export class ReturnPage {
       return;
     }
     this.remark = event;
-
   }
 
   getUserByToken(userNfc: User, input: TypeUserNfc): void {
@@ -82,14 +91,14 @@ export class ReturnPage {
         deliveredBy: this.deliveredByUser?.id,
         receivedBy: this.recivedByUser?.id,
         detail: {
-          status: this.statusEquipment ? 'bueno': 'malo',
+          status: this.statusEquipment ? 'bueno' : 'malo',
           quantity: this.quantity,
         },
         remark: this.remark,
       },
     };
 
-    this.sicaApiService.updateLoan(body, '6195b55cb3ab015475ec826d').subscribe(
+    this.sicaApiService.updateLoan(body, this.lastLoan?.id).subscribe(
       (data) => {
         this.toastrService.createToast(
           'Se ha recibido el equipo con éxito',
@@ -107,5 +116,29 @@ export class ReturnPage {
         );
       }
     );
+  }
+
+  private async getLastLoan(idTool: string): Promise<void> {
+    await this.loadingService.initLoading(
+      'Obteniendo último prestamo de la herramienta'
+    );
+    this.sicaApiService
+      .getLastLoanOfTool(this.currentConstruction?.id, idTool)
+      .subscribe(
+        async (data) => {
+          await this.loadingService.endLoading();
+          this.lastLoan = data;
+        },
+        async (err) => {
+          await this.loadingService.endLoading();
+          this.lastLoan = null;
+          await this.toastrService.createToast(
+            `Ha ocurrido un error obteniendo ultimo prestamo ${JSON.stringify(
+              err
+            )}`,
+            'warning'
+          );
+        }
+      );
   }
 }

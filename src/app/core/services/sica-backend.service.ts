@@ -10,10 +10,11 @@ import { environment } from 'src/environments/environment.prod';
 import { ConstructionService } from './construction.service';
 import { CreateToolBody, ToolByBarcodeResponseService } from '../models/Tool';
 import { User } from '../models/User';
-import { CreateLoanBody, UpdateLoanBody } from '../models/Loan';
-import { SaveRentedToolBody } from '../models/RentedTool';
+import { CreateLoanBody, Loan, UpdateLoanBody } from '../models/Loan';
+import { RentedTool, SaveRentedToolBody } from '../models/RentedTool';
 import { SendEToolBody } from '../models/Movement';
 import { Reason } from '../models/Reason';
+import { Maintenance, MaintenanceBodyCreate } from '../models/Maintenance';
 
 @Injectable({
   providedIn: 'root',
@@ -72,8 +73,10 @@ export class SicaBackendService {
 
   getLastMovement(toolId: string): Observable<Movement> {
     const idConstruction =
-    this.constructionService.getConstructionSelected()?.id;
-    return this.http.get<Movement>(`${environment.urlApi}/api/${idConstruction}/tool/movement/last-of/${toolId}`);
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.get<Movement>(
+      `${environment.urlApi}/api/${idConstruction}/tool/movement/last-of/${toolId}`
+    );
   }
 
   getCategoryTool(): Observable<CategoryTool[]> {
@@ -86,11 +89,36 @@ export class SicaBackendService {
     );
   }
 
+  getLastLoanRentedTool(categoryId: string): Observable<RentedTool> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.get<RentedTool>(
+      `${environment?.urlApi}/api/${idConstruction}/tool/loan-rented/last-of/${categoryId}`
+    );
+  }
+
+  getMaintenance(): Observable<Maintenance[]> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.get<Maintenance[]>(
+      `${environment?.urlApi}api/${idConstruction}/tool/maintenance`
+    );
+  }
+
   createLoan(body: CreateLoanBody): Observable<{ id: string }> {
     const idConstruction =
       this.constructionService.getConstructionSelected()?.id;
     return this.http.post<{ id: string }>(
       `${environment.urlApi}/api/${idConstruction}/tool/loan`,
+      body
+    );
+  }
+
+  createMaintenance(body: MaintenanceBodyCreate): Observable<{ id: string }> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.post<{ id: string }>(
+      `${environment?.urlApi}/api/${idConstruction}/tool/maintenance`,
       body
     );
   }
@@ -125,15 +153,36 @@ export class SicaBackendService {
     );
   }
 
-  sendTool(body: SendEToolBody): Observable<any>{
+  sendTool(body: SendEToolBody): Observable<any> {
     const idConstruction =
-    this.constructionService.getConstructionSelected()?.id;
-    return this.http.post<any>(`${environment?.urlApi}/api/${idConstruction}/tool/movement/send-tool`, body);
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.post<any>(
+      `${environment?.urlApi}/api/${idConstruction}/tool/movement/send-tool`,
+      body
+    );
   }
 
-  receiveTool(body: ReceiveToolBody, movementId: string): Observable<any>{
+  receiveTool(body: ReceiveToolBody, movementId: string): Observable<any> {
     const idConstruction =
-    this.constructionService.getConstructionSelected()?.id;
-    return this.http.patch<any>(`${environment?.urlApi}/api/${idConstruction}/tool/movement/${movementId}/receive-tool`, body);
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.patch<any>(
+      `${environment?.urlApi}/api/${idConstruction}/tool/movement/${movementId}/receive-tool`,
+      body
+    );
+  }
+
+  getRentedToolWith(
+    constructionId: string,
+    categoryBarcode: string
+  ): Observable<RentedTool> {
+    return this.http.get<RentedTool>(
+      `${environment?.urlApi}/api/${constructionId}}/tool/rented/${categoryBarcode}`
+    );
+  }
+
+  getLastLoanOfTool(constructionId: string, toolId: string): Observable<Loan> {
+    return this.http.get<Loan>(
+      `${environment?.urlApi}/api/${constructionId}}/tool/loan/last-of/${toolId}`
+    );
   }
 }

@@ -59,22 +59,23 @@
     <div class="reception__layout__0" *ngSwitchCase="1">
       <app-input-general
         label="Procede de"
-        [value]="''"
+        [value]="lastMovement?.origin?.construction?.name"
         [disable]="true"
       ></app-input-general>
       <app-input-general
         label="Motivo"
-        [value]="''"
+        [value]="lastMovement?.reason?.description"
         [disable]="true"
       ></app-input-general>
       <app-input-general
         label="Envía"
-        [value]="''"
+        [value]="lastMovement?.origin?.user?.name?.first + ' ' + lastMovement?.origin?.user?.name?.last"
         [disable]="true"
       ></app-input-general>
       <app-input-general
         label="Fecha estimada"
-        [value]="''"
+        [value]="lastMovement?.devolutionEstimatedDate?.split('T')[0]"
+        [isTypeDate]="true"
         [disable]="true"
       ></app-input-general>
       <app-capture-reader-nfc (userNfcValue)="handleUserNfc($event)"></app-capture-reader-nfc>
