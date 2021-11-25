@@ -49,6 +49,7 @@ export class EntryPage implements OnInit {
       }
       this.listAddedEquipments = [];
       await this.loadingService.endLoading();
+      await this.toastrService.createToast('Se han creado con éxito', 'success');
     } catch (error) {
       await this.loadingService.endLoading();
       this.toastrService.createToast('Ocurrió un error guardando', 'danger');

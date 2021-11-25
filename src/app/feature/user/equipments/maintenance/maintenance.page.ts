@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MaintenanceBodyCreate } from 'src/app/core/models/Maintenance';
@@ -32,6 +33,7 @@ export class MaintenancePage implements OnInit {
     private loadingService: LoadingService,
     private sicaBackend: SicaBackendService,
     private cd: ChangeDetectorRef,
+    private router: Router,
     private readonly constructionService: ConstructionService,
     private toastrService: ToastService
   ) {}
@@ -117,8 +119,8 @@ export class MaintenancePage implements OnInit {
   }
 
   private async sendRequest(): Promise<void> {
-    if (this.listAddedEquipment?.length < 0) {
-      this.toastrService.createToast(
+    if (this.listAddedEquipment?.length < 1) {
+      await this.toastrService.createToast(
         'No has agregado ningún equipo',
         'warning'
       );
@@ -130,9 +132,11 @@ export class MaintenancePage implements OnInit {
         await this.sicaBackend.createMaintenance(iterator)?.toPromise();
       } catch (error) {
         console.log(error);
+        continue;
       }
     }
     this.listAddedEquipment = [];
+    this.router.navigate(['/auth/menu-equipments']);
   }
 
   private formBuild(): void {

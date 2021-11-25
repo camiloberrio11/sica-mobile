@@ -27,6 +27,7 @@ export class CaptureReaderNfcComponent implements OnInit {
   ngOnInit() {}
 
   readNfc(): void {
+    this.valueInput = 'Leyendo...';
     const flags = this.nfc.FLAG_READER_NFC_A || this.nfc.FLAG_READER_NFC_V;
     this.readerMode$ = this.nfc.readerMode(flags).subscribe(
       (tag) => {

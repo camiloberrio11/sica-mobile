@@ -107,6 +107,12 @@
           typeInput="text"
           placeholder="Digite valor"
         ></app-input-general>
+
+        <div class="maintenance__layout__1__add">
+          <app-button-add (handleClick)="addEquipment()"></app-button-add>
+        </div>
+
+        
       </div>
 
       <!-- form index 1 -->
@@ -119,9 +125,7 @@
           [value]="item?.tool"
         ></app-input-general>
 
-        <div class="maintenance__layout__1__add">
-          <app-button-add (handleClick)="addEquipment()"></app-button-add>
-        </div>
+
       </div>
       <button class="maintenance__layout__btngeneral" (click)="nextStep()">
         {{stepEnd ? 'Entregar' : 'Continuar'}}

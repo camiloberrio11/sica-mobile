@@ -89,7 +89,7 @@ export class ReceptionPage implements OnInit {
       async (data) => {
         await this.loadingService.endLoading();
         await this.toastrService.createToast(
-          'Se ha entregado el equipo con éxito',
+          'Se ha recibido el equipo con éxito',
           'success'
         );
         this.router.navigate(['/auth/menu-equipments']);
