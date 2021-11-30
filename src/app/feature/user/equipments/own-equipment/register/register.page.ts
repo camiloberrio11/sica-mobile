@@ -55,7 +55,7 @@ export class RegisterPage implements OnInit {
     this.cd?.detectChanges();
   }
 
-  handleSelect(event: string, formcontrol: string): void {
+  handleSelect(event: string | any, formcontrol: string): void {
     this.updateFieldForm(event, formcontrol);
   }
 

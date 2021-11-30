@@ -28,6 +28,7 @@
           label="Equipo"
           placeholder="Seleccione equipo"
           [optionsList]="listCategoryTool"
+          [canSearch]="true"
           (selectItem)="handleSelect($event, 'toolCategoryId')"
         ></app-select-custom>
         <app-select-custom

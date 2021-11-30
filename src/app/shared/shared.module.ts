@@ -15,6 +15,7 @@ import { InputObservationsComponent } from './input-observations/input-observati
 import { BoxQuantityComponent } from './box-quantity/box-quantity.component';
 import { InputCodebarComponent } from './input-codebar/input-codebar.component';
 import { InputLabelNfcComponent } from './input-label-nfc/input-label-nfc.component';
+import { IonicSelectableModule } from 'ionic-selectable';
 
 @NgModule({
   declarations: [
@@ -31,9 +32,9 @@ import { InputLabelNfcComponent } from './input-label-nfc/input-label-nfc.compon
     SelectCustomComponent,
     ButtonAddComponent,
     CaptureImageComponent,
-    CaptureReaderNfcComponent
+    CaptureReaderNfcComponent,
   ],
-  imports: [CommonModule, IonicModule],
+  imports: [CommonModule, IonicModule, IonicSelectableModule],
   exports: [
     HeaderComponent,
     ButtonItemMenuComponent,
@@ -48,7 +49,7 @@ import { InputLabelNfcComponent } from './input-label-nfc/input-label-nfc.compon
     SelectCustomComponent,
     ButtonAddComponent,
     CaptureImageComponent,
-    CaptureReaderNfcComponent
+    CaptureReaderNfcComponent,
   ],
 })
 export class SharedModule {}
