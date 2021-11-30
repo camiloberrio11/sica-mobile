@@ -58,6 +58,9 @@ export class ReturnPage {
   getEquipmentByCodeBar(toolByBarcode: ToolByBarcodeResponseService): void {
     this.toolFindByCodeBar = toolByBarcode;
     this.cd?.detectChanges();
+    if (toolByBarcode?.category?.isUnit) {
+      this.quantity = 1;
+    }
     this.getLastLoan(toolByBarcode?.id);
   }
 
