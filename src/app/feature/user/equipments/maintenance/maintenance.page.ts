@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
@@ -8,6 +9,9 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
 import { Construction } from 'src/app/core/models/Construction';
 import { ConstructionService } from 'src/app/core/services/construction.service';
+import { AlertController, Platform } from '@ionic/angular';
+import { Location } from '@angular/common';
+
 type MaintenanceType = 'maintenance' | 'reparation';
 
 interface Equipment {
@@ -29,20 +33,53 @@ export class MaintenancePage implements OnInit {
   formMaintenance: FormGroup;
   toolRead: ToolByBarcodeResponseService;
   currentConstruction: Construction;
+  subscriptionBackButton: Subscription;
+
   constructor(
     private loadingService: LoadingService,
     private sicaBackend: SicaBackendService,
     private cd: ChangeDetectorRef,
     private router: Router,
     private readonly constructionService: ConstructionService,
-    private toastrService: ToastService
-  ) {}
+    private toastrService: ToastService,
+    private platform: Platform,
+    private alertController: AlertController,
+    private location: Location,
+  ) {
+    this.subscriptionBackButton = this.platform.backButton.subscribe(() => {
+      if(this.listAddedEquipment?.length > 0) {
+        this.showModal();
+      }
+    });
+  }
 
   ngOnInit() {
     this.getSupplier();
     this.formBuild();
     this.currentConstruction = this.constructionService.getConstructionSelected();
     this.updateFieldForm(this.currentConstruction?.id, 'constructionId');
+  }
+
+  ionViewDidLeave(): void {
+    this.subscriptionBackButton?.unsubscribe();
+    this.listAddedEquipment = [];
+  }
+
+  async showModal(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Un Momento',
+      cssClass: 'modalcss',
+      backdropDismiss: false,
+      message: `Estas seguro de salir, perderás los equipos agregados`,
+      buttons: [
+        {
+          text: 'Salir',
+          handler: () => this.location?.back(),
+        },
+        { text: 'Cancelar', role: 'cancel', cssClass: 'danger-cancel' },
+      ],
+    });
+    await alert.present();
   }
 
   currentIndexStepForm(event: number) {

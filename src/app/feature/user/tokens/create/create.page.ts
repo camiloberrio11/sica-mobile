@@ -12,6 +12,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 })
 export class CreatePage {
   nfcSubs: Subscription;
+  tokenDocumentSubs$: Subscription;
   identification: string;
   exist = false;
   constructor(
@@ -22,13 +23,14 @@ export class CreatePage {
     private loadingService: LoadingService
   ) {}
 
-  ionViewWillLeave() {
+  ionViewDidLeave() {
     this.nfcSubs.unsubscribe();
+    this.tokenDocumentSubs$ ?.unsubscribe();
   }
 
   async handleClick(event: boolean): Promise<void> {
     await this.loadingService.initLoading('Obteniendo información');
-    this.sicaBackendService.getTokenByDocument(this.identification).subscribe(
+    this.tokenDocumentSubs$ =  this.sicaBackendService.getTokenByDocument(this.identification).subscribe(
       async (data) => {
         await this.loadingService.endLoading();
         this.exist = true;

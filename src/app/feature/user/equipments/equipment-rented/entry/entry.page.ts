@@ -41,9 +41,14 @@ export class EntryPage implements OnInit {
     this.buildForm();
   }
 
+  ionViewDidLeave(): void {
+    this.subscriptionBackButton?.unsubscribe();
+    this.listAddedEquipments = [];
+  }
+
   async showModal(): Promise<void> {
     const alert = await this.alertController.create({
-      header: 'Impuesto',
+      header: 'Un momento',
       cssClass: 'modalcss',
       backdropDismiss: false,
       message: `Estas seguro de salir, perderás los equipos agregados`,

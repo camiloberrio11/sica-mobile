@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { CategoryTool } from 'src/app/core/models/CategoryTool';
 import { RentedTool } from 'src/app/core/models/RentedTool';
@@ -6,6 +7,8 @@ import { User } from 'src/app/core/models/User';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 import { ToastService } from 'src/app/core/services/toast.service';
+import { AlertController, Platform } from '@ionic/angular';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-return',
@@ -14,16 +17,49 @@ import { ToastService } from 'src/app/core/services/toast.service';
 })
 export class ReturnPage {
   listAddedEquipments: { name: string }[] = [];
+  subscriptionBackButton: Subscription;
+
   listSupplier: { id: string; value: string }[] = [];
   lastMovementCategory: RentedTool;
   constructor(
     private loadingService: LoadingService,
     private sicaBackend: SicaBackendService,
+    private platform: Platform,
+    private alertController: AlertController,
+    private location: Location,
     private toastrService: ToastService
-  ) {}
+  ) {
+    this.subscriptionBackButton = this.platform.backButton.subscribe(() => {
+      if(this.listAddedEquipments?.length > 0) {
+        this.showModal();
+      }
+    });
+  }
+
+  ionViewDidLeave(): void {
+    this.subscriptionBackButton?.unsubscribe();
+    this.listAddedEquipments = [];
+  }
 
   ionViewDidEnter() {
     this.getSupplier();
+  }
+
+  async showModal(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Un Momento',
+      cssClass: 'modalcss',
+      backdropDismiss: false,
+      message: `Estas seguro de salir, perderás los equipos agregados`,
+      buttons: [
+        {
+          text: 'Salir',
+          handler: () => this.location?.back(),
+        },
+        { text: 'Cancelar', role: 'cancel', cssClass: 'danger-cancel' },
+      ],
+    });
+    await alert.present();
   }
 
   addEquipment(): void {
