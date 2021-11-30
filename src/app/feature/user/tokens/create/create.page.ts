@@ -5,7 +5,6 @@ import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 
-const ID_SIMULATE_USER = 'abc123YKNDKH8IYHJM31214DASA';
 @Component({
   selector: 'app-create',
   templateUrl: './create.page.html',

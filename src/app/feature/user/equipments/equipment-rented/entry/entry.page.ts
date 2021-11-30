@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { ToastService } from './../../../../../core/services/toast.service';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SaveRentedToolBody } from 'src/app/core/models/RentedTool';
@@ -5,6 +6,8 @@ import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CategoryTool } from 'src/app/core/models/CategoryTool';
+import { AlertController, Platform } from '@ionic/angular';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-entry',
@@ -15,18 +18,44 @@ export class EntryPage implements OnInit {
   listSupplier: { id: string; value: string }[] = [];
   listAddedEquipments: SaveRentedToolBody[] = [];
   formEntry: FormGroup;
-
+  subscriptionBackButton: Subscription;
   currentCategory: CategoryTool;
 
   constructor(
     private loadingService: LoadingService,
+    private platform: Platform,
+    private alertController: AlertController,
+    private location: Location,
     private sicaBackend: SicaBackendService,
     private cd: ChangeDetectorRef,
     private toastrService: ToastService
-  ) {}
+  ) {
+    this.subscriptionBackButton = this.platform.backButton.subscribe(() => {
+      if(this.listAddedEquipments?.length > 0) {
+        this.showModal();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.buildForm();
+  }
+
+  async showModal(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Impuesto',
+      cssClass: 'modalcss',
+      backdropDismiss: false,
+      message: `Estas seguro de salir, perderás los equipos agregados`,
+      buttons: [
+        {
+          text: 'Salir',
+          handler: () => this.location?.back(),
+        },
+        { text: 'Cancelar', role: 'cancel', cssClass: 'danger-cancel' },
+      ],
+    });
+    await alert.present();
   }
 
   ionViewDidEnter(): void {
