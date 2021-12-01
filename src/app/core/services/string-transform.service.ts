@@ -18,9 +18,9 @@ export class StringTransformService {
     return textToTransform.replace(/\s+/g, '').trim();
   }
 
-  formatCurrency(currencyCode: string, value: number): string {
+  formatCurrency( value: number): string {
     const valueFormat = `${value}`;
-    return `${currencyCode} ${valueFormat.replace('.', ',').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, '.')}`.trim();
+    return `${valueFormat.replace('.', ',').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, '.')}`.trim();
   }
   formatDate(dateString): string {
     const cleanString = dateString.replace(/\D/g, '');
