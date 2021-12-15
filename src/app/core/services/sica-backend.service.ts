@@ -59,6 +59,10 @@ export class SicaBackendService {
     return this.http.get<User>(`${environment.urlApi}/api/user/${token}`);
   }
 
+  getWorkerByToken(token: string): Observable<Worker> {
+    return this.http.get<Worker>(`${environment.urlApi}/api/worker/${token}`);
+  }
+
   getSupplier(): Observable<Supplier[]> {
     return this.http.get<Supplier[]>(`${environment.urlApi}/api/supplier`);
   }
