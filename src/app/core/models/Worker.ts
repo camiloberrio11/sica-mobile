@@ -1,4 +1,4 @@
-export interface Worker{
+export interface WorkerSica {
   id: string;
   name: Name;
   document: string;

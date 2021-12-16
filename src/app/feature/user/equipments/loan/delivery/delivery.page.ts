@@ -1,3 +1,4 @@
+import { WorkerSica } from './../../../../../core/models/Worker';
 import { Router } from '@angular/router';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -21,7 +22,7 @@ export class DeliveryPage implements OnInit {
   stepEnd = false;
   toolFindByCodeBar: ToolByBarcodeResponseService;
   deliveredByUser: User;
-  recivedByUser: User;
+  recivedByUser: WorkerSica;
 
   constructor(
     private loadingService: LoadingService,
@@ -67,7 +68,10 @@ export class DeliveryPage implements OnInit {
       this.deliveredByUser = user;
       return;
     }
-    this.recivedByUser = user;
+  }
+
+  getWorker(worker: WorkerSica): void {
+    this.recivedByUser = work er;
   }
 
 

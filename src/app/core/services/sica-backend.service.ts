@@ -1,3 +1,4 @@
+import { WorkerSica } from './../models/Worker';
 import { Movement, ReceiveToolBody } from './../models/Movement';
 import { CategoryTool } from './../models/CategoryTool';
 import { Brand } from './../models/Brand';
@@ -59,8 +60,8 @@ export class SicaBackendService {
     return this.http.get<User>(`${environment.urlApi}/api/user/${token}`);
   }
 
-  getWorkerByToken(token: string): Observable<Worker> {
-    return this.http.get<Worker>(`${environment.urlApi}/api/worker/${token}`);
+  getWorkerByToken(token: string): Observable<WorkerSica> {
+    return this.http.get<WorkerSica>(`${environment.urlApi}/api/worker/${token}`);
   }
 
   getSupplier(): Observable<Supplier[]> {
