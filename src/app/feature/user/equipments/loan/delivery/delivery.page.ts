@@ -71,7 +71,7 @@ export class DeliveryPage implements OnInit {
   }
 
   getWorker(worker: WorkerSica): void {
-    this.recivedByUser = work er;
+    this.recivedByUser = worker;
   }
 
 

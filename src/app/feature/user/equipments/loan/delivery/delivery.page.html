@@ -40,6 +40,7 @@
         <app-input-label-nfc
           [label]="'Entregado a'"
           srcIcon="assets/icon/nfc.svg"
+          [isWorker]="true"
           (nfcValueWorker)="getWorker($event)"
         ></app-input-label-nfc>
         <app-input-general
