@@ -60,6 +60,13 @@ export class MaintenancePage implements OnInit {
     this.updateFieldForm(this.currentConstruction?.id, 'constructionId');
   }
 
+
+  ionViewWillEnter() {
+    this.formMaintenance.patchValue({
+      invoiceDate: new Date().toISOString()?.split('T')[0]
+    });
+  }
+
   ionViewDidLeave(): void {
     this.subscriptionBackButton?.unsubscribe();
     this.listAddedEquipment = [];

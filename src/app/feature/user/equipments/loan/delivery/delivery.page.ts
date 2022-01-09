@@ -57,10 +57,10 @@ export class DeliveryPage implements OnInit {
 
   getEquipmentByCodeBar(toolByBarcode: ToolByBarcodeResponseService): void {
     this.toolFindByCodeBar = toolByBarcode;
-    this.cd?.detectChanges();
     if (toolByBarcode?.category?.isUnit) {
       this.inputChange('1', 'quantity');
     }
+    this.cd?.detectChanges();
   }
 
   getUserByToken(user: User, input: TypeUserNfc): void {

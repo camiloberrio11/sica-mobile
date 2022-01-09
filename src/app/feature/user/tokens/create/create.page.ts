@@ -25,26 +25,28 @@ export class CreatePage {
 
   ionViewDidLeave() {
     this.nfcSubs.unsubscribe();
-    this.tokenDocumentSubs$ ?.unsubscribe();
+    this.tokenDocumentSubs$?.unsubscribe();
   }
 
   async handleClick(event: boolean): Promise<void> {
     await this.loadingService.initLoading('Obteniendo información');
-    this.tokenDocumentSubs$ =  this.sicaBackendService.getTokenByDocument(this.identification).subscribe(
-      async (data) => {
-        await this.loadingService.endLoading();
-        this.exist = true;
-        this.listenerAndWriteNfc(data?.token);
-      },
-      async (error) => {
-        await this.loadingService.endLoading();
-        this.exist = false;
-        this.toastrService.createToast(
-          'No se ha encontrado registros',
-          'warning'
-        );
-      }
-    );
+    this.tokenDocumentSubs$ = this.sicaBackendService
+      .getTokenByDocument(this.identification)
+      .subscribe(
+        async (data) => {
+          await this.loadingService.endLoading();
+          this.exist = true;
+          this.listenerAndWriteNfc(data?.token);
+        },
+        async (error) => {
+          await this.loadingService.endLoading();
+          this.exist = false;
+          this.toastrService.createToast(
+            'No se ha encontrado registros',
+            'warning'
+          );
+        }
+      );
   }
 
   private listenerAndWriteNfc(token: string) {
@@ -61,10 +63,11 @@ export class CreatePage {
       .subscribe(async () => {
         const message = [this.ndef.textRecord(token)];
         try {
-          const result = await this.nfc.write(message);
-          this.toastrService.createToast('Token creado', 'success');
+          await this.nfc.write(message);
+          await this.toastrService.createToast('Token creado', 'success');
           this.exist = false;
           this.identification = '';
+          this.nfcSubs?.unsubscribe();
         } catch (error) {
           this.toastrService.createToast(
             'No se ha podido escribir el token',
