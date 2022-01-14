@@ -27,7 +27,7 @@ export class CaptureImageComponent implements OnInit {
     try {
       this.srcImgCapture = '';
       const result = await this.camera.getPicture(this.options);
-      this.srcImgCapture = `data:image/jpeg;base64,${result}`;
+      this.srcImgCapture = `data:image/jpeg;charset=utf-8;base64, ${result}`;
       this.dataPhoto.emit(result);
     } catch (error) {
         this.toastrService.createToast(

@@ -26,6 +26,10 @@ export class CaptureReaderNfcComponent implements OnInit {
 
   ngOnInit() {}
 
+  ionViewDidLeave(): void {
+    this.readerMode$?.unsubscribe();
+  }
+
   readNfc(): void {
     this.valueInput = 'Leyendo...';
     const flags = this.nfc.FLAG_READER_NFC_A || this.nfc.FLAG_READER_NFC_V;
@@ -59,6 +63,7 @@ export class CaptureReaderNfcComponent implements OnInit {
         this.valueInput = `${data?.name?.first} ${data?.name?.last}`;
         this.cd.detectChanges();
         this.userNfcValue.emit(data);
+        this.readerMode$?.unsubscribe();
       },
       async (err) => {
         await this.loadingService.endLoading();
