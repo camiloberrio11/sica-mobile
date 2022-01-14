@@ -65,6 +65,7 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
         this.getInfoByToken(decodeNfc);
       },
       (err) => {
+        this.toastrService.createToast('Error en lectura', 'warning');
         console.log('Error reading tag', err);
       }
     );
@@ -83,7 +84,7 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
     await this.loadingService.initLoading('Obteniendo información del token');
     this.backendSicaService.getUserByToken(code).subscribe(
       async (data) => {
-        this.loadingService.endLoading();
+        await this.loadingService.endLoading();
         this.valueInput = `${data?.name?.first} ${data?.name?.last}`;
         this.cd.detectChanges();
         this.nfcValue.emit(data);
@@ -104,7 +105,7 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
     this.backendSicaService.getWorkerByToken(code).subscribe(
       async (data) => {
         await this.loadingService.endLoading();
-        this.valueInput = ``;
+        this.valueInput = `${data?.name?.first} ${data?.name?.last}`;
         this.cd.detectChanges();
         this.nfcValueWorker.emit(data);
       },

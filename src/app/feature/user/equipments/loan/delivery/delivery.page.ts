@@ -40,6 +40,7 @@ export class DeliveryPage implements OnInit {
     this.formDelivery.patchValue({
       [formcontrolname]: event,
     });
+    this.cd?.detectChanges();
   }
 
   currentIndexStepForm(event: number) {
@@ -72,6 +73,7 @@ export class DeliveryPage implements OnInit {
 
   getWorker(worker: WorkerSica): void {
     this.recivedByUser = worker;
+    this.cd?.detectChanges();
   }
 
 

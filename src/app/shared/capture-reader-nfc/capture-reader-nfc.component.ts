@@ -55,7 +55,7 @@ export class CaptureReaderNfcComponent implements OnInit {
     await this.loadingService.initLoading('Obteniendo información del token');
     this.backendSicaService.getUserByToken(code).subscribe(
       async (data) => {
-        this.loadingService.endLoading();
+        await this.loadingService.endLoading();
         this.valueInput = `${data?.name?.first} ${data?.name?.last}`;
         this.cd.detectChanges();
         this.userNfcValue.emit(data);

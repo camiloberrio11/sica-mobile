@@ -5,6 +5,7 @@ import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 
+const ID_SIMULATE_USER = 'abc123YKNDKH8IYHJM31214DASA';
 @Component({
   selector: 'app-create',
   templateUrl: './create.page.html',
@@ -12,7 +13,6 @@ import { ToastService } from 'src/app/core/services/toast.service';
 })
 export class CreatePage {
   nfcSubs: Subscription;
-  tokenDocumentSubs$: Subscription;
   identification: string;
   exist = false;
   constructor(
@@ -23,30 +23,27 @@ export class CreatePage {
     private loadingService: LoadingService
   ) {}
 
-  ionViewDidLeave() {
-    this.nfcSubs.unsubscribe();
-    this.tokenDocumentSubs$?.unsubscribe();
+  ionViewWillLeave() {
+    this.nfcSubs?.unsubscribe();
   }
 
   async handleClick(event: boolean): Promise<void> {
     await this.loadingService.initLoading('Obteniendo información');
-    this.tokenDocumentSubs$ = this.sicaBackendService
-      .getTokenByDocument(this.identification)
-      .subscribe(
-        async (data) => {
-          await this.loadingService.endLoading();
-          this.exist = true;
-          this.listenerAndWriteNfc(data?.token);
-        },
-        async (error) => {
-          await this.loadingService.endLoading();
-          this.exist = false;
-          this.toastrService.createToast(
-            'No se ha encontrado registros',
-            'warning'
-          );
-        }
-      );
+    this.sicaBackendService.getTokenByDocument(this.identification).subscribe(
+      async (data) => {
+        await this.loadingService.endLoading();
+        this.exist = true;
+        this.listenerAndWriteNfc(data?.token);
+      },
+      async (error) => {
+        await this.loadingService.endLoading();
+        this.exist = false;
+        this.toastrService.createToast(
+          'No se ha encontrado registros',
+          'warning'
+        );
+      }
+    );
   }
 
   private listenerAndWriteNfc(token: string) {
@@ -63,8 +60,8 @@ export class CreatePage {
       .subscribe(async () => {
         const message = [this.ndef.textRecord(token)];
         try {
-          await this.nfc.write(message);
-          await this.toastrService.createToast('Token creado', 'success');
+          const result = await this.nfc.write(message);
+          this.toastrService.createToast('Token creado', 'success');
           this.exist = false;
           this.identification = '';
           this.nfcSubs?.unsubscribe();

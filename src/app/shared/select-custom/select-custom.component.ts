@@ -17,7 +17,7 @@ export class SelectCustomComponent implements OnInit {
   ngOnInit() {}
 
   select(event: any) {
-    const value = event?.detail?.value || event?.value;
+    const value = event?.id || event?.detail?.value || event?.value;
     if (value) {
       this.selectItem.emit(value);
     }

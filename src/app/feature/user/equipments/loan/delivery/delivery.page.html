@@ -46,12 +46,13 @@
         <app-input-general
           [label]="'Contratista'"
           typeInput="text"
-          [value]="recivedByUser?.name?.first + recivedByUser?.name?.last"
+          [value]="recivedByUser?.contractor.name"
         ></app-input-general>
 
         <div class="delivery__layout__loan__1__quan">
           <app-box-quantity
             label="Cantidad"
+            formControlName="quantity"
             (valueInput)="inputChange($event, 'quantity')"
           ></app-box-quantity>
           <app-box-quantity

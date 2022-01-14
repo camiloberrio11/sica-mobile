@@ -9,6 +9,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { Loan, UpdateLoanBody } from 'src/app/core/models/Loan';
 import { ConstructionService } from 'src/app/core/services/construction.service';
 import { Construction } from 'src/app/core/models/Construction';
+import { WorkerSica } from 'src/app/core/models/Worker';
 type TypeUserNfc = 'delivery' | 'received';
 type InputForm = 'remark' | 'quantity';
 
@@ -23,7 +24,7 @@ export class ReturnPage {
   stepEnd = false;
   toolFindByCodeBar: ToolByBarcodeResponseService;
   deliveredByUser: User;
-  recivedByUser: User;
+  recivedByUser: WorkerSica;
   statusEquipment = true;
   currentConstruction: Construction;
   lastLoan: Loan;
@@ -57,11 +58,11 @@ export class ReturnPage {
 
   getEquipmentByCodeBar(toolByBarcode: ToolByBarcodeResponseService): void {
     this.toolFindByCodeBar = toolByBarcode;
-    this.cd?.detectChanges();
     if (toolByBarcode?.category?.isUnit) {
       this.quantity = 1;
     }
     this.getLastLoan(toolByBarcode?.id);
+    this.cd?.detectChanges();
   }
 
   nextStep(): void {
@@ -85,14 +86,20 @@ export class ReturnPage {
       this.deliveredByUser = userNfc;
       return;
     }
-    this.recivedByUser = userNfc;
+    // this.recivedByUser = userNfc;
+  }
+
+  getWorker(worker: WorkerSica): void {
+    console.log(worker);
+    this.recivedByUser = worker;
+    this.cd?.detectChanges();
   }
 
   private sendRequest(): void {
     const body: UpdateLoanBody = {
       return: {
-        deliveredBy: this.deliveredByUser?.id,
-        receivedBy: this.recivedByUser?.id,
+        deliveredBy: this.recivedByUser?.id,
+        receivedBy: this.deliveredByUser?.id,
         detail: {
           status: this.statusEquipment ? 'bueno' : 'malo',
           quantity: this.quantity,
