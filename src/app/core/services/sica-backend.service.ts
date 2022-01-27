@@ -9,7 +9,11 @@ import { Observable } from 'rxjs';
 import { Construction } from '../models/Construction';
 import { environment } from 'src/environments/environment.prod';
 import { ConstructionService } from './construction.service';
-import { CreateToolBody, ToolByBarcodeResponseService } from '../models/Tool';
+import {
+  BodyTakeBackRentedTool,
+  CreateToolBody,
+  ToolByBarcodeResponseService,
+} from '../models/Tool';
 import { User } from '../models/User';
 import { CreateLoanBody, Loan, UpdateLoanBody } from '../models/Loan';
 import { RentedTool, SaveRentedToolBody } from '../models/RentedTool';
@@ -61,7 +65,9 @@ export class SicaBackendService {
   }
 
   getWorkerByToken(token: string): Observable<WorkerSica> {
-    return this.http.get<WorkerSica>(`${environment.urlApi}/api/worker/${token}`);
+    return this.http.get<WorkerSica>(
+      `${environment.urlApi}/api/worker/${token}`
+    );
   }
 
   getSupplier(): Observable<Supplier[]> {
@@ -188,6 +194,26 @@ export class SicaBackendService {
   getLastLoanOfTool(constructionId: string, toolId: string): Observable<Loan> {
     return this.http.get<Loan>(
       `${environment?.urlApi}/api/${constructionId}}/tool/loan/last-of/${toolId}`
+    );
+  }
+
+  getAvailableRentedTool(
+    supplierId: string,
+    categoryId: string
+  ): Observable<{ available: number }> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.get<{ available: number }>(
+      `${environment?.urlApi}/api/${idConstruction}/tool/rented/available/${supplierId}/${categoryId}`
+    );
+  }
+
+  takeBackRentedTool(body: BodyTakeBackRentedTool): Observable<any> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.post(
+      `${environment?.urlApi}/api/${idConstruction}/tool/rented/take-back`,
+      body
     );
   }
 }

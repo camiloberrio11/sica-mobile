@@ -16,6 +16,7 @@ import { BoxQuantityComponent } from './box-quantity/box-quantity.component';
 import { InputCodebarComponent } from './input-codebar/input-codebar.component';
 import { InputLabelNfcComponent } from './input-label-nfc/input-label-nfc.component';
 import { IonicSelectableModule } from 'ionic-selectable';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { IonicSelectableModule } from 'ionic-selectable';
     CaptureImageComponent,
     CaptureReaderNfcComponent,
   ],
-  imports: [CommonModule, IonicModule, IonicSelectableModule],
+  imports: [CommonModule, IonicModule, IonicSelectableModule, FormsModule],
   exports: [
     HeaderComponent,
     ButtonItemMenuComponent,

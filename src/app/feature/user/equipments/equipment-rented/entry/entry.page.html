@@ -10,7 +10,7 @@
       ></app-select-custom>
       <app-input-general
         [label]="'Remisión'"
-        typeInput="text"
+        typeInput="number"
         placeholder="Digite la remisión"
         (inputChange)="updateField($event, 'remisionNumber')"
         [value]="formEntry?.get('remisionNumber')?.value"
@@ -23,9 +23,11 @@
         Equipos Agregados
       </h6>
       <app-input-general
-        *ngFor="let item of listAddedEquipments"
+        *ngFor="let item of listAddedEquipments; let i = index"
         [label]="'Equipo'"
+        [deleteBtn]="true"
         typeInput="text"
+        (inputDelete)="deleteItem(i)"
         [disable]="true"
         [value]="currentCategory?.name + '-' + (listAddedEquipments?.length)?.toString()"
       ></app-input-general>
@@ -48,21 +50,20 @@
       <app-input-general
         [label]="'Fecha de alquiler'"
         [isTypeDate]="true"
-        srcIcon="assets/icon/Calendar.svg"
         placeholder="Digite fecha DD/MM/AAAA"
         (inputChange)="updateField($event, 'remisionRentedFrom')"
         [value]="formEntry?.get('remisionRentedFrom')?.value"
       ></app-input-general>
       <app-input-general
         [label]="'Cantidad'"
-        typeInput="text"
+        typeInput="number"
         placeholder="Ingrese cantidad"
         (inputChange)="updateField($event, 'toolQuantity')"
         [value]="formEntry?.get('toolQuantity')?.value"
       ></app-input-general>
       <app-input-general
         [label]="'Alquiler días'"
-        typeInput="text"
+        typeInput="number"
         placeholder="Ingrese alquiler estimado (días)"
         (inputChange)="updateField($event, 'remisionEstimatedRentalDays')"
         [value]="formEntry?.get('remisionEstimatedRentalDays')?.value"
@@ -76,7 +77,7 @@
       ></app-input-general>
       <app-input-general
         [label]="'Precio por día'"
-        typeInput="text"
+        typeInput="number"
         placeholder="Digite precio por día"
         (inputChange)="updateField($event, 'remisionDailyPrice')"
         [value]="formEntry?.get('remisionDailyPrice')?.value"

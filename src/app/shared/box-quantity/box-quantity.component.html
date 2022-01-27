@@ -1,5 +1,10 @@
 <div class="boxquantity">
-  <label>{{label}}</label>
-  <input type="text" (keyup)="handleInput($event)" [value]="value"/>
+  <label>{{ label }}</label>
+  <input
+    [disabled]="disabled"
+    type="text"
+    (keyup)="handleInput($event)"
+    [value]="value"
+    [type]="typeInput"
+  />
 </div>
-

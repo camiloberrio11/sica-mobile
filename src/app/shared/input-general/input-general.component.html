@@ -1,11 +1,24 @@
 <div class="inputgeneral">
   <p>{{ label }}</p>
   <input
+    *ngIf="!isTypeDate"
     [type]="typeInput"
     (keyup)="handleInput($event)"
     [disabled]="disable"
     [readonly]="disable"
     [placeholder]="placeholder"
+    [value]="value"
+  />
+  <button class="delete" *ngIf="deleteBtn" (click)="handleDelete()">
+    <ion-icon slot="start" name="trash-outline"></ion-icon>
+  </button>
+  <input
+    *ngIf="isTypeDate"
+    type="date"
+    [disabled]="disable"
+    [readonly]="disable"
+    [placeholder]="placeholder"
+    (input)="handleInput($event)"
     [value]="value"
   />
   <img *ngIf="srcIcon" [src]="srcIcon" alt="icon" />

@@ -68,3 +68,20 @@ interface Invoice {
 interface ConstructionId {
   id: string;
 }
+
+
+export interface BodyTakeBackRentedTool {
+  ids: IdToolBodyTakeBackRentedTool[];
+  remission: string;
+  remark: string;
+  deliveredBy: string;
+  realAnnouncedDate: string;
+  supplier: string;
+}
+
+export interface IdToolBodyTakeBackRentedTool {
+  returnIdBySupplier: string;
+  quantity: number;
+  category: string;
+}
+

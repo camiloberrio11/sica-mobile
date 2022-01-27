@@ -31,7 +31,7 @@ export class EntryPage implements OnInit {
     private toastrService: ToastService
   ) {
     this.subscriptionBackButton = this.platform.backButton.subscribe(() => {
-      if(this.listAddedEquipments?.length > 0) {
+      if (this.listAddedEquipments?.length > 0) {
         this.showModal();
       }
     });
@@ -68,6 +68,18 @@ export class EntryPage implements OnInit {
     this.getSupplier();
   }
 
+  async deleteItem(event: number): Promise<void> {
+    const deleteFormat: SaveRentedToolBody[] = [];
+    for (let index = 0; index < this.listAddedEquipments.length; index++) {
+      if (event === index) {
+        continue;
+      }
+      deleteFormat.push(this.listAddedEquipments[index]);
+    }
+    this.listAddedEquipments = deleteFormat;
+    await this.toastrService.createToast('Eliminado', 'success');
+  }
+
   async save(): Promise<void> {
     if (this.listAddedEquipments?.length < 1) {
       this.toastrService.createToast(
@@ -83,7 +95,10 @@ export class EntryPage implements OnInit {
       }
       this.listAddedEquipments = [];
       await this.loadingService.endLoading();
-      await this.toastrService.createToast('Se han creado con éxito', 'success');
+      await this.toastrService.createToast(
+        'Se han creado con éxito',
+        'success'
+      );
     } catch (error) {
       await this.loadingService.endLoading();
       this.toastrService.createToast('Ocurrió un error guardando', 'danger');
@@ -94,11 +109,12 @@ export class EntryPage implements OnInit {
     alert('Enviado al correo');
   }
 
-
-
-  handleAdd(): void {
+  async handleAdd(): Promise<void> {
     if (this.formEntry?.invalid) {
-      this.toastrService.createToast('Completa el formulario', 'medium');
+      await this.toastrService.createToast(
+        'Completa campos obligatorios',
+        'warning'
+      );
       return;
     }
     const formValue = this.formEntry.value;
@@ -120,7 +136,7 @@ export class EntryPage implements OnInit {
       },
     };
     this.listAddedEquipments.push(newEquipment);
-    this.toastrService.createToast('Agregado','success');
+    this.toastrService.createToast('Agregado!', 'success');
     this.formEntry.reset();
   }
 
@@ -172,5 +188,9 @@ export class EntryPage implements OnInit {
       toolImage: new FormControl(''),
       toolCategory: new FormControl('', Validators.required),
     });
+    this.updateField(
+      new Date()?.toISOString()?.split('T')[0],
+      'remisionRentedFrom'
+    );
   }
 }

@@ -5,10 +5,12 @@
       label="Proveedor"
       [optionsList]="listSupplier"
       placeholder="Seleccione proveedor"
+      (selectItem)="selectCustomer($event)"
     ></app-select-custom>
     <app-input-general
       label="N. Devolucion"
-      placeholder="Ingrese devoluciíon"
+      placeholder="Ingrese devolucíon"
+      (inputChange)="remision = $event"
     ></app-input-general>
     <h6 *ngIf="listAddedEquipments?.length > 0" class="return__subtitle">
       Equipos agregados
@@ -18,7 +20,7 @@
       [label]="'Equipo'"
       typeInput="text"
       [disable]="true"
-      [value]="item?.name"
+      [value]="item?.category"
     ></app-input-general>
 
     <h6 class="return__subtitle">Ingrese equipo</h6>
@@ -35,24 +37,27 @@
       [label]="'Equipo'"
       typeInput="text"
       [disable]="true"
-      (inputChange)="handleInpput($event)"
+      [value]="lastMovementCategory?.category?.name"
     ></app-input-general>
     <app-input-general
       [label]="'Fecha'"
       typeInput="text"
       [isTypeDate]="true"
-      (inputChange)="handleInpput($event)"
+      [value]="currentDate"
       [disable]="true"
     ></app-input-general>
 
     <div class="return__quan">
       <app-box-quantity
         label="Cantidad disponible"
-        (valueInput)="handleInpput($event)"
+        [value]="available?.toString() || ''"
+        [disabled]="true"
       ></app-box-quantity>
       <app-box-quantity
         label="Cantidad devolver"
         (valueInput)="handleInpput($event)"
+        [value]="quantity || ''"
+        [disabled]="categoryTool?.isUnit"
       ></app-box-quantity>
     </div>
 

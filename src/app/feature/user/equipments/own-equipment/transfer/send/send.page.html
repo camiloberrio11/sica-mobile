@@ -47,7 +47,7 @@
       ></app-input-general>
       <app-input-general
         label="Garantía"
-        [value]="''"
+        [value]="toolFindByCodeBar?.warrantyExpirationDate?.toString()"
         [disable]="true"
         [value]="toolFindByCodeBar?.invoices?.pop()?.warranty?.toString()"
       ></app-input-general>
@@ -70,12 +70,13 @@
       <app-input-general
         label="Fecha aprox devolución"
         [isTypeDate]="true"
-        srcIcon="assets/icon/Calendar.svg"
         placeholder="Digite fecha DD/MM/AAAA"
         (inputChange)="handleInput($event)"
-        [value]="formState?.dateReturn"
+        [value]="formState?.dateReturn || ''"
       ></app-input-general>
-      <app-capture-reader-nfc (userNfcValue)="handleUserNfc($event)"></app-capture-reader-nfc>
+      <app-capture-reader-nfc
+        (userNfcValue)="handleUserNfc($event)"
+      ></app-capture-reader-nfc>
     </div>
     <button class="send__layout__btngeneral" (click)="nextStep()">
       {{stepEnd ? 'Finalizar' : 'Continuar'}}

@@ -11,24 +11,21 @@
       <!-- form index 0 -->
       <div class="maintenance__layout__0" *ngSwitchCase="0">
         <app-select-custom
-          label="Proveedor"
-          placeholder="Selecciona proveedor"
+          label="Proveedor *"
+          placeholder="Selecciona proveedor *"
           [optionsList]="listSupplier"
           (selectItem)="handleSelect($event)"
         ></app-select-custom>
         <div class="maintenance__layout__0__quan">
           <app-box-quantity
-            label="Fecha"
-            [value]="formMaintenance?.get('invoiceDate')?.value"
-            (valueInput)="inputChange($event, 'invoiceDate')"
-          ></app-box-quantity>
-          <app-box-quantity
             label="Factura"
             (valueInput)="inputChange($event, 'invoiceNumber')"
             [value]="formMaintenance?.get('invoiceNumber')?.value"
+            [typeInput]="'number'"
           ></app-box-quantity>
           <app-box-quantity
             label="Valor"
+            [typeInput]="'number'"
             (valueInput)="inputChange($event, 'invoicePrice')"
             [value]="formMaintenance?.get('invoicePrice')?.value"
           ></app-box-quantity>
@@ -46,6 +43,13 @@
           typeInput="text"
           [value]="toolRead?.category?.name"
         ></app-input-general>
+
+        <app-input-general
+          [label]="'Fecha'"
+          [isTypeDate]="true"
+          (inputChange)="inputChange($event, 'invoiceDate')"
+        ></app-input-general>
+
         <app-input-general
           [label]="'Marca'"
           typeInput="text"
@@ -82,7 +86,7 @@
 
         <app-input-general
           [label]="'Garantía'"
-          typeInput="text"
+          [typeInput]="'number'"
           placeholder="Garantía (meses)"
           (inputChange)="inputChange($event, 'invoiceWarranty')"
           [value]="formMaintenance?.get('invoiceWarranty')?.value"
@@ -91,41 +95,34 @@
         <app-input-general
           [label]="'Descontar a'"
           typeInput="text"
-          placeholder="nombre"
+          placeholder="Digite nombre"
         ></app-input-general>
 
         <app-input-general
-          [label]="'Obsservaciones'"
+          [label]="'Observaciones'"
           typeInput="text"
           (inputChange)="inputChange($event, 'remark')"
           placeholder="Digite observaciones"
           [value]="formMaintenance?.get('remark')?.value"
         ></app-input-general>
 
-        <app-input-general
-          [label]="'Valor'"
-          typeInput="text"
-          placeholder="Digite valor"
-        ></app-input-general>
 
         <div class="maintenance__layout__1__add">
           <app-button-add (handleClick)="addEquipment()"></app-button-add>
         </div>
-
-        
       </div>
 
       <!-- form index 1 -->
       <div class="maintenance__layout__1" *ngSwitchCase="1">
         <app-input-general
-          *ngFor="let item of listAddedEquipment"
+          *ngFor="let item of listAddedEquipment; let i = index"
           [label]="'Equipo'"
           typeInput="text"
+          [deleteBtn]="true"
+          (inputDelete)="handleDelete(i)"
           placeholder="Digite valor"
-          [value]="item?.tool"
+          [value]="item?.name"
         ></app-input-general>
-
-
       </div>
       <button class="maintenance__layout__btngeneral" (click)="nextStep()">
         {{stepEnd ? 'Entregar' : 'Continuar'}}

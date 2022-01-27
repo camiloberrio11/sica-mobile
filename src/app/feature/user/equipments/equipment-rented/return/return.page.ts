@@ -1,8 +1,13 @@
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { CategoryTool } from 'src/app/core/models/CategoryTool';
 import { RentedTool } from 'src/app/core/models/RentedTool';
-import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
+import {
+  BodyTakeBackRentedTool,
+  IdToolBodyTakeBackRentedTool,
+  ToolByBarcodeResponseService,
+} from 'src/app/core/models/Tool';
 import { User } from 'src/app/core/models/User';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
@@ -16,33 +21,50 @@ import { Location } from '@angular/common';
   styleUrls: ['./return.page.scss'],
 })
 export class ReturnPage {
-  listAddedEquipments: { name: string }[] = [];
+  listAddedEquipments: IdToolBodyTakeBackRentedTool[] = [];
   subscriptionBackButton: Subscription;
-
+  currentDate: string;
   listSupplier: { id: string; value: string }[] = [];
   lastMovementCategory: RentedTool;
+
+  // Properties view
+  available = 0;
+  categoryTool: CategoryTool;
+  idCustomer: string;
+  quantity: string;
+  remision: string;
+  userNfc: User;
+
   constructor(
     private loadingService: LoadingService,
     private sicaBackend: SicaBackendService,
     private platform: Platform,
     private alertController: AlertController,
     private location: Location,
-    private toastrService: ToastService
+    private toastrService: ToastService,
+    private router: Router
   ) {
     this.subscriptionBackButton = this.platform.backButton.subscribe(() => {
-      if(this.listAddedEquipments?.length > 0) {
+      if (this.listAddedEquipments?.length > 0) {
         this.showModal();
       }
     });
   }
 
   ionViewDidLeave(): void {
+    this.available = 0;
     this.subscriptionBackButton?.unsubscribe();
     this.listAddedEquipments = [];
+    const [year, month, day] = new Date()
+      ?.toDateString()
+      ?.split('T')[0]
+      ?.split('-');
+    this.currentDate = `${day}${month}${year}`;
   }
 
   ionViewDidEnter() {
     this.getSupplier();
+    this.available = 0;
   }
 
   async showModal(): Promise<void> {
@@ -62,10 +84,14 @@ export class ReturnPage {
     await alert.present();
   }
 
-  addEquipment(): void {
+  async addEquipment(): Promise<void> {
     this.listAddedEquipments.push({
-      name: `Test prueba agregado ${this.listAddedEquipments?.length + 1}`,
+      returnIdBySupplier: 'string',
+      quantity: +this.quantity,
+      category: this.categoryTool?.id,
     });
+    await this.toastrService.createToast('Equipo agregado', 'success');
+    this.quantity = null;
   }
 
   save(): void {
@@ -77,14 +103,18 @@ export class ReturnPage {
   }
 
   handleInpput(value: string) {
-    console.log(value);
+    this.quantity = value;
   }
 
   handleNfc(nfcValue: User) {
-    console.log(nfcValue);
+    this.userNfc = nfcValue;
   }
 
   async handleCodebar(event: CategoryTool) {
+    this.categoryTool = event;
+    if (event?.isUnit) {
+      this.quantity = '1';
+    }
     await this.loadingService.initLoading(
       'Obteniendo ultimo movimiento de la categoría'
     );
@@ -92,6 +122,7 @@ export class ReturnPage {
       async (data) => {
         this.lastMovementCategory = data;
         await this.loadingService.endLoading();
+        this.getAvailable();
       },
       async (err) => {
         this.lastMovementCategory = null;
@@ -118,6 +149,60 @@ export class ReturnPage {
           'warning'
         );
         await this.loadingService.endLoading();
+      }
+    );
+  }
+
+  selectCustomer(event: string) {
+    this.idCustomer = event;
+    this.getAvailable();
+  }
+
+  async getAvailable(): Promise<void> {
+    if (!this.idCustomer || !this.categoryTool) {
+      return;
+    }
+    await this.loadingService?.initLoading('Obteniendo cantidad disposible');
+    this.sicaBackend
+      .getAvailableRentedTool(this.idCustomer, this.categoryTool?.id)
+      .subscribe(
+        async (inf) => {
+          this.available = inf?.available;
+          await this.loadingService?.endLoading();
+        },
+        async (err) => {
+          await this.loadingService?.endLoading();
+          await this.toastrService.createToast(
+            'Ha ocurrido un error obteniendo cantidad disponible',
+            'danger'
+          );
+        }
+      );
+  }
+
+  async sendBackTool(): Promise<void> {
+    const date = new Date()?.toISOString().split('T')[0];
+    const body: BodyTakeBackRentedTool = {
+      ids: this.listAddedEquipments,
+      remission: this.remision,
+      remark: '',
+      deliveredBy: this.userNfc?.id,
+      realAnnouncedDate: date,
+      supplier: this.idCustomer,
+    };
+    await this.loadingService.initLoading('Enviando equipos');
+    this.sicaBackend.takeBackRentedTool(body).subscribe(
+      async () => {
+        await this.loadingService?.endLoading();
+        await this.toastrService.createToast('Equipos enviados', 'success');
+        this.router.navigate(['/auth/menu-equipments']);
+      },
+      async (err) => {
+        await this.loadingService?.endLoading();
+        await this.toastrService.createToast(
+          'Ha ocurrido un error enviando equipos',
+          'danger'
+        );
       }
     );
   }

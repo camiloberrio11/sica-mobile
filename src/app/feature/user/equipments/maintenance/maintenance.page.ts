@@ -44,10 +44,10 @@ export class MaintenancePage implements OnInit {
     private toastrService: ToastService,
     private platform: Platform,
     private alertController: AlertController,
-    private location: Location,
+    private location: Location
   ) {
     this.subscriptionBackButton = this.platform.backButton.subscribe(() => {
-      if(this.listAddedEquipment?.length > 0) {
+      if (this.listAddedEquipment?.length > 0) {
         this.showModal();
       }
     });
@@ -56,14 +56,14 @@ export class MaintenancePage implements OnInit {
   ngOnInit() {
     this.getSupplier();
     this.formBuild();
-    this.currentConstruction = this.constructionService.getConstructionSelected();
+    this.currentConstruction =
+      this.constructionService.getConstructionSelected();
     this.updateFieldForm(this.currentConstruction?.id, 'constructionId');
   }
 
-
   ionViewWillEnter() {
     this.formMaintenance.patchValue({
-      invoiceDate: new Date().toISOString()?.split('T')[0]
+      invoiceDate: new Date().toISOString()?.split('T')[0],
     });
   }
 
@@ -125,7 +125,26 @@ export class MaintenancePage implements OnInit {
     this.typeMaintenance = value;
   }
 
-  addEquipment(): void {
+  handleDelete(event: number) {
+    const update: MaintenanceBodyCreate[] = [];
+    for (let index = 0; index < this.listAddedEquipment.length; index++) {
+      const element = this.listAddedEquipment[index];
+      if (index === event) {
+        continue;
+      }
+      update.push(element);
+    }
+    this.listAddedEquipment = update;
+  }
+
+  async addEquipment(): Promise<void> {
+    if (this.formMaintenance?.invalid) {
+      await this.toastrService.createToast(
+        'Llena los campos obligatorios',
+        'warning'
+      );
+      return;
+    }
     const formValues = this.formMaintenance.value;
     const body: MaintenanceBodyCreate = {
       invoice: {
@@ -138,8 +157,10 @@ export class MaintenancePage implements OnInit {
       remark: formValues?.remark,
       construction: formValues?.constructionId,
       tool: formValues?.toolId,
+      name: this.toolRead?.brand?.name,
     };
     this.listAddedEquipment.push(body);
+    await this.toastrService.createToast('Equipo agregado', 'danger');
     this.formMaintenance.reset();
   }
 
@@ -179,6 +200,7 @@ export class MaintenancePage implements OnInit {
         continue;
       }
     }
+    await this.loadingService?.endLoading();
     this.listAddedEquipment = [];
     this.router.navigate(['/auth/menu-equipments']);
   }
@@ -190,10 +212,14 @@ export class MaintenancePage implements OnInit {
       invoiceSupplierId: new FormControl('', Validators.required),
       invoicePrice: new FormControl('', Validators.required),
       invoiceWarranty: new FormControl('', Validators.required),
-      remark: new FormControl('', Validators.required),
+      remark: new FormControl(''),
       constructionId: new FormControl('', Validators.required),
       toolId: new FormControl('', Validators.required),
     });
+    this.updateFieldForm(
+      new Date()?.toISOString()?.split('T')[0],
+      'invoiceDate'
+    );
   }
 
   private updateFieldForm(value: string, formcontrol: string): void {
