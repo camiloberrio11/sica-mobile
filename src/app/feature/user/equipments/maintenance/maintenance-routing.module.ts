@@ -7,6 +7,14 @@ const routes: Routes = [
   {
     path: '',
     component: MaintenancePage
+  },
+  {
+    path: 'send',
+    loadChildren: () => import('./send/send.module').then( m => m.SendPageModule)
+  },
+  {
+    path: 'return',
+    loadChildren: () => import('./return/return.module').then( m => m.ReturnPageModule)
   }
 ];
 
