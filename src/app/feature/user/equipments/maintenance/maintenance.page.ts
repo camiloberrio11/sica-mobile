@@ -160,7 +160,7 @@ export class MaintenancePage implements OnInit {
       name: this.toolRead?.brand?.name,
     };
     this.listAddedEquipment.push(body);
-    await this.toastrService.createToast('Equipo agregado', 'danger');
+    await this.toastrService.createToast('Equipo agregado', 'success');
     this.formMaintenance.reset();
   }
 
@@ -201,6 +201,7 @@ export class MaintenancePage implements OnInit {
       }
     }
     await this.loadingService?.endLoading();
+    await this.toastrService.createToast('Equipo enviado', 'success');
     this.listAddedEquipment = [];
     this.router.navigate(['/auth/menu-equipments']);
   }

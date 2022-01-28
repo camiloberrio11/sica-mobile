@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CategoryTool } from 'src/app/core/models/CategoryTool';
 import { RentedTool } from 'src/app/core/models/RentedTool';
 import {
@@ -41,6 +41,7 @@ export class ReturnPage {
     private platform: Platform,
     private alertController: AlertController,
     private location: Location,
+    private cd: ChangeDetectorRef,
     private toastrService: ToastService,
     private router: Router
   ) {
@@ -168,6 +169,8 @@ export class ReturnPage {
       .subscribe(
         async (inf) => {
           this.available = inf?.available;
+          this.cd?.detectChanges();
+
           await this.loadingService?.endLoading();
         },
         async (err) => {
@@ -181,6 +184,10 @@ export class ReturnPage {
   }
 
   async sendBackTool(): Promise<void> {
+    if (this.listAddedEquipments?.length < 1 ){
+      await this.toastrService.createToast('No has agregado ningún equipo', 'danger');
+      return;
+    }
     const date = new Date()?.toISOString().split('T')[0];
     const body: BodyTakeBackRentedTool = {
       ids: this.listAddedEquipments,

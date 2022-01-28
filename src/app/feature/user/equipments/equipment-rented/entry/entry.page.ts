@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ToastService } from './../../../../../core/services/toast.service';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
@@ -28,7 +29,8 @@ export class EntryPage implements OnInit {
     private location: Location,
     private sicaBackend: SicaBackendService,
     private cd: ChangeDetectorRef,
-    private toastrService: ToastService
+    private toastrService: ToastService,
+    private router: Router
   ) {
     this.subscriptionBackButton = this.platform.backButton.subscribe(() => {
       if (this.listAddedEquipments?.length > 0) {
@@ -99,6 +101,7 @@ export class EntryPage implements OnInit {
         'Se han creado con éxito',
         'success'
       );
+      this.router.navigate(['/auth/menu-equipments']);
     } catch (error) {
       await this.loadingService.endLoading();
       this.toastrService.createToast('Ocurrió un error guardando', 'danger');
