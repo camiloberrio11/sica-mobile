@@ -197,7 +197,7 @@ export class ReturnPage {
       realAnnouncedDate: date,
       supplier: this.idCustomer,
     };
-    await this.loadingService.initLoading('Enviando equipos');
+    await this.loadingService.initLoading('Enviando equipos. Un momento por favor...');
     this.sicaBackend.takeBackRentedTool(body).subscribe(
       async () => {
         await this.loadingService?.endLoading();

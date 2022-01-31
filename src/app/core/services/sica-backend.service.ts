@@ -19,7 +19,11 @@ import { CreateLoanBody, Loan, UpdateLoanBody } from '../models/Loan';
 import { RentedTool, SaveRentedToolBody } from '../models/RentedTool';
 import { SendEToolBody } from '../models/Movement';
 import { Reason } from '../models/Reason';
-import { Maintenance, MaintenanceBodyCreate } from '../models/Maintenance';
+import {
+  BodyReturnMaintenance,
+  Maintenance,
+  MaintenanceBodyCreate,
+} from '../models/Maintenance';
 
 @Injectable({
   providedIn: 'root',
@@ -108,11 +112,11 @@ export class SicaBackendService {
     );
   }
 
-  getMaintenance(): Observable<Maintenance[]> {
+  getMaintenance(toolId: string): Observable<Maintenance> {
     const idConstruction =
       this.constructionService.getConstructionSelected()?.id;
-    return this.http.get<Maintenance[]>(
-      `${environment?.urlApi}api/${idConstruction}/tool/maintenance`
+    return this.http.get<Maintenance>(
+      `${environment?.urlApi}/api/${idConstruction}/tool/maintenance/last-of/${toolId}`
     );
   }
 
@@ -213,6 +217,18 @@ export class SicaBackendService {
       this.constructionService.getConstructionSelected()?.id;
     return this.http.post(
       `${environment?.urlApi}/api/${idConstruction}/tool/rented/take-back`,
+      body
+    );
+  }
+
+  patchMaintenance(
+    idmaintenance: string,
+    body: BodyReturnMaintenance
+  ): Observable<any> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.patch(
+      `${environment?.urlApi}/api/${idConstruction}/tool/maintenance/${idmaintenance}/return-tool`,
       body
     );
   }

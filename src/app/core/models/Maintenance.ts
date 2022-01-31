@@ -47,3 +47,9 @@ export interface MaintenanceBodyCreate {
   tool: string;
   name?: string;
 }
+
+export interface BodyReturnMaintenance {
+  return: {
+    remark: string;
+  };
+}

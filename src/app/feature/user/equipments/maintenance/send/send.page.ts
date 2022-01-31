@@ -24,7 +24,6 @@ interface Equipment {
   styleUrls: ['./send.page.scss'],
 })
 export class SendPage implements OnInit {
-
   indexStep = 0;
   menuFormStep: string[] = ['Equipo', 'Finalizar'];
   stepEnd = false;
@@ -196,13 +195,14 @@ export class SendPage implements OnInit {
       await this.loadingService.initLoading('Enviando a mantenimiento');
       try {
         await this.sicaBackend.createMaintenance(iterator)?.toPromise();
+        await this.toastrService.createToast(`Equipo ${iterator?.name} enviado`, 'success');
       } catch (error) {
         console.log(error);
+        await this.toastrService.createToast(`Equipo ${iterator?.name} con error`, 'danger');
         continue;
       }
     }
     await this.loadingService?.endLoading();
-    await this.toastrService.createToast('Equipo enviado', 'success');
     this.listAddedEquipment = [];
     this.router.navigate(['/auth/menu-equipments']);
   }
@@ -229,5 +229,4 @@ export class SendPage implements OnInit {
       [formcontrol]: value,
     });
   }
-
 }
