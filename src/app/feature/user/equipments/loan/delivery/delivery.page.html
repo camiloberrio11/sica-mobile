@@ -53,7 +53,9 @@
           <app-box-quantity
             label="Cantidad"
             formControlName="quantity"
+            [disabled]="toolFindByCodeBar?.category?.isUnit"
             (valueInput)="inputChange($event, 'quantity')"
+            [value]="formDelivery?.get('quantity')?.value"
           ></app-box-quantity>
           <app-box-quantity
             label="Días"

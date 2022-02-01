@@ -187,7 +187,7 @@ export class SendPage implements OnInit {
     if (this.listAddedEquipment?.length < 1) {
       await this.toastrService.createToast(
         'No has agregado ningún equipo',
-        'warning'
+        'warning', 'middle'
       );
       return;
     }

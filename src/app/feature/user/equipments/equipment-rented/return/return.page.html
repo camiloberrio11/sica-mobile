@@ -43,8 +43,15 @@
       [label]="'Fecha'"
       typeInput="text"
       [isTypeDate]="true"
-      [value]="currentDate"
-      [disable]="true"
+    ></app-input-general>
+
+    <app-input-general
+      *ngIf="categoryTool?.isUnit"
+      [label]="'Id Proveedor'"
+      placeholder="Ingresa Id proveedor"
+      typeInput="text"
+      (inputChange)="handleSupplier($event)"
+      [value]="idSupplier"
     ></app-input-general>
 
     <div class="return__quan">

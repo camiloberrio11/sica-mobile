@@ -23,9 +23,9 @@ import { Location } from '@angular/common';
 export class ReturnPage {
   listAddedEquipments: IdToolBodyTakeBackRentedTool[] = [];
   subscriptionBackButton: Subscription;
-  currentDate: string;
   listSupplier: { id: string; value: string }[] = [];
   lastMovementCategory: RentedTool;
+  idSupplier = '';
 
   // Properties view
   available = 0;
@@ -60,7 +60,6 @@ export class ReturnPage {
       ?.toDateString()
       ?.split('T')[0]
       ?.split('-');
-    this.currentDate = `${day}${month}${year}`;
   }
 
   ionViewDidEnter() {
@@ -87,16 +86,22 @@ export class ReturnPage {
 
   async addEquipment(): Promise<void> {
     this.listAddedEquipments.push({
-      returnIdBySupplier: 'string',
+      returnIdBySupplier: this.idSupplier || '',
       quantity: +this.quantity,
       category: this.categoryTool?.id,
     });
-    await this.toastrService.createToast('Equipo agregado', 'success');
+    await this.toastrService.createToast('Equipo agregado', 'success', 'middle');
+    this.idSupplier = '';
     this.quantity = null;
+    this.categoryTool = null;
   }
 
   save(): void {
     alert('Guardado');
+  }
+
+  handleSupplier(event: string): void {
+    this.idSupplier = event;
   }
 
   sendEmail(): void {
@@ -163,14 +168,13 @@ export class ReturnPage {
     if (!this.idCustomer || !this.categoryTool) {
       return;
     }
-    await this.loadingService?.initLoading('Obteniendo cantidad disposible');
+    await this.loadingService?.initLoading('Obteniendo cantidad disposible...');
     this.sicaBackend
       .getAvailableRentedTool(this.idCustomer, this.categoryTool?.id)
       .subscribe(
         async (inf) => {
           this.available = inf?.available;
           this.cd?.detectChanges();
-
           await this.loadingService?.endLoading();
         },
         async (err) => {
@@ -184,8 +188,11 @@ export class ReturnPage {
   }
 
   async sendBackTool(): Promise<void> {
-    if (this.listAddedEquipments?.length < 1 ){
-      await this.toastrService.createToast('No has agregado ningún equipo', 'danger');
+    if (this.listAddedEquipments?.length < 1) {
+      await this.toastrService.createToast(
+        'No has agregado ningún equipo',
+        'danger'
+      );
       return;
     }
     const date = new Date()?.toISOString().split('T')[0];
@@ -197,7 +204,9 @@ export class ReturnPage {
       realAnnouncedDate: date,
       supplier: this.idCustomer,
     };
-    await this.loadingService.initLoading('Enviando equipos. Un momento por favor...');
+    await this.loadingService.initLoading(
+      'Enviando equipos. Un momento por favor...'
+    );
     this.sicaBackend.takeBackRentedTool(body).subscribe(
       async () => {
         await this.loadingService?.endLoading();
