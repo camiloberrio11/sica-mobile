@@ -29,6 +29,7 @@
     height: 100%;
     border: 1px solid var(--secondary-color);
     font-size: 13px;
+    background-color: transparent;
     &::placeholder {
       font-size: 12px;
     }
