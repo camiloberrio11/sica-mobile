@@ -12,6 +12,7 @@ import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 export class LoginPage implements OnInit {
   username: string;
   password: string;
+  viewPassword = false;
 
   constructor(
     private router: Router,

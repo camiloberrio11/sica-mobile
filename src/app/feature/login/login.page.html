@@ -1,17 +1,26 @@
 <div class="login">
   <div class="login__content">
     <h2 class="login__content__title">Iniciar sesion</h2>
-    <div class="login__content__input">
+    <div class="login__content__input passwordbox">
       <ion-icon class="login__content__input__icon" name="person"></ion-icon>
       <input type="text" placeholder="Usuario" [(ngModel)]="username" />
     </div>
-    <div class="login__content__input">
+    <div class="login__content__input passwordbox">
       <ion-icon
         class="login__content__input__icon"
         name="lock-closed"
       ></ion-icon>
 
-      <input type="password" placeholder="Password" [(ngModel)]="password" />
+      <input
+        [type]="viewPassword ? 'text' : 'password'"
+        placeholder="Password"
+        [(ngModel)]="password"
+      />
+      <button class="view-password" (click)="viewPassword = !viewPassword">
+        <ion-icon
+          [name]="!viewPassword ? 'eye-outline' : 'eye-off-outline'"
+        ></ion-icon>
+      </button>
     </div>
     <p class="login__content__passwordcover">¿Olvidaste tu contraseña?</p>
     <div class="login__content__logo">
