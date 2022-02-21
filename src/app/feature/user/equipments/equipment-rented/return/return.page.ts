@@ -85,6 +85,10 @@ export class ReturnPage {
   }
 
   async addEquipment(): Promise<void> {
+    if (!this.categoryTool || !this.quantity || (this.categoryTool?.isUnit && !this.idSupplier)) {
+      await this.toastrService.createToast('LLena campos obligatorios', 'warning', 'middle');
+      return;
+    }
     this.listAddedEquipments.push({
       returnIdBySupplier: this.idSupplier || '',
       quantity: +this.quantity,

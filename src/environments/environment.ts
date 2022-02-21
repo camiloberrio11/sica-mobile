@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  urlApi: 'https://sica-backend.herokuapp.com'
+  urlApi: 'https://sica-backend.herokuapp.com',
+  urlCorreos: 'https://api-emails-metis.herokuapp.com'
 };
 /*
  * For easier debugging in development mode, you can import the following file
