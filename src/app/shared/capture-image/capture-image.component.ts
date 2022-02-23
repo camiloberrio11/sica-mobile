@@ -57,7 +57,7 @@ export class CaptureImageComponent implements OnInit {
       if (error === 'No Image Selected') {
         return;
       }
-      this.toastrService.createToast(
+      await this.toastrService.createToast(
         'Ocurrió un error capturando la foto',
         'warning'
       );
