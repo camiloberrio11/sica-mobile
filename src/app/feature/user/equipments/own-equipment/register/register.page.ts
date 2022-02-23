@@ -16,10 +16,11 @@ export class RegisterPage implements OnInit {
   menuFormStep: string[] = ['Foto', 'Datos', 'Factura'];
   stepEnd = false;
   formRegister: FormGroup;
-
+  base64ImageEquipment: string;
   listSupplier: { id: string; value: string }[] = [];
   listBrand: { id: string; value: string }[] = [];
   listCategoryTool: { id: string; value: string }[] = [];
+
 
   constructor(
     private loadingService: LoadingService,
@@ -35,6 +36,7 @@ export class RegisterPage implements OnInit {
 
   ionViewDidEnter(): void {
     this.getSupplier();
+    this.base64ImageEquipment = null;
   }
 
   currentIndexStepForm(event: number) {
@@ -60,7 +62,8 @@ export class RegisterPage implements OnInit {
   }
 
   getDataTakePhoto(photoBase64: string): void {
-    console.log('Foto', photoBase64);
+    this.base64ImageEquipment = photoBase64;
+    // console.log('Foto', photoBase64);
   }
 
   private async getBrand(): Promise<void> {

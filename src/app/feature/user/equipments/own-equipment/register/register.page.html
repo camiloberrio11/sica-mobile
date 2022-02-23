@@ -18,6 +18,7 @@
           (registerResult)="getEquipmentByCodeBar($event)"
         ></app-input-codebar>
         <app-capture-image
+        [srcImg]="base64ImageEquipment"
           (dataPhoto)="getDataTakePhoto($event)"
         ></app-capture-image>
       </div>
