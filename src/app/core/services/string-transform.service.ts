@@ -20,7 +20,8 @@ export class StringTransformService {
 
   formatCurrency( value: number): string {
     const valueFormat = `${value}`;
-    return `${valueFormat.replace('.', ',').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, '.')}`.trim();
+    const valueTotal = `${valueFormat.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`?.trim();
+    return valueTotal;
   }
   formatDate(dateString): string {
     const cleanString = dateString.replace(/\D/g, '');

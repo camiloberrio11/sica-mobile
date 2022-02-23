@@ -10,6 +10,12 @@ export interface SendNotificationEmail {
   nameCompany: string;
 }
 
+export interface ResponseSendNotificationEmail {
+  ok: boolean;
+  message: string;
+  data: any;
+}
+
 interface Attachment {
   name: string;
   data: string;

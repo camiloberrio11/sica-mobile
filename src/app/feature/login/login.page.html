@@ -3,7 +3,12 @@
     <h2 class="login__content__title">Iniciar sesion</h2>
     <div class="login__content__input passwordbox">
       <ion-icon class="login__content__input__icon" name="person"></ion-icon>
-      <input type="text" placeholder="Usuario" [(ngModel)]="username" />
+      <input
+        type="text"
+        placeholder="Usuario"
+        [(ngModel)]="username"
+        autocomplete="false"
+      />
     </div>
     <div class="login__content__input passwordbox">
       <ion-icon

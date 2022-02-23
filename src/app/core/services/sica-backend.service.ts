@@ -1,3 +1,7 @@
+import {
+  ResponseSendNotificationEmail,
+  SendNotificationEmail,
+} from './../models/SendEmailNotification';
 import { WorkerSica } from './../models/Worker';
 import { Movement, ReceiveToolBody } from './../models/Movement';
 import { CategoryTool } from './../models/CategoryTool';
@@ -229,6 +233,15 @@ export class SicaBackendService {
       this.constructionService.getConstructionSelected()?.id;
     return this.http.patch(
       `${environment?.urlApi}/api/${idConstruction}/tool/maintenance/${idmaintenance}/return-tool`,
+      body
+    );
+  }
+
+  sendNotificationEmail(
+    body: SendNotificationEmail
+  ): Observable<ResponseSendNotificationEmail> {
+    return this.http.post<ResponseSendNotificationEmail>(
+      `${environment?.urlCorreos}/api/email/send`,
       body
     );
   }

@@ -1,3 +1,4 @@
+import { StringTransformService } from './../../../../../core/services/string-transform.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ToastService } from './../../../../../core/services/toast.service';
@@ -9,6 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CategoryTool } from 'src/app/core/models/CategoryTool';
 import { AlertController, Platform } from '@ionic/angular';
 import { Location } from '@angular/common';
+import { SendNotificationEmail } from 'src/app/core/models/SendEmailNotification';
 
 @Component({
   selector: 'app-entry',
@@ -30,7 +32,8 @@ export class EntryPage implements OnInit {
     private sicaBackend: SicaBackendService,
     private cd: ChangeDetectorRef,
     private toastrService: ToastService,
-    private router: Router
+    private router: Router,
+    private readonly stringTransformService: StringTransformService
   ) {
     this.subscriptionBackButton = this.platform.backButton.subscribe(() => {
       if (this.listAddedEquipments?.length > 0) {
@@ -108,8 +111,85 @@ export class EntryPage implements OnInit {
     }
   }
 
-  sendEmail(): void {
-    alert('Enviado al correo');
+  async sendEmail(): Promise<void> {
+    const alert = await this.alertController.create({
+      cssClass: 'modalcss',
+      header: 'Un momento',
+      message: 'Ingresa correo(s) a notificar. Si son mas de uno separalos por coma (,)',
+      mode: 'ios',
+      inputs: [
+        {
+          name: 'email',
+          type: 'email',
+          placeholder: 'Ej: micorreo@gmail.com, app@gmail.com',
+          attributes: {
+            required: true,
+          },
+        },
+      ],
+      buttons: [
+        { text: 'Cancelar', role: 'cancel', cssClass: 'danger-cancel' },
+        {
+          text: 'Enviar',
+          handler: () => {
+            console.log('Confirm Ok');
+          },
+        },
+      ],
+    });
+    await alert.present();
+    const { data } = await alert.onWillDismiss();
+    if (data?.values?.email) {
+      this.sendEmailNotification(data?.values?.email);
+      return;
+    }
+    await this.toastrService.createToast(
+      'Debes ingresar correo válido',
+      'warning',
+      'middle'
+    );
+  }
+
+  async sendEmailNotification(email: string): Promise<void> {
+    await this.loadingService.initLoading(`Enviando notificación a ${email}`);
+    const body: SendNotificationEmail = {
+      email: 'appsmetis@gmail.com',
+      subjectEmail: 'Movimiento de equipo alquilado',
+      mailsToSend: [...email.split(',')],
+      colorPrimary: '#4e909b',
+      contentEmail:
+        'Has creado un ingreso de equipo alquilado, a continuación encontrarás más información asociada al movimiento',
+      imgHeaderEmail:
+        'https://res.cloudinary.com/dupegtamn/image/upload/v1645447665/logo-metis_php0qh.png',
+      attachments: [
+        {
+          name: 'miadjuntoenurl.pdf',
+          data: 'https://www.orimi.com/pdf-test.pdf',
+        },
+      ],
+      urlCompany: 'https://www.metis.com.co',
+      nameCompany: 'Metis Consultores',
+    };
+    this.sicaBackend.sendNotificationEmail(body).subscribe(
+      async (data) => {
+        if (data?.ok) {
+          await this.loadingService.endLoading();
+          await this.toastrService.createToast('Correo enviado', 'success');
+          return;
+        }
+        await this.toastrService.createToast(
+          'Ha ocurrido un error enviando notificación',
+          'warning'
+        );
+      },
+      async (err) => {
+        await this.loadingService.endLoading();
+        await this.toastrService.createToast(
+          'Ha ocurrido un error con el servidor de correos',
+          'danger'
+        );
+      }
+    );
   }
 
   async handleAdd(): Promise<void> {
@@ -124,7 +204,9 @@ export class EntryPage implements OnInit {
     const newEquipment: SaveRentedToolBody = {
       remission: {
         number: +formValue?.remisionNumber,
-        dailyPrice: +formValue?.remisionDailyPrice,
+        dailyPrice: +this.stringTransformService.removeSpecialCharacters(
+          `${formValue?.remisionDailyPrice}`
+        ),
         rentedFrom: formValue?.remisionRentedFrom,
         estimatedRentalDays: +formValue?.remisionEstimatedRentalDays,
         supplier: formValue?.remisionSupplierId,
@@ -166,7 +248,10 @@ export class EntryPage implements OnInit {
     );
   }
 
-  updateField(value: string, formcontrol: string): void {
+  updateField(
+    value: string,
+    formcontrol: string,
+  ): void {
     this.formEntry.patchValue({
       [formcontrol]: value,
     });
