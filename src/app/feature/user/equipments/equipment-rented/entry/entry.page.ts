@@ -11,6 +11,7 @@ import { CategoryTool } from 'src/app/core/models/CategoryTool';
 import { AlertController, Platform } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { SendNotificationEmail } from 'src/app/core/models/SendEmailNotification';
+import { GeneratePdfService } from 'src/app/core/services/generate-pdf.service';
 
 @Component({
   selector: 'app-entry',
@@ -33,7 +34,8 @@ export class EntryPage implements OnInit {
     private cd: ChangeDetectorRef,
     private toastrService: ToastService,
     private router: Router,
-    private readonly stringTransformService: StringTransformService
+    private readonly stringTransformService: StringTransformService,
+    private readonly pdfGeneratorService: GeneratePdfService
   ) {
     this.subscriptionBackButton = this.platform.backButton.subscribe(() => {
       if (this.listAddedEquipments?.length > 0) {
@@ -115,7 +117,8 @@ export class EntryPage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: 'modalcss',
       header: 'Un momento',
-      message: 'Ingresa correo(s) a notificar. Si son mas de uno separalos por coma (,)',
+      message:
+        'Ingresa correo(s) a notificar. Si son mas de uno separalos por coma (,)',
       mode: 'ios',
       inputs: [
         {
@@ -151,6 +154,9 @@ export class EntryPage implements OnInit {
   }
 
   async sendEmailNotification(email: string): Promise<void> {
+    const contentPdf = await this.pdfGeneratorService.generatePdf(
+      '<html> <h1>  Hello World  </h1> </html>'
+    );
     await this.loadingService.initLoading(`Enviando notificación a ${email}`);
     const body: SendNotificationEmail = {
       email: 'appsmetis@gmail.com',
@@ -163,8 +169,8 @@ export class EntryPage implements OnInit {
         'https://res.cloudinary.com/dupegtamn/image/upload/v1645447665/logo-metis_php0qh.png',
       attachments: [
         {
-          name: 'miadjuntoenurl.pdf',
-          data: 'https://www.orimi.com/pdf-test.pdf',
+          name: 'Ingreso equipo alquilado',
+          data: contentPdf,
         },
       ],
       urlCompany: 'https://www.metis.com.co',
@@ -248,10 +254,7 @@ export class EntryPage implements OnInit {
     );
   }
 
-  updateField(
-    value: string,
-    formcontrol: string,
-  ): void {
+  updateField(value: string, formcontrol: string): void {
     this.formEntry.patchValue({
       [formcontrol]: value,
     });

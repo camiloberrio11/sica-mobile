@@ -27,7 +27,7 @@ export class RegisterPage implements OnInit {
     private sicaBackend: SicaBackendService,
     private cd: ChangeDetectorRef,
     private toastrService: ToastService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit() {
