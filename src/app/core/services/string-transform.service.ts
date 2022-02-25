@@ -43,6 +43,10 @@ export class StringTransformService {
     return output;
   }
 
+  getExtensionFile(nameFile: string = ''): string {
+    return nameFile?.split('.').pop();
+  }
+
   private insertString(originalString, newString, index) {
     return (
       originalString.substr(0, index) + newString + originalString.substr(index)

@@ -12,6 +12,7 @@ import { AlertController, Platform } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { SendNotificationEmail } from 'src/app/core/models/SendEmailNotification';
 import { GeneratePdfService } from 'src/app/core/services/generate-pdf.service';
+import { SendNotificationEmailService } from 'src/app/core/services/send-notification-email.service';
 
 @Component({
   selector: 'app-entry',
@@ -35,7 +36,8 @@ export class EntryPage implements OnInit {
     private toastrService: ToastService,
     private router: Router,
     private readonly stringTransformService: StringTransformService,
-    private readonly pdfGeneratorService: GeneratePdfService
+    private readonly pdfGeneratorService: GeneratePdfService,
+    private readonly sendNotificationEmailService: SendNotificationEmailService
   ) {
     this.subscriptionBackButton = this.platform.backButton.subscribe(() => {
       if (this.listAddedEquipments?.length > 0) {
@@ -154,47 +156,29 @@ export class EntryPage implements OnInit {
   }
 
   async sendEmailNotification(email: string): Promise<void> {
+    await this.loadingService.initLoading(
+      'Enviando correo y creando adjuntos...'
+    );
     const contentPdf = await this.pdfGeneratorService.generatePdf(
       '<html> <h1>  Hello World  </h1> </html>'
     );
-    await this.loadingService.initLoading(`Enviando notificación a ${email}`);
-    const body: SendNotificationEmail = {
-      email: 'appsmetis@gmail.com',
-      subjectEmail: 'Movimiento de equipo alquilado',
-      mailsToSend: [...email.split(',')],
-      colorPrimary: '#4e909b',
-      contentEmail:
-        'Has creado un ingreso de equipo alquilado, a continuación encontrarás más información asociada al movimiento',
-      imgHeaderEmail:
-        'https://res.cloudinary.com/dupegtamn/image/upload/v1645447665/logo-metis_php0qh.png',
-      attachments: [
-        {
-          name: 'Ingreso equipo alquilado',
-          data: contentPdf,
-        },
-      ],
-      urlCompany: 'https://www.metis.com.co',
-      nameCompany: 'Metis Consultores',
-    };
-    this.sicaBackend.sendNotificationEmail(body).subscribe(
-      async (data) => {
-        if (data?.ok) {
-          await this.loadingService.endLoading();
-          await this.toastrService.createToast('Correo enviado', 'success');
-          return;
-        }
-        await this.toastrService.createToast(
-          'Ha ocurrido un error enviando notificación',
-          'warning'
-        );
-      },
-      async (err) => {
-        await this.loadingService.endLoading();
-        await this.toastrService.createToast(
-          'Ha ocurrido un error con el servidor de correos',
-          'danger'
-        );
-      }
+    const emailSend =
+      await this.sendNotificationEmailService.sendEmailNotification(
+        email,
+        [{ name: 'CertificadoEquipoAlquiladoIngreso.pdf', data: contentPdf }],
+        'Movimiento de equipo alquilado',
+        'Has creado un ingreso de equipo alquilado, a continuación encontrarás más información asociada al movimiento'
+      );
+    if (emailSend) {
+      await this.loadingService.endLoading();
+      await this.toastrService.createToast('Correo enviado', 'success');
+      return;
+    }
+    await this.loadingService.endLoading();
+
+    await this.toastrService.createToast(
+      'Ha ocurrido un error con el servidor de correos',
+      'danger'
     );
   }
 

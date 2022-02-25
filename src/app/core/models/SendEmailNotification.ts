@@ -16,7 +16,7 @@ export interface ResponseSendNotificationEmail {
   data: any;
 }
 
-interface Attachment {
+export interface Attachment {
   name: string;
   data: string;
 }
