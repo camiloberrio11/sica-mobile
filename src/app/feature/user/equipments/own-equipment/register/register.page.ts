@@ -5,6 +5,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 import { CreateToolBody } from 'src/app/core/models/Tool';
+import { StorageService } from 'src/app/core/services/storage.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-register',
@@ -21,13 +23,13 @@ export class RegisterPage implements OnInit {
   listBrand: { id: string; value: string }[] = [];
   listCategoryTool: { id: string; value: string }[] = [];
 
-
   constructor(
     private loadingService: LoadingService,
     private sicaBackend: SicaBackendService,
     private cd: ChangeDetectorRef,
     private toastrService: ToastService,
     private router: Router,
+    private readonly storageService: StorageService
   ) {}
 
   ngOnInit() {
@@ -63,7 +65,6 @@ export class RegisterPage implements OnInit {
 
   getDataTakePhoto(photoBase64: string): void {
     this.base64ImageEquipment = photoBase64;
-    // console.log('Foto', photoBase64);
   }
 
   private async getBrand(): Promise<void> {
@@ -151,8 +152,10 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  private sendRequest(): void {
+  private async sendRequest(): Promise<void> {
+    await this.loadingService.initLoading('Guardando. Un momento por favor');
     const valuesForm = this.formRegister.value;
+    const urlImage = await this.upploadImage();
     const body: CreateToolBody = {
       invoice: {
         date: valuesForm?.invoiceDate || new Date()?.toISOString(),
@@ -162,7 +165,7 @@ export class RegisterPage implements OnInit {
         warranty: +valuesForm?.invoiceWarranty,
       },
       tool: {
-        image: 'imagen/de/prueba10.png',
+        image: urlImage,
         barcode: valuesForm?.toolCodebar,
         reference: valuesForm?.toolReference,
         serial: valuesForm?.toolSerial,
@@ -172,20 +175,36 @@ export class RegisterPage implements OnInit {
       },
     };
     this.sicaBackend.createTool(body).subscribe(
-      (data) => {
-        this.toastrService.createToast(
+      async (data) => {
+        await this.loadingService.endLoading();
+        await this.toastrService.createToast(
           'Se ha creado el equipo con éxito',
           'success'
         );
         this.formRegister.reset();
         this.router.navigate(['/auth/menu-equipments']);
       },
-      (err) => {
-        this.toastrService.createToast(
+      async (err) => {
+        await this.loadingService.endLoading();
+        await this.toastrService.createToast(
           `No se ha podido crear el equipo ${err?.msg}`,
           'warning'
         );
       }
     );
+  }
+
+  private async upploadImage(): Promise<string> {
+    const valuesForm = this.formRegister.value;
+    const path = `${environment?.nameApp}/equipo-propio/registro/${valuesForm?.toolCodebar}-${valuesForm?.toolReference}`;
+    try {
+      const url = await this.storageService.uploadImageFirebase(
+        path,
+        this.base64ImageEquipment
+      );
+      return url;
+    } catch (error) {
+      return JSON.stringify(error);
+    }
   }
 }

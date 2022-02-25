@@ -15,6 +15,7 @@
   "dependencies": {
     "@angular/common": "~12.1.1",
     "@angular/core": "~12.1.1",
+    "@angular/fire": "^7.2.1",
     "@angular/forms": "~12.1.1",
     "@angular/platform-browser": "~12.1.1",
     "@angular/platform-browser-dynamic": "~12.1.1",
@@ -30,6 +31,7 @@
     "@ionic-native/nfc": "^5.36.0",
     "@ionic/angular": "^5.5.2",
     "cordova-plugin-camera": "^6.0.0",
+    "firebase": "^9.6.7",
     "ionic-selectable": "^4.9.0",
     "onscan.js": "^1.5.2",
     "phonegap-nfc": "^1.2.0",
