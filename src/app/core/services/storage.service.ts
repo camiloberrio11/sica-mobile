@@ -5,18 +5,18 @@ import { environment } from 'src/environments/environment';
 
 firebase.initializeApp(environment?.firebaseConfig);
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StorageService {
   storageRef = firebase.app().storage().ref();
 
-  constructor() { }
+  constructor() {}
 
   async uploadImageFirebase(pathSaveImg: string, imgBase64: any) {
     try {
       const respuesta = await this.storageRef
         .child(pathSaveImg)
-        .putString(imgBase64, 'data_url');
+        .putString(`${imgBase64}`, 'base64');
       return await respuesta?.ref?.getDownloadURL();
     } catch (error) {
       console.log(error);
