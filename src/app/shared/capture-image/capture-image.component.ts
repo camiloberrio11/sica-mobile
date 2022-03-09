@@ -50,7 +50,7 @@ export class CaptureImageComponent implements OnInit {
       this.srcImgCapture = this.sanitizer.bypassSecurityTrustResourceUrl(
         'data:image/jpeg;base64,' + result
       );
-      this.dataPhoto.emit(this.srcImgCapture || result);
+      this.dataPhoto.emit(this.srcImgCapture?.changingThisBreaksApplicationSecurity || result);
       this.cd.detectChanges();
       await this.loadingService.endLoading();
     } catch (error) {

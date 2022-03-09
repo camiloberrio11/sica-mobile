@@ -16,7 +16,7 @@ export class StorageService {
     try {
       const respuesta = await this.storageRef
         .child(pathSaveImg)
-        .putString(`${imgBase64}`, 'base64');
+        .putString(`${imgBase64}`, 'data_url');
       return await respuesta?.ref?.getDownloadURL();
     } catch (error) {
       console.log(error);

@@ -158,14 +158,14 @@ export class RegisterPage implements OnInit {
     const urlImage = await this.upploadImage();
     const body: CreateToolBody = {
       invoice: {
-        date: valuesForm?.invoiceDate || new Date()?.toISOString(),
+        date: valuesForm?.invoiceDate || new Date()?.toISOString() ,
         number: +valuesForm?.invoiceNumber,
         supplier: valuesForm?.invoiceSupplierId,
         price: +valuesForm?.invoicePrice,
         warranty: +valuesForm?.invoiceWarranty,
       },
       tool: {
-        image: urlImage,
+        image: urlImage || '',
         barcode: valuesForm?.toolCodebar,
         reference: valuesForm?.toolReference,
         serial: valuesForm?.toolSerial,
@@ -196,7 +196,7 @@ export class RegisterPage implements OnInit {
 
   private async upploadImage(): Promise<string> {
     const valuesForm = this.formRegister.value;
-    const path = `${environment?.nameApp}/equipo-propio/registro/${valuesForm?.toolCodebar}-${valuesForm?.toolReference}`;
+    const path = `${environment?.nameApp}/equipo-propio/registro/${valuesForm?.toolCodebar}_${valuesForm?.toolReference}`;
     try {
       const url = await this.storageService.uploadImageFirebase(
         path,
