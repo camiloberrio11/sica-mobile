@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  nameApp: 'capital',
-  urlApi: 'https://sica-backend.herokuapp.com',
+  nameApp: 'vertice',
+  urlApi: 'https://sica-vertice.herokuapp.com',
   urlCorreos: 'https://api-emails-metis.herokuapp.com',
   firebaseConfig: {
     apiKey: 'AIzaSyCQYQvDuRgwyKF7cfXyKAo3GAtBX8cf3dA',
