@@ -13,7 +13,7 @@ const ID_SIMULATE_USER = 'abc123YKNDKH8IYHJM31214DASA';
 })
 export class CreatePage {
   nfcSubs: Subscription;
-  identification: string;
+  identification: number;
   exist = false;
   constructor(
     private nfc: NFC,
@@ -24,12 +24,12 @@ export class CreatePage {
   ) {}
 
   ionViewWillLeave() {
-    this.nfcSubs.unsubscribe();
+    this.nfcSubs?.unsubscribe();
   }
 
   async handleClick(event: boolean): Promise<void> {
     await this.loadingService.initLoading('Obteniendo información');
-    this.sicaBackendService.getTokenByDocument(this.identification).subscribe(
+    this.sicaBackendService.getTokenByDocument(`${this.identification}`).subscribe(
       async (data) => {
         await this.loadingService.endLoading();
         this.exist = true;
@@ -63,7 +63,8 @@ export class CreatePage {
           const result = await this.nfc.write(message);
           this.toastrService.createToast('Token creado', 'success');
           this.exist = false;
-          this.identification = '';
+          this.identification = null;
+          this.nfcSubs?.unsubscribe();
         } catch (error) {
           this.toastrService.createToast(
             'No se ha podido escribir el token',

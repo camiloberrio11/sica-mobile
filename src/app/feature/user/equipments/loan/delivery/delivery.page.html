@@ -40,18 +40,22 @@
         <app-input-label-nfc
           [label]="'Entregado a'"
           srcIcon="assets/icon/nfc.svg"
-          (nfcValue)="getUserByToken($event, 'received')"
+          [isWorker]="true"
+          (nfcValueWorker)="getWorker($event)"
         ></app-input-label-nfc>
         <app-input-general
           [label]="'Contratista'"
           typeInput="text"
-          [value]="recivedByUser?.name?.first + recivedByUser?.name?.last"
+          [value]="recivedByUser?.contractor.name"
         ></app-input-general>
 
         <div class="delivery__layout__loan__1__quan">
           <app-box-quantity
             label="Cantidad"
+            formControlName="quantity"
+            [disabled]="toolFindByCodeBar?.category?.isUnit"
             (valueInput)="inputChange($event, 'quantity')"
+            [value]="formDelivery?.get('quantity')?.value"
           ></app-box-quantity>
           <app-box-quantity
             label="Días"

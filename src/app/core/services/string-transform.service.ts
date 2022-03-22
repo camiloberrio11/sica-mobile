@@ -18,24 +18,33 @@ export class StringTransformService {
     return textToTransform.replace(/\s+/g, '').trim();
   }
 
-  formatCurrency(currencyCode: string, value: number): string {
+  formatCurrency(value: number): string {
     const valueFormat = `${value}`;
-    return `${currencyCode} ${valueFormat.replace('.', ',').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, '.')}`.trim();
+    const valueTotal = `${valueFormat.replace(
+      /(\d)(?=(\d{3})+(?!\d))/g,
+      '$1.'
+    )}`?.trim();
+    return valueTotal;
+  }
+
+  removeLinesBlank(text: string): string {
+    return text?.replace(/(\r\n|\n|\r)/gm, '');
   }
   formatDate(dateString): string {
     const cleanString = dateString.replace(/\D/g, '');
     let output = cleanString.substr(0, 8);
     const size = dateString.length;
-
     if (size > 4) {
       output = this.insertString(output, '/', 4);
     }
-
     if (size > 2) {
       output = this.insertString(output, '/', 2);
     }
-
     return output;
+  }
+
+  getExtensionFile(nameFile: string = ''): string {
+    return nameFile?.split('.').pop();
   }
 
   private insertString(originalString, newString, index) {

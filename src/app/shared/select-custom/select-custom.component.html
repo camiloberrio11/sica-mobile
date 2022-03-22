@@ -1,7 +1,7 @@
 <div class="selectcustom">
   <p>{{ label }}</p>
   <ion-list>
-    <ion-item>
+    <ion-item *ngIf="!canSearch">
       <ion-select
         [placeholder]="placeholder"
         okText="Seleccionar"
@@ -12,6 +12,20 @@
           item?.value
         }}</ion-select-option>
       </ion-select>
+    </ion-item>
+    <ion-item *ngIf="canSearch">
+      <ion-label>{{placeholder}}</ion-label>
+      <ionic-selectable
+        [items]="optionsList"
+        itemValueField="id"
+        itemTextField="value"
+        [canSearch]="true"
+        closeButtonText="Cerrar"
+        searchPlaceholder="Buscar"
+        closeButtonSlot="end"
+        (onChange)="select($event?.value)"
+      >
+      </ionic-selectable>
     </ion-item>
   </ion-list>
 </div>

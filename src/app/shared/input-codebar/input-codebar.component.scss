@@ -19,7 +19,8 @@
   img {
     position: absolute;
     right: 10px;
-    bottom: 10px;
+    bottom: 16px;
+    width: 25px;
   }
   input {
     padding-left: 15px;
@@ -28,6 +29,7 @@
     height: 100%;
     border: 1px solid var(--secondary-color);
     font-size: 13px;
+    background-color: transparent;
     &::placeholder {
       font-size: 12px;
     }

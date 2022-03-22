@@ -1,3 +1,4 @@
+import { WorkerSica } from './../../core/models/Worker';
 import {
   ChangeDetectorRef,
   Component,
@@ -24,7 +25,9 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
   @Input() placeholder = 'Toca para leer token';
   @Input() srcIcon: string;
   @Input() id: string;
+  @Input() isWorker: boolean;
   @Output() nfcValue: EventEmitter<User> = new EventEmitter<User>();
+  @Output() nfcValueWorker: EventEmitter<WorkerSica> = new EventEmitter<WorkerSica>();
 
   readerMode$: Subscription;
   valueInput = '';
@@ -37,8 +40,7 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnDestroy(): void {
     this.readerMode$?.unsubscribe();
@@ -63,6 +65,7 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
         this.getInfoByToken(decodeNfc);
       },
       (err) => {
+        this.toastrService.createToast('Error en lectura', 'warning');
         console.log('Error reading tag', err);
       }
     );
@@ -74,10 +77,14 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
     }
     this.valueInput = '';
     this.cd.detectChanges();
+    if (this.isWorker) {
+      this.getWorker(code);
+      return;
+    }
     await this.loadingService.initLoading('Obteniendo información del token');
     this.backendSicaService.getUserByToken(code).subscribe(
       async (data) => {
-        this.loadingService.endLoading();
+        await this.loadingService.endLoading();
         this.valueInput = `${data?.name?.first} ${data?.name?.last}`;
         this.cd.detectChanges();
         this.nfcValue.emit(data);
@@ -89,6 +96,22 @@ export class InputLabelNfcComponent implements OnInit, OnDestroy {
           'warning'
         );
         this.valueInput = '';
+      }
+    );
+  }
+
+  private async getWorker(code: string): Promise<void> {
+    await this.loadingService.initLoading('Obteniendo información del token');
+    this.backendSicaService.getWorkerByToken(code).subscribe(
+      async (data) => {
+        await this.loadingService.endLoading();
+        this.valueInput = `${data?.name?.first} ${data?.name?.last}`;
+        this.cd.detectChanges();
+        this.nfcValueWorker.emit(data);
+      },
+      async (err) => {
+        await this.loadingService.endLoading();
+        await this.toastrService.createToast('Ocurrió un error', 'danger');
       }
     );
   }

@@ -27,7 +27,7 @@ export class SelectConstructionPage  {
   }
 
 
-  changeConstruction(event: { detail: { value: Construction } }) {
+  changeConstruction(event: { detail: { value: Construction } } | any) {
     const construction = event?.detail?.value;
     if (construction) {
       this.selectConstructionService.selectConstruction(construction);

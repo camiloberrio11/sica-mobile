@@ -34,7 +34,6 @@ interface Invoice {
   supplier: { id: string }[];
 }
 
-
 export interface MaintenanceBodyCreate {
   invoice: {
     date: string;
@@ -46,4 +45,11 @@ export interface MaintenanceBodyCreate {
   remark: string;
   construction: string;
   tool: string;
+  name?: string;
+}
+
+export interface BodyReturnMaintenance {
+  return: {
+    remark: string;
+  };
 }

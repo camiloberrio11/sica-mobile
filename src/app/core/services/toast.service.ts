@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 type Color = 'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger' | 'light' | 'medium' | 'dark';
+type Position = 'bottom' | 'middle' | 'top';
+
 
 @Injectable({
   providedIn: 'root',
@@ -8,11 +10,12 @@ type Color = 'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'dan
 export class ToastService {
   constructor(private toastCtrl: ToastController) {}
 
-  async createToast(message: string, type: Color) {
+  async createToast(message: string, type: Color, position: Position = 'bottom') {
     const toast = await this.toastCtrl.create({
       message,
       duration: 2500,
-      color: type
+      color: type,
+      position
     });
     toast.present();
   }

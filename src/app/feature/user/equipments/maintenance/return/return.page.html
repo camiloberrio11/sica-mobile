@@ -1,0 +1,68 @@
+<app-header [title]="'Mantenimiento'"></app-header>
+<ion-content [fullscreen]="true" class="maintenance">
+  <app-form-step
+    [listItems]="menuFormStep"
+    [currentIndexInForm]="indexStep"
+    (indexCurrent)="currentIndexStepForm($event)"
+  ></app-form-step>
+
+  <div class="maintenance__layout" [ngSwitch]="indexStep">
+    <form [formGroup]="formMaintenance">
+      <!-- form index 0 -->
+      <div class="maintenance__layout__0" *ngSwitchCase="0">
+        <app-input-codebar
+          [label]="'Escanear'"
+          placeholder="Escanear Código"
+          srcIcon="assets/icon/barcode.png"
+          typeInput="text"
+          (codeBarRead)="readCodeBar($event)"
+        ></app-input-codebar>
+        <app-input-general
+          [label]="'Equipo'"
+          [disable]="true"
+          typeInput="text"
+          [value]="toolRead?.category?.name"
+        ></app-input-general>
+
+        <app-input-general
+          [label]="'Marca'"
+          typeInput="text"
+          [disable]="true"
+          [value]="toolRead?.brand?.name"
+        ></app-input-general>
+        <app-input-general
+          [label]="'Referencia'"
+          typeInput="text"
+          [disable]="true"
+          [value]="toolRead?.reference"
+        ></app-input-general>
+        <app-input-general
+          [label]="'Serie'"
+          typeInput="text"
+          [disable]="true"
+          [value]="toolRead?.serial"
+        ></app-input-general>
+
+        <app-input-general
+          [label]="'Observación (es) *'"
+          [typeInput]="'text'"
+          placeholder="Observaciones"
+          (inputChange)="inputChange($event, 'remark')"
+          [value]="formMaintenance?.get('remark')?.value"
+        ></app-input-general>
+
+        <button class="maintenance__layout__btngeneral" (click)="nextStep()">
+          {{stepEnd ? 'Recibir' : 'Continuar'}}
+        </button>
+
+        <button
+          *ngIf="stepEnd"
+          (click)="sendEmail()"
+          class="maintenance__layout__btngeneral"
+        >
+          <ion-icon slot="start" name="mail-outline"></ion-icon> Enviar email
+        </button>
+      </div>
+    </form>
+  </div>
+</ion-content>

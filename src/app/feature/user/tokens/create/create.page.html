@@ -3,7 +3,7 @@
 <ion-content [fullscreen]="true" class="createtoken">
   <div class="createtoken__identification">
     <p>Ingresar cédula</p>
-    <input type="text" [(ngModel)]="identification" />
+    <input type="number" [(ngModel)]="identification" />
   </div>
   <app-button-item-menu
     *ngIf="identification"

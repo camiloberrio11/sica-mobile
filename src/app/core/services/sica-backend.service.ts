@@ -1,3 +1,8 @@
+import {
+  ResponseSendNotificationEmail,
+  SendNotificationEmail,
+} from './../models/SendEmailNotification';
+import { WorkerSica } from './../models/Worker';
 import { Movement, ReceiveToolBody } from './../models/Movement';
 import { CategoryTool } from './../models/CategoryTool';
 import { Brand } from './../models/Brand';
@@ -8,13 +13,21 @@ import { Observable } from 'rxjs';
 import { Construction } from '../models/Construction';
 import { environment } from 'src/environments/environment.prod';
 import { ConstructionService } from './construction.service';
-import { CreateToolBody, ToolByBarcodeResponseService } from '../models/Tool';
+import {
+  BodyTakeBackRentedTool,
+  CreateToolBody,
+  ToolByBarcodeResponseService,
+} from '../models/Tool';
 import { User } from '../models/User';
 import { CreateLoanBody, Loan, UpdateLoanBody } from '../models/Loan';
 import { RentedTool, SaveRentedToolBody } from '../models/RentedTool';
 import { SendEToolBody } from '../models/Movement';
 import { Reason } from '../models/Reason';
-import { Maintenance, MaintenanceBodyCreate } from '../models/Maintenance';
+import {
+  BodyReturnMaintenance,
+  Maintenance,
+  MaintenanceBodyCreate,
+} from '../models/Maintenance';
 
 @Injectable({
   providedIn: 'root',
@@ -59,6 +72,12 @@ export class SicaBackendService {
     return this.http.get<User>(`${environment.urlApi}/api/user/${token}`);
   }
 
+  getWorkerByToken(token: string): Observable<WorkerSica> {
+    return this.http.get<WorkerSica>(
+      `${environment.urlApi}/api/worker/${token}`
+    );
+  }
+
   getSupplier(): Observable<Supplier[]> {
     return this.http.get<Supplier[]>(`${environment.urlApi}/api/supplier`);
   }
@@ -97,11 +116,11 @@ export class SicaBackendService {
     );
   }
 
-  getMaintenance(): Observable<Maintenance[]> {
+  getMaintenance(toolId: string): Observable<Maintenance> {
     const idConstruction =
       this.constructionService.getConstructionSelected()?.id;
-    return this.http.get<Maintenance[]>(
-      `${environment?.urlApi}api/${idConstruction}/tool/maintenance`
+    return this.http.get<Maintenance>(
+      `${environment?.urlApi}/api/${idConstruction}/tool/maintenance/last-of/${toolId}`
     );
   }
 
@@ -183,6 +202,47 @@ export class SicaBackendService {
   getLastLoanOfTool(constructionId: string, toolId: string): Observable<Loan> {
     return this.http.get<Loan>(
       `${environment?.urlApi}/api/${constructionId}}/tool/loan/last-of/${toolId}`
+    );
+  }
+
+  getAvailableRentedTool(
+    supplierId: string,
+    categoryId: string
+  ): Observable<{ available: number }> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.get<{ available: number }>(
+      `${environment?.urlApi}/api/${idConstruction}/tool/rented/available/${supplierId}/${categoryId}`
+    );
+  }
+
+  takeBackRentedTool(body: BodyTakeBackRentedTool): Observable<any> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.post(
+      `${environment?.urlApi}/api/${idConstruction}/tool/rented/take-back`,
+      body
+    );
+  }
+
+  patchMaintenance(
+    idmaintenance: string,
+    body: BodyReturnMaintenance
+  ): Observable<any> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.patch(
+      `${environment?.urlApi}/api/${idConstruction}/tool/maintenance/${idmaintenance}/return-tool`,
+      body
+    );
+  }
+
+  sendNotificationEmail(
+    body: SendNotificationEmail
+  ): Observable<ResponseSendNotificationEmail> {
+    return this.http.post<ResponseSendNotificationEmail>(
+      `${environment?.urlCorreos}/api/email/send`,
+      body
     );
   }
 }

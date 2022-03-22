@@ -44,7 +44,8 @@ export class SendPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.idConstructionCurrent = this.constructionService?.getConstructionSelected()?.id;
+    this.idConstructionCurrent =
+      this.constructionService?.getConstructionSelected()?.id;
   }
 
   nextStep(): void {
@@ -118,7 +119,9 @@ export class SendPage implements OnInit {
           };
           return item;
         });
-        this.listConstruction = this.listConstruction.filter(it => it?.id !== this.idConstructionCurrent);
+        this.listConstruction = this.listConstruction.filter(
+          (it) => it?.id !== this.idConstructionCurrent
+        );
         await this.loadingService.endLoading();
       },
       async (err) => {
@@ -135,7 +138,7 @@ export class SendPage implements OnInit {
   private async sendRequest(): Promise<void> {
     const body: SendEToolBody = {
       reason: this.formState?.constructionId,
-      devolutionEstimatedDate: this.formState.dateReturn,
+      devolutionEstimatedDate: this.formState?.dateReturn,
       origin: {
         user: this.formState?.userId,
         construction: this.idConstructionCurrent,

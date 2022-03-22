@@ -18,6 +18,7 @@
           (registerResult)="getEquipmentByCodeBar($event)"
         ></app-input-codebar>
         <app-capture-image
+        [srcImg]="base64ImageEquipment"
           (dataPhoto)="getDataTakePhoto($event)"
         ></app-capture-image>
       </div>
@@ -28,6 +29,7 @@
           label="Equipo"
           placeholder="Seleccione equipo"
           [optionsList]="listCategoryTool"
+          [canSearch]="true"
           (selectItem)="handleSelect($event, 'toolCategoryId')"
         ></app-select-custom>
         <app-select-custom
@@ -58,12 +60,14 @@
         ></app-select-custom>
         <app-input-general
           label="No. FACT. / REM."
+          [typeInput]="'number'"
           placeholder="Digite # de factura (Opcional)"
           (inputChange)="handleSelect($event,'invoiceNumber')"
         ></app-input-general>
         <app-input-general
-          label="Valor"
+          label="Valor equipo (con iva)"
           placeholder="Digite valor"
+          [typeInput]="'number'"
           (inputChange)="handleSelect($event,'invoicePrice')"
         ></app-input-general>
         <app-input-general
@@ -76,6 +80,7 @@
         <app-input-general
           label="Garantía"
           placeholder="En meses (Opcional)"
+          [typeInput]="'number'"
           (inputChange)="handleSelect($event,'invoiceWarranty')"
         ></app-input-general>
       </div>
