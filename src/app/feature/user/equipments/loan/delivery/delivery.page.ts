@@ -1,3 +1,4 @@
+import { BodyLoanRentedTool } from './../../../../../core/models/RentedTool';
 import { WorkerSica } from './../../../../../core/models/Worker';
 import { Router } from '@angular/router';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
@@ -52,10 +53,42 @@ export class DeliveryPage implements OnInit {
 
   nextStep(): void {
     if (this.stepEnd) {
-      this.sendRequest();
-      return;
+      // By tool
+      if (this.toolFindByCodeBar) {
+        this.sendRequest();
+        return;
+      }
+
+      // By category
+      this.sendRequestCategory();
     }
     this.indexStep = this.indexStep + 1;
+  }
+
+  async sendRequestCategory(): Promise<void> {
+    await this.loadingService.initLoading('Enviando datos... Un momento');
+    const valuesForm = this.formDelivery.value;
+    const body: BodyLoanRentedTool = {
+      deliveredBy: this.deliveredByUser?.id,
+      receivedBy: this.recivedByUser?.id,
+      quantity: valuesForm.quantity,
+      days: valuesForm.days,
+      tasks: valuesForm.tasks,
+      remark: valuesForm.remark,
+      category: this.categoryToolFind?.id,
+    };
+    this.sicaApiService.sendLoanRentedTool(body).subscribe(
+      async (inf) => {
+        await this.loadingService.endLoading();
+      },
+      async (err) => {
+        await this.loadingService.endLoading();
+        await this.toastrService.createToast(
+          'No se ha podido prestar el equipo',
+          'danger'
+        );
+      }
+    );
   }
 
   getEquipmentByCodeBar(toolByBarcode: ToolByBarcodeResponseService): void {
@@ -68,7 +101,6 @@ export class DeliveryPage implements OnInit {
 
   getCategoryByBarcode(category: CategoryTool): void {
     this.categoryToolFind = category;
-    console.log(category);
     if (category?.isUnit) {
       this.inputChange('1', 'quantity');
     }

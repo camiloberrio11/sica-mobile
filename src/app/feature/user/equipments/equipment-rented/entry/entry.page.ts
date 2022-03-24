@@ -247,8 +247,11 @@ export class EntryPage implements OnInit {
     this.updateField(event?.id, 'toolCategory');
     this.currentCategory = event;
     if (this.currentCategory?.isUnit) {
-      this.formEntry.get('toolIdBySupplier').setValidators([Validators.required])
-
+      this.formEntry
+        .get('toolIdBySupplier')
+        .setValidators([Validators.required]);
+    } else {
+      this.formEntry.get('toolIdBySupplier').setValidators([]);
     }
     this.cd.detectChanges();
   }
