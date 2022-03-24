@@ -1,3 +1,4 @@
+import { StringTransformService } from './../../core/services/string-transform.service';
 import {
   Component,
   Input,
@@ -21,11 +22,13 @@ export class InputGeneralComponent implements OnInit, OnDestroy {
   @Input() srcIcon: string;
   @Input() typeInput: 'text' | 'password' | 'number';
   @Input() deleteBtn: boolean;
-
+  @Input() isCurrency: boolean;
   @Output() inputChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() inputDelete: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor() {}
+  constructor(
+    private readonly stringTransformService: StringTransformService
+  ) {}
 
   ngOnInit(): void {
     if (!this.value || this.value === '0') {
@@ -41,6 +44,7 @@ export class InputGeneralComponent implements OnInit, OnDestroy {
 
   handleInput(event: any): void {
     const value = event?.target?.value;
+    this.value = `${value}`;
     this.inputChange.emit(`${value}`);
   }
 }
