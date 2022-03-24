@@ -15,6 +15,10 @@ const routes: Routes = [
   {
     path: 'return',
     loadChildren: () => import('./return/return.module').then( m => m.ReturnPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   }
 ];
 

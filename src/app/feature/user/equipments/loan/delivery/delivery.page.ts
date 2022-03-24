@@ -8,6 +8,7 @@ import { User } from 'src/app/core/models/User';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 import { ToastService } from 'src/app/core/services/toast.service';
+import { CategoryTool } from './../../../../../core/models/CategoryTool';
 type TypeUserNfc = 'delivery' | 'received';
 
 @Component({
@@ -21,6 +22,7 @@ export class DeliveryPage implements OnInit {
   menuFormStep: string[] = ['Equipo', 'Usuario'];
   stepEnd = false;
   toolFindByCodeBar: ToolByBarcodeResponseService;
+  categoryToolFind: CategoryTool;
   deliveredByUser: User;
   recivedByUser: WorkerSica;
 
@@ -64,6 +66,15 @@ export class DeliveryPage implements OnInit {
     this.cd?.detectChanges();
   }
 
+  getCategoryByBarcode(category: CategoryTool): void {
+    this.categoryToolFind = category;
+    console.log(category);
+    if (category?.isUnit) {
+      this.inputChange('1', 'quantity');
+    }
+    this.cd?.detectChanges();
+  }
+
   getUserByToken(user: User, input: TypeUserNfc): void {
     if (input === 'delivery') {
       this.deliveredByUser = user;
@@ -75,8 +86,6 @@ export class DeliveryPage implements OnInit {
     this.recivedByUser = worker;
     this.cd?.detectChanges();
   }
-
-
 
   private sendRequest(): void {
     const valuesForm = this.formDelivery.value;
@@ -94,9 +103,9 @@ export class DeliveryPage implements OnInit {
         this.toastrService.createToast(
           'Se ha entregado el equipo con éxito',
           'success'
-          );
-          this.formDelivery.reset();
-          this.router.navigate(['/auth/menu-equipments']);
+        );
+        this.formDelivery.reset();
+        this.router.navigate(['/auth/menu-equipments']);
       },
       (err) => {
         this.toastrService.createToast(

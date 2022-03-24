@@ -52,7 +52,6 @@ export class InputCodebarComponent {
     onScan.detachFrom(this.document);
   }
 
-
   handleBlur(): void {
     this.render = false;
     onScan.detachFrom(this.document);
@@ -104,10 +103,11 @@ export class InputCodebarComponent {
       },
       async (err) => {
         await this.loadingService.endLoading();
-        await this.toastrService.createToast(
-          'No se ha encontrado el equipo',
-          'warning'
-        );
+        this.findCategoryBarcode(value);
+        // await this.toastrService.createToast(
+        //   'No se ha encontrado el equipo',
+        //   'warning'
+        // );
       }
     );
   }
@@ -126,7 +126,7 @@ export class InputCodebarComponent {
       async (err) => {
         await this.loadingService.endLoading();
         await this.toastrService.createToast(
-          'No se ha encontrado categoría',
+          'No se ha encontrado información asociada',
           'warning'
         );
       }

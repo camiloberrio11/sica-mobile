@@ -13,14 +13,15 @@
       <div class="delivery__layout__loan__0" *ngSwitchCase="0">
         <app-input-codebar
           (codeBarRead)="getEquipmentByCodeBar($event)"
+          (barcodeCategory)="getCategoryByBarcode($event)"
           [label]="'Escanear'"
           placeholder="Toca para escanear Código"
           srcIcon="assets/icon/barcode.png"
           typeInput="text"
         ></app-input-codebar>
         <app-card-detail-equipment
-          [brand]="toolFindByCodeBar?.brand?.name"
-          [categoryName]="toolFindByCodeBar?.category?.name"
+          [brand]="toolFindByCodeBar?.brand?.name || categoryToolFind?.name"
+          [categoryName]="toolFindByCodeBar?.category?.name || categoryToolFind?.name"
           [reference]="toolFindByCodeBar?.reference"
           [serial]="toolFindByCodeBar?.serial"
           [isOwned]="true"
