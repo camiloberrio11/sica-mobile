@@ -1,3 +1,4 @@
+import { BodyPatchReturnRentedTool } from './../models/RentedTool';
 import {
   ResponseSendNotificationEmail,
   SendNotificationEmail,
@@ -118,6 +119,12 @@ export class SicaBackendService {
     return this.http.get<RentedTool>(
       `${environment?.urlApi}/api/${idConstruction}/tool/loan-rented/last-of/${categoryId}`
     );
+  }
+
+  returnRentedTool(body: BodyPatchReturnRentedTool, loanRentedId): Observable<any> {
+    const idConstruction =
+    this.constructionService.getConstructionSelected()?.id;
+    return this.http.patch(`${environment?.urlApi}/api/${idConstruction}/tool/loan-rented/${loanRentedId}/return-rented-tool`, body);
   }
 
   sendLoanRentedTool(body: BodyLoanRentedTool): Observable<{id: string}> {

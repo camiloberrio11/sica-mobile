@@ -15,8 +15,19 @@ export interface SaveRentedToolBody {
   };
 }
 
-export interface BodyLoanRentedTool {
+export interface BodyPatchReturnRentedTool {
+  return: {
+    deliveredBy: string;
+    receivedBy: string;
+    detail: {
+      status: string;
+      quantity: number;
+    };
+    remark: string;
+  };
+}
 
+export interface BodyLoanRentedTool {
   deliveredBy: string;
   receivedBy: string;
   quantity: number;
@@ -24,7 +35,6 @@ export interface BodyLoanRentedTool {
   tasks: string;
   remark: string;
   category: string;
-
 }
 export interface RentedTool {
   id: string;
@@ -72,5 +82,3 @@ interface Remission {
   construction: { id: string }[];
   supplier: { id: string }[];
 }
-
-

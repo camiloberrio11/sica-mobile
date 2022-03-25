@@ -1,3 +1,5 @@
+import { RentedTool } from 'src/app/core/models/RentedTool';
+import { BodyPatchReturnRentedTool } from './../../../../../core/models/RentedTool';
 import { Router } from '@angular/router';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
@@ -10,6 +12,7 @@ import { Loan, UpdateLoanBody } from 'src/app/core/models/Loan';
 import { ConstructionService } from 'src/app/core/services/construction.service';
 import { Construction } from 'src/app/core/models/Construction';
 import { WorkerSica } from 'src/app/core/models/Worker';
+import { CategoryTool } from 'src/app/core/models/CategoryTool';
 type TypeUserNfc = 'delivery' | 'received';
 type InputForm = 'remark' | 'quantity';
 
@@ -28,6 +31,8 @@ export class ReturnPage {
   statusEquipment = true;
   currentConstruction: Construction;
   lastLoan: Loan;
+  categoryToolFind: CategoryTool;
+  lastRentedTool: RentedTool;
 
   // Properties form
   quantity = 0;
@@ -61,13 +66,26 @@ export class ReturnPage {
     if (toolByBarcode?.category?.isUnit) {
       this.quantity = 1;
     }
+    this.categoryToolFind = null;
     this.getLastLoan(toolByBarcode?.id);
+    this.cd?.detectChanges();
+  }
+
+  getCategoryCodebar(category: CategoryTool): void {
+    this.categoryToolFind = category;
+    this.toolFindByCodeBar = null;
+    this.getLastLoanCategory(category?.id);
     this.cd?.detectChanges();
   }
 
   nextStep(): void {
     if (this.stepEnd) {
-      this.sendRequest();
+
+      if (this.toolFindByCodeBar) {
+        this.sendRequest();
+        return;
+      }
+      this.returnRentedTool();
       return;
     }
     this.indexStep = this.indexStep + 1;
@@ -123,6 +141,55 @@ export class ReturnPage {
           'No se ha podido recibir el equipo',
           'warning'
         );
+      }
+    );
+  }
+
+  private async returnRentedTool(): Promise<void> {
+    const body: BodyPatchReturnRentedTool = {
+      return: {
+        deliveredBy: this.recivedByUser?.id,
+        receivedBy: this.deliveredByUser?.id,
+        detail: {
+          status: this.statusEquipment ? 'bueno' : 'malo',
+          quantity: this.quantity,
+        },
+        remark: this.remark,
+      },
+    };
+    await this.loadingService.initLoading('Recibiendo equipo... Un momento');
+    this.sicaApiService.returnRentedTool(body, this.lastRentedTool?.id).subscribe(
+      async (inf) => {
+        await this.loadingService.endLoading();
+        await this.toastrService.createToast(
+          'Se ha recibido el equipo con éxito',
+          'success'
+        );
+        this.remark = '';
+        this.quantity = 0;
+        this.router.navigate(['/auth/menu-equipments']);
+      },
+      async (err) => {
+        await this.loadingService.endLoading();
+        await this.toastrService.createToast(
+          'No se ha podido recibir el equipo',
+          'warning'
+        );
+      }
+    );
+  }
+
+  private async getLastLoanCategory(idCategory: string): Promise<void> {
+    await this.loadingService.initLoading(
+      'Obteniendo último prestamo de la categoría'
+    );
+    this.sicaApiService.getLastLoanRentedTool(idCategory).subscribe(
+      async (inf) => {
+        await this.loadingService.endLoading();
+        this.lastRentedTool = inf;
+      },
+      async (err) => {
+        await this.loadingService.endLoading();
       }
     );
   }
