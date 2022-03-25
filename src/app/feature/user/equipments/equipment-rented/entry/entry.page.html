@@ -79,6 +79,7 @@
       <app-input-general
         [label]="'Precio por día'"
         typeInput="number"
+        [isCurrency]="true"
         placeholder="Digite precio por día"
         (inputChange)="updateField($event, 'remisionDailyPrice')"
         [value]="formEntry?.get('remisionDailyPrice')?.value"

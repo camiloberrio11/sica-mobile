@@ -68,6 +68,7 @@
           label="Valor equipo (con iva)"
           placeholder="Digite valor"
           [typeInput]="'number'"
+          [isCurrency]="true"
           (inputChange)="handleSelect($event,'invoicePrice')"
         ></app-input-general>
         <app-input-general

@@ -43,7 +43,13 @@ export class InputGeneralComponent implements OnInit, OnDestroy {
   }
 
   handleInput(event: any): void {
-    const value = event?.target?.value;
+    let value = this.stringTransformService.removeSpecialCharacters(
+      `${event?.target?.value}`
+    );
+    if (this.isCurrency) {
+      const format = Number(value).toLocaleString('es-CO');
+      value = `${format}`;
+    }
     this.value = `${value}`;
     this.inputChange.emit(`${value}`);
   }
