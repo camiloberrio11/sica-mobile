@@ -20,7 +20,11 @@ import {
 } from '../models/Tool';
 import { User } from '../models/User';
 import { CreateLoanBody, Loan, UpdateLoanBody } from '../models/Loan';
-import { RentedTool, SaveRentedToolBody } from '../models/RentedTool';
+import {
+  BodyLoanRentedTool,
+  RentedTool,
+  SaveRentedToolBody,
+} from '../models/RentedTool';
 import { SendEToolBody } from '../models/Movement';
 import { Reason } from '../models/Reason';
 import {
@@ -113,6 +117,15 @@ export class SicaBackendService {
       this.constructionService.getConstructionSelected()?.id;
     return this.http.get<RentedTool>(
       `${environment?.urlApi}/api/${idConstruction}/tool/loan-rented/last-of/${categoryId}`
+    );
+  }
+
+  sendLoanRentedTool(body: BodyLoanRentedTool): Observable<{id: string}> {
+    const idConstruction =
+      this.constructionService.getConstructionSelected()?.id;
+    return this.http.post<{id: string}>(
+      ` ${environment?.urlApi}/api/${idConstruction}/tool/loan-rented`,
+      body
     );
   }
 

@@ -69,6 +69,7 @@
         [value]="formEntry?.get('remisionEstimatedRentalDays')?.value"
       ></app-input-general>
       <app-input-general
+        *ngIf="currentCategory?.isUnit"
         [label]="'Identificador'"
         typeInput="text"
         placeholder="Ingrese identificador proveedor"

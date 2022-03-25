@@ -116,7 +116,6 @@ export class ReturnPage {
         );
         this.remark = '';
         this.quantity = 0;
-        // this.formDelivery.reset();
         this.router.navigate(['/auth/menu-equipments']);
       },
       (err) => {

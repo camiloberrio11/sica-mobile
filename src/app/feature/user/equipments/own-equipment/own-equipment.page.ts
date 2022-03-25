@@ -25,11 +25,6 @@ export class OwnEquipmentPage implements OnInit {
       title: 'Hoja de vida',
       routePath: 'auth/own-equipment/history',
     },
-    {
-      srcImg: 'assets/icon/equipopropio.svg',
-      title: 'Informes',
-      routePath: 'auth/own-equipment/reports',
-    },
   ];
   constructor(private constructionService: ConstructionService) { }
 

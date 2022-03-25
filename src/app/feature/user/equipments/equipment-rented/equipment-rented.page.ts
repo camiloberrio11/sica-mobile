@@ -25,11 +25,6 @@ export class EquipmentRentedPage implements OnInit {
       title: 'Preliquidación',
       routePath: 'auth/equipment-rented/pre-settlement',
     },
-    {
-      srcImg: 'assets/icon/informe.svg',
-      title: 'Informes',
-      routePath: 'auth/equipment-rented/reports',
-    },
   ];
   constructor(private constructionService: ConstructionService) { }
 

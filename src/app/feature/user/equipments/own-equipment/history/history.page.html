@@ -17,7 +17,7 @@
       [label]="'Equipo'"
       typeInput="text"
       [disable]="true"
-      [value]="toolFindByCodeBar?.brand?.name"
+      [value]="toolFindByCodeBar?.category?.name + '-' + toolFindByCodeBar?.barcode"
     ></app-input-general>
     <app-input-general
       [label]="'Marca'"
@@ -44,10 +44,10 @@
       [value]="toolFindByCodeBar?.invoices?.pop()?.date?.split('T')[0]"
     ></app-input-general>
     <app-input-general
-      [label]="'Garantía'"
+      [label]="'Garantía  meses'"
       typeInput="text"
       [disable]="true"
-      [value]="toolFindByCodeBar?.warrantyExpirationDate?.split('T')[0]"
+      [value]="toolFindByCodeBar?.invoices?.pop().warranty?.toString()"
     ></app-input-general>
     <app-input-general
       [label]="'Valor de compra'"

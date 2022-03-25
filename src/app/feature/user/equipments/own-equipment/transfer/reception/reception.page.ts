@@ -1,5 +1,8 @@
 import { Router } from '@angular/router';
-import { Movement, ReceiveToolBody } from './../../../../../../core/models/Movement';
+import {
+  Movement,
+  ReceiveToolBody,
+} from './../../../../../../core/models/Movement';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
@@ -61,11 +64,11 @@ export class ReceptionPage implements OnInit {
     this.sicaApiService.getLastMovement(idTool).subscribe(
       async (data) => {
         this.lastMovement = data;
+        this.cd?.detectChanges();
         await this.loadingService.endLoading();
       },
       async (err) => {
         await this.loadingService.endLoading();
-
       }
     );
   }

@@ -17,37 +17,32 @@
       ></app-input-codebar>
       <app-input-general
         label="Equipo"
-        [value]="''"
         [disable]="true"
         [value]="toolFindByCodeBar?.category?.name"
       ></app-input-general>
       <app-input-general
         label="Marca"
-        [value]="''"
         [disable]="true"
         [value]="toolFindByCodeBar?.brand?.name"
       ></app-input-general>
       <app-input-general
         label="Referencia"
-        [value]="''"
         [disable]="true"
         [value]="toolFindByCodeBar?.reference"
       ></app-input-general>
       <app-input-general
         label="Serie"
-        [value]="''"
         [disable]="true"
         [value]="toolFindByCodeBar?.serial"
       ></app-input-general>
       <app-input-general
         label="Fecha de compra"
-        [value]="''"
         [disable]="true"
         [value]="toolFindByCodeBar?.invoices?.pop()?.date?.split('T')[0]"
       ></app-input-general>
       <app-input-general
-        label="Garantía"
-        [value]="toolFindByCodeBar?.warrantyExpirationDate?.toString()"
+        label="Garantía meses"
+        [value]="toolFindByCodeBar?.invoices?.pop()?.warranty?.toString()"
         [disable]="true"
         [value]="toolFindByCodeBar?.invoices?.pop()?.warranty?.toString()"
       ></app-input-general>

@@ -54,7 +54,12 @@
       [value]="idSupplier"
     ></app-input-general>
 
-    <div class="return__quan">
+    <p class="return__subtitle">
+      {{categoryTool ? categoryTool?.isUnit? 'Individual' : 'Generico': ''}}
+    </p>
+
+    <!-- Si es generico -->
+    <div class="return__quan" *ngIf="!categoryTool?.isUnit">
       <app-box-quantity
         label="Cantidad disponible"
         [value]="available?.toString() || ''"
@@ -66,6 +71,20 @@
         [value]="quantity || ''"
         [disabled]="categoryTool?.isUnit"
       ></app-box-quantity>
+    </div>
+
+    <!-- Si es individual -->
+    <div class="return__quan" *ngIf="categoryTool?.isUnit">
+      <app-box-quantity
+        label="Identificador"
+        [value]="available?.toString() || ''"
+        [disabled]="true"
+      ></app-box-quantity>
+      <app-checkbox
+        [id]=""
+        [checked]="false"
+        (changeCheckBox)="handleCheckbox($event)"
+      ></app-checkbox>
     </div>
 
     <app-capture-reader-nfc

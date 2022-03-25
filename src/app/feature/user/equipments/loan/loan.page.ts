@@ -18,12 +18,7 @@ export class LoanPage implements OnInit {
       title: 'Devolución',
       srcImg: 'assets/icon/devolucionn.svg',
       routePath: 'auth/loan-equipment/return',
-    },
-    {
-      title: 'Informe',
-      srcImg: 'assets/icon/informe.svg',
-      routePath: 'auth/loan-equipment/reports',
-    },
+    }
   ];
   constructionSelected: Construction;
   constructor(private constructionService: ConstructionService) {}
