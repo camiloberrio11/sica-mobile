@@ -80,6 +80,12 @@ export class DeliveryPage implements OnInit {
     this.sicaApiService.sendLoanRentedTool(body).subscribe(
       async (inf) => {
         await this.loadingService.endLoading();
+        await this.toastrService.createToast(
+          'Se ha entregado con éxito',
+          'success'
+        );
+        this.formDelivery.reset();
+        this.router.navigate(['/auth/menu-equipments']);
       },
       async (err) => {
         await this.loadingService.endLoading();

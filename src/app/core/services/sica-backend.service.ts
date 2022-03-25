@@ -120,11 +120,11 @@ export class SicaBackendService {
     );
   }
 
-  sendLoanRentedTool(body: BodyLoanRentedTool): Observable<any> {
+  sendLoanRentedTool(body: BodyLoanRentedTool): Observable<{id: string}> {
     const idConstruction =
       this.constructionService.getConstructionSelected()?.id;
-    return this.http.post(
-      ` ${environment?.urlApi}/api/${idConstruction}//tool/loan-rented`,
+    return this.http.post<{id: string}>(
+      ` ${environment?.urlApi}/api/${idConstruction}/tool/loan-rented`,
       body
     );
   }

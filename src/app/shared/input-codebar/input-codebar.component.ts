@@ -94,6 +94,7 @@ export class InputCodebarComponent {
       return;
     }
     await this.loadingService.initLoading('Obteniendo información de equipo');
+    this.valueInput = value;
     this.backendServiceSica.getToolByCodeBar(value).subscribe(
       async (data) => {
         this.valueInput = data?.barcode;
@@ -116,6 +117,7 @@ export class InputCodebarComponent {
     await this.loadingService.initLoading(
       'Obteniendo información de categoría'
     );
+    this.valueInput = barcode;
     this.backendServiceSica.getCategoryToolByBarcode(barcode).subscribe(
       async (data) => {
         this.valueInput = data?.barcode;
@@ -125,6 +127,8 @@ export class InputCodebarComponent {
       },
       async (err) => {
         await this.loadingService.endLoading();
+        this.valueInput = '';
+        this.cd.detectChanges();
         await this.toastrService.createToast(
           'No se ha encontrado información asociada',
           'warning'
