@@ -85,8 +85,24 @@ export class ReturnPage {
   }
 
   async addEquipment(): Promise<void> {
-    if (!this.categoryTool || !this.quantity || (this.categoryTool?.isUnit && !this.idSupplier)) {
-      await this.toastrService.createToast('LLena campos obligatorios', 'warning', 'middle');
+    if (+this.quantity > +this.available) {
+      await this.toastrService.createToast(
+        'La cantidad a enviar es mayor a la cantidad disponible',
+        'warning',
+        'middle'
+      );
+      return;
+    }
+    if (
+      !this.categoryTool ||
+      !this.quantity ||
+      (this.categoryTool?.isUnit && !this.idSupplier)
+    ) {
+      await this.toastrService.createToast(
+        'LLena campos obligatorios',
+        'warning',
+        'middle'
+      );
       return;
     }
     this.listAddedEquipments.push({
@@ -94,7 +110,11 @@ export class ReturnPage {
       quantity: +this.quantity,
       category: this.categoryTool?.id,
     });
-    await this.toastrService.createToast('Equipo agregado', 'success', 'middle');
+    await this.toastrService.createToast(
+      'Equipo agregado',
+      'success',
+      'middle'
+    );
     this.idSupplier = '';
     this.quantity = null;
     this.categoryTool = null;
@@ -118,6 +138,10 @@ export class ReturnPage {
 
   handleNfc(nfcValue: User) {
     this.userNfc = nfcValue;
+  }
+
+  handleCheckbox(idChecked: string): void {
+    console.log(idChecked);
   }
 
   async handleCodebar(event: CategoryTool) {

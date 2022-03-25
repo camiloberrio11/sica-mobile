@@ -21,7 +21,10 @@ export class CaptureImageComponent implements OnInit {
   @Output() dataPhoto: EventEmitter<string> = new EventEmitter<string>();
   srcImgCapture: any;
   options: CameraOptions = {
-    quality: 100,
+    quality: 80,
+    allowEdit: false,
+    sourceType: 1,
+    saveToPhotoAlbum: true,
     destinationType: this.camera.DestinationType.DATA_URL,
     encodingType: this.camera.EncodingType.JPEG,
     mediaType: this.camera.MediaType.PICTURE,
@@ -50,7 +53,9 @@ export class CaptureImageComponent implements OnInit {
       this.srcImgCapture = this.sanitizer.bypassSecurityTrustResourceUrl(
         'data:image/jpeg;base64,' + result
       );
-      this.dataPhoto.emit(this.srcImgCapture?.changingThisBreaksApplicationSecurity || result);
+      this.dataPhoto.emit(
+        this.srcImgCapture?.changingThisBreaksApplicationSecurity || result
+      );
       this.cd.detectChanges();
       await this.loadingService.endLoading();
     } catch (error) {

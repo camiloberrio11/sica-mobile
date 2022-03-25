@@ -22,6 +22,11 @@ export class MaintenancePage {
       title: 'Recibir',
       routePath: 'auth/maintenance/return',
     },
+    {
+      srcImg: 'assets/icon/informe.svg',
+      title: 'Registrar',
+      routePath: 'auth/maintenance/register',
+    },
 
   ];
 

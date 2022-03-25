@@ -1,21 +1,19 @@
-import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { MaintenanceBodyCreate } from 'src/app/core/models/Maintenance';
+import { SendEToolBody } from 'src/app/core/models/Movement';
+import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
+import { User } from 'src/app/core/models/User';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { SicaBackendService } from 'src/app/core/services/sica-backend.service';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { ToolByBarcodeResponseService } from 'src/app/core/models/Tool';
-import { Construction } from 'src/app/core/models/Construction';
 import { ConstructionService } from 'src/app/core/services/construction.service';
-import { AlertController, Platform } from '@ionic/angular';
-import { Location } from '@angular/common';
 
-type MaintenanceType = 'maintenance' | 'reparation';
-
-interface Equipment {
-  name: string;
+type TypeSelect = 'supplier' | 'reason';
+interface FormSimulate {
+  userId: string;
+  supplierId: string;
+  reasonId: string;
+  dateReturn: string;
 }
 
 @Component({
@@ -25,87 +23,32 @@ interface Equipment {
 })
 export class SendPage implements OnInit {
   indexStep = 0;
-  menuFormStep: string[] = ['Equipo', 'Finalizar'];
+  menuFormStep: string[] = ['Equipo', 'Destino'];
   stepEnd = false;
-  typeMaintenance: MaintenanceType = 'reparation';
-  listSupplier: { id: string; value: string }[] = [];
-  listAddedEquipment: MaintenanceBodyCreate[] = [];
-  formMaintenance: FormGroup;
-  toolRead: ToolByBarcodeResponseService;
-  currentConstruction: Construction;
-  subscriptionBackButton: Subscription;
+  toolFindByCodeBar: ToolByBarcodeResponseService;
+  listReason: { id: string; value: string }[] = [];
+  listConstruction: { id: string; value: string }[] = [];
+  formState: FormSimulate;
+  listSuppliers: { id: string; value: string }[] = [];
+  idConstructionCurrent: string;
 
   constructor(
     private loadingService: LoadingService,
-    private sicaBackend: SicaBackendService,
+    private sicaApiService: SicaBackendService,
+    private toastrService: ToastService,
     private cd: ChangeDetectorRef,
     private router: Router,
-    private readonly constructionService: ConstructionService,
-    private toastrService: ToastService,
-    private platform: Platform,
-    private alertController: AlertController,
-    private location: Location
-  ) {
-    this.subscriptionBackButton = this.platform.backButton.subscribe(() => {
-      if (this.listAddedEquipment?.length > 0) {
-        this.showModal();
-      }
-    });
-  }
+    private constructionService: ConstructionService
+  ) {}
 
   ngOnInit() {
-    this.getSupplier();
-    this.formBuild();
-    this.currentConstruction =
-      this.constructionService.getConstructionSelected();
-    this.updateFieldForm(this.currentConstruction?.id, 'constructionId');
+    this.getReasons();
+    this.getProviders();
   }
 
   ionViewWillEnter() {
-    this.formMaintenance.patchValue({
-      invoiceDate: new Date().toISOString()?.split('T')[0],
-    });
-  }
-
-  ionViewDidLeave(): void {
-    this.subscriptionBackButton?.unsubscribe();
-    this.listAddedEquipment = [];
-  }
-
-  async showModal(): Promise<void> {
-    const alert = await this.alertController.create({
-      header: 'Un Momento',
-      cssClass: 'modalcss',
-      backdropDismiss: false,
-      message: `Estas seguro de salir, perderás los equipos agregados`,
-      buttons: [
-        {
-          text: 'Salir',
-          handler: () => this.location?.back(),
-        },
-        { text: 'Cancelar', role: 'cancel', cssClass: 'danger-cancel' },
-      ],
-    });
-    await alert.present();
-  }
-
-  currentIndexStepForm(event: number) {
-    this.stepEnd = this.indexStep + 1 === this.menuFormStep?.length;
-    this.indexStep = event;
-  }
-
-  handleSelect(event: string): void {
-    this.updateFieldForm(event, 'invoiceSupplierId');
-  }
-
-  inputChange(event: string, formcontrolname?: string): void {
-    this.updateFieldForm(event, formcontrolname);
-  }
-
-  readCodeBar(event: ToolByBarcodeResponseService) {
-    this.toolRead = event;
-    this.updateFieldForm(event?.id, 'toolId');
-    this.cd.detectChanges();
+    this.idConstructionCurrent =
+      this.constructionService?.getConstructionSelected()?.id;
   }
 
   nextStep(): void {
@@ -116,117 +59,146 @@ export class SendPage implements OnInit {
     this.indexStep = this.indexStep + 1;
   }
 
-  sendEmail(): void {
-    alert('Email enviado');
+  currentIndexStepForm(event: number) {
+    this.stepEnd = this.indexStep + 1 === this.menuFormStep?.length;
+    this.indexStep = event;
   }
 
-  changeCheckbox(event: string) {
-    const value: any = event;
-    this.typeMaintenance = value;
+  handleUserNfc(user: User) {
+    this.updateForm('userId', user?.id);
   }
 
-  handleDelete(event: number) {
-    const update: MaintenanceBodyCreate[] = [];
-    for (let index = 0; index < this.listAddedEquipment.length; index++) {
-      const element = this.listAddedEquipment[index];
-      if (index === event) {
-        continue;
-      }
-      update.push(element);
-    }
-    this.listAddedEquipment = update;
+  handleInput(event: string) {
+    this.updateForm('dateReturn', event);
   }
 
-  async addEquipment(): Promise<void> {
-    if (this.formMaintenance?.invalid) {
-      await this.toastrService.createToast(
-        'Llena los campos obligatorios',
-        'warning'
-      );
+  handleSelect(event: string, typeSelect: TypeSelect): void {
+    if (typeSelect === 'supplier') {
+      this.updateForm('supplierId', event);
       return;
     }
-    const formValues = this.formMaintenance.value;
-    const body: MaintenanceBodyCreate = {
-      invoice: {
-        date: formValues?.invoiceDate,
-        number: +formValues?.invoiceNumber,
-        supplier: formValues?.invoiceSupplierId,
-        price: +formValues?.invoicePrice,
-        warranty: +formValues?.invoiceWarranty,
-      },
-      remark: formValues?.remark,
-      construction: formValues?.constructionId,
-      tool: formValues?.toolId,
-      name: this.toolRead?.brand?.name,
-    };
-    this.listAddedEquipment.push(body);
-    await this.toastrService.createToast('Equipo agregado', 'success');
-    this.formMaintenance.reset();
+    this.updateForm('reasonId', event);
   }
 
-  async getSupplier(): Promise<void> {
-    await this.loadingService.initLoading('Obteniendo proveedor');
-    this.sicaBackend.getSupplier().subscribe(
-      async (sup) => {
-        this.listSupplier = sup.map((it) => {
-          const item = {
-            id: it.id,
-            value: it.name,
-          };
-          return item;
-        });
+  getEquipmentByCodeBar(toolByBarcode: ToolByBarcodeResponseService): void {
+    this.toolFindByCodeBar = toolByBarcode;
+    this.cd?.detectChanges();
+  }
+
+  async getProviders(): Promise<void> {
+    await this.loadingService.initLoading('Obteniendo proveedores');
+    this.sicaApiService.getSupplier().subscribe(
+      async (inf) => {
+        this.listSuppliers = inf.map((item) => ({ id: item?.id, value: item?.name }));
         await this.loadingService.endLoading();
       },
       async (err) => {
+        await this.loadingService.endLoading();
+        await this.toastrService.createToast(
+          'Ha ocurrido un error obteniendo los proveedores',
+          'danger'
+        );
+      }
+    );
+  }
+
+  async getReasons(): Promise<void> {
+    await this.loadingService.initLoading('Obteniendo motivos');
+    this.sicaApiService.getReason().subscribe(
+      async (data) => {
+        this.listReason = data.map((it) => {
+          const item = {
+            id: it.id,
+            value: it.description,
+          };
+          return item;
+        });
+
+        await this.loadingService.endLoading();
+        this.getConstructions();
+      },
+      async (err) => {
+        this.listReason = [];
+        await this.loadingService.endLoading();
+        this.toastrService.createToast(
+          'Ocurrió un error obteniendo motivos',
+          'warning'
+        );
+      }
+    );
+  }
+
+  async getConstructions(): Promise<void> {
+    await this.loadingService.initLoading('Obteniendo obras');
+    this.sicaApiService.getConstruiction().subscribe(
+      async (data) => {
+        this.listConstruction = data.map((it) => {
+          const item = {
+            id: it?.id,
+            value: it?.name,
+          };
+          return item;
+        });
+        this.listConstruction = this.listConstruction.filter(
+          (it) => it?.id !== this.idConstructionCurrent
+        );
+        await this.loadingService.endLoading();
+      },
+      async (err) => {
+        this.listConstruction = [];
+        this.toastrService.createToast(
+          'Ocurrió un error obteniendo obras',
+          'warning'
+        );
         await this.loadingService.endLoading();
       }
     );
   }
 
   private async sendRequest(): Promise<void> {
-    if (this.listAddedEquipment?.length < 1) {
-      await this.toastrService.createToast(
-        'No has agregado ningún equipo',
-        'warning', 'middle'
-      );
-      return;
-    }
-    for (const iterator of this.listAddedEquipment) {
-      await this.loadingService.initLoading('Enviando a mantenimiento');
-      try {
-        await this.sicaBackend.createMaintenance(iterator)?.toPromise();
-        await this.toastrService.createToast(`Equipo ${iterator?.name} enviado`, 'success');
-      } catch (error) {
-        console.log(error);
-        await this.toastrService.createToast(`Equipo ${iterator?.name} con error`, 'danger');
-        continue;
+    const body: SendEToolBody = {
+      reason: this.formState?.supplierId,
+      devolutionEstimatedDate: this.formState?.dateReturn,
+      origin: {
+        user: this.formState?.userId,
+        construction: this.idConstructionCurrent,
+      },
+      destination: {
+        construction: this.formState?.supplierId,
+      },
+      tool: this.toolFindByCodeBar?.id,
+    };
+    await this.loadingService.initLoading('Haciendo proceso de envío');
+    this.sicaApiService.sendTool(body).subscribe(
+      async (data) => {
+        await this.loadingService.endLoading();
+        await this.toastrService.createToast(
+          'Se ha enviado el equipo con éxito',
+          'success'
+        );
+        this.cleanForm();
+        this.router.navigate(['/auth/menu-equipments']);
+      },
+      async (err) => {
+        await this.loadingService.endLoading();
+        await this.toastrService.createToast(
+          'No se ha podido enviar el equipo',
+          'warning'
+        );
       }
-    }
-    await this.loadingService?.endLoading();
-    this.listAddedEquipment = [];
-    this.router.navigate(['/auth/menu-equipments']);
-  }
-
-  private formBuild(): void {
-    this.formMaintenance = new FormGroup({
-      invoiceDate: new FormControl('', Validators.required),
-      invoiceNumber: new FormControl('', Validators.required),
-      invoiceSupplierId: new FormControl('', Validators.required),
-      invoicePrice: new FormControl('', Validators.required),
-      invoiceWarranty: new FormControl('', Validators.required),
-      remark: new FormControl(''),
-      constructionId: new FormControl('', Validators.required),
-      toolId: new FormControl('', Validators.required),
-    });
-    this.updateFieldForm(
-      new Date()?.toISOString()?.split('T')[0],
-      'invoiceDate'
     );
   }
 
-  private updateFieldForm(value: string, formcontrol: string): void {
-    this.formMaintenance.patchValue({
-      [formcontrol]: value,
-    });
+  private updateForm(key: string, value: string): void {
+    this.formState = { ...this.formState, [key]: value };
+  }
+
+  private cleanForm(): void {
+    this.formState = {
+      supplierId: '',
+      reasonId: '',
+      dateReturn: '',
+      userId: '',
+    };
   }
 }

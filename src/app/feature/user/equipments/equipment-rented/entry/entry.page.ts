@@ -175,7 +175,6 @@ export class EntryPage implements OnInit {
       return;
     }
     await this.loadingService.endLoading();
-
     await this.toastrService.createToast(
       'Ha ocurrido un error con el servidor de correos',
       'danger'
@@ -247,6 +246,13 @@ export class EntryPage implements OnInit {
   handleCategory(event: CategoryTool): void {
     this.updateField(event?.id, 'toolCategory');
     this.currentCategory = event;
+    if (this.currentCategory?.isUnit) {
+      this.formEntry
+        .get('toolIdBySupplier')
+        .setValidators([Validators.required]);
+    } else {
+      this.formEntry.get('toolIdBySupplier').setValidators([]);
+    }
     this.cd.detectChanges();
   }
 
@@ -257,7 +263,7 @@ export class EntryPage implements OnInit {
       remisionRentedFrom: new FormControl('', Validators.required),
       remisionEstimatedRentalDays: new FormControl('', Validators.required),
       remisionSupplierId: new FormControl('', Validators.required),
-      toolIdBySupplier: new FormControl('', Validators.required),
+      toolIdBySupplier: new FormControl(''),
       toolQuantity: new FormControl('', Validators.required),
       toolUserFor: new FormControl(''),
       toolImage: new FormControl(''),
