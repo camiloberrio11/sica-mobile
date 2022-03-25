@@ -13,7 +13,8 @@ ios/
 Thumbs.db
 UserInterfaceState.xcuserstate
 $RECYCLE.BIN/
-
+android/
+ios/
 *.log
 log.txt
 npm-debug.log*
