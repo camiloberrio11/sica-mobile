@@ -1,3 +1,4 @@
+import { StringTransformService } from './../../../../../core/services/string-transform.service';
 import { Router } from '@angular/router';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
@@ -29,7 +30,8 @@ export class RegisterPage implements OnInit {
     private cd: ChangeDetectorRef,
     private toastrService: ToastService,
     private router: Router,
-    private readonly storageService: StorageService
+    private readonly storageService: StorageService,
+    private readonly stringTransformService: StringTransformService
   ) {}
 
   ngOnInit() {
@@ -158,10 +160,12 @@ export class RegisterPage implements OnInit {
     const urlImage = await this.upploadImage();
     const body: CreateToolBody = {
       invoice: {
-        date: valuesForm?.invoiceDate || new Date()?.toISOString() ,
+        date: valuesForm?.invoiceDate || new Date()?.toISOString(),
         number: +valuesForm?.invoiceNumber,
         supplier: valuesForm?.invoiceSupplierId,
-        price: +valuesForm?.invoicePrice,
+        price: +this.stringTransformService.removeSpecialCharacters(
+          valuesForm?.invoicePrice
+        ),
         warranty: +valuesForm?.invoiceWarranty,
       },
       tool: {

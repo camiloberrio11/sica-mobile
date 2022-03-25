@@ -1,7 +1,7 @@
 <div class="inputgeneral">
   <p>{{ label }}</p>
   <input
-    *ngIf="!isTypeDate"
+    *ngIf="!isTypeDate && !isCurrency"
     [type]="typeInput"
     (keyup)="handleInput($event)"
     [disabled]="disable"
@@ -9,11 +9,23 @@
     [placeholder]="placeholder"
     [value]="value"
   />
+  <input
+    *ngIf="isCurrency"
+    type="text"
+    pattern="[0-9]*"
+    inputmode="numeric"
+    (keyup)="handleInput($event)"
+    [disabled]="disable"
+    [readonly]="disable"
+    [placeholder]="placeholder"
+    [value]="value"
+  />
+
   <button class="delete" *ngIf="deleteBtn" (click)="handleDelete()">
     <ion-icon slot="start" name="trash-outline"></ion-icon>
   </button>
   <input
-    *ngIf="isTypeDate"
+    *ngIf="isTypeDate && !isCurrency"
     type="date"
     [disabled]="disable"
     [readonly]="disable"
